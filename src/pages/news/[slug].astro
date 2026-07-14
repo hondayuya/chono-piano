@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  formatDate,
+  getNewsDetail,
+  getNewsList,
+  getSiteSettings,
+} from '../../lib/microcms';
+
+export async function getStaticPaths() {
+  const news = await getNewsList(100);
+  return news.map((item) => ({
+    params: { slug: item.id },
+  }));
+}
+
+const { slug } = Astro.params;
+const settings = await getSiteSettings();
+const article = slug ? await getNewsDetail(slug) : null;
+
+if (!article) {
+  return Astro.redirect('/news/');
+}
+---
+
+<BaseLayout
+  title={article.title}
+  description={article.title}
+  settings={settings}
+  currentPath="/news/"
+>
+  <article id="top" class="site-shell" style="padding:clamp(2.5rem,6vw,4rem) 0">
+    <p class="news-list__date">{formatDate(article.date)}</p>
+    <h1 class="section__title">{article.title}</h1>
+    {
+      article.eyecatch && (
+        <img
+          src={article.eyecatch.url}
+          alt=""
+          width={article.eyecatch.width}
+          height={article.eyecatch.height}
+          style="margin:1.5rem 0;max-width:36rem"
+        />
+      )
+    }
+    <div class="prose" set:html={article.body} />
+    <p style="margin-top:2rem">
+      <a href="/news/">お知らせ一覧へ戻る</a>
+    </p>
+  </article>
+</BaseLayout>

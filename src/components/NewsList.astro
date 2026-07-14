@@ -1,0 +1,30 @@
+---
+import { formatDate } from '../lib/microcms';
+import type { News } from '../lib/types';
+
+type Props = {
+  items: News[];
+  emptyText?: string;
+};
+
+const { items, emptyText = '現在お知らせはありません。' } = Astro.props;
+---
+
+{
+  items.length === 0 ? (
+    <p>{emptyText}</p>
+  ) : (
+    <ul class="news-list">
+      {items.map((item) => (
+        <li>
+          <a href={`/news/${item.id}/`}>
+            <span class="news-list__date">{formatDate(item.date)}</span>
+            <span class="news-list__title">
+              {item.pinned && <span class="badge">注目</span>} {item.title}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}

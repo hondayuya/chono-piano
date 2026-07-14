@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  getLabArticleDetail,
+  getLabArticles,
+  getSiteSettings,
+} from '../../lib/microcms';
+
+export async function getStaticPaths() {
+  const articles = await getLabArticles(100);
+  return articles.map((item) => ({
+    params: { slug: item.id },
+  }));
+}
+
+const { slug } = Astro.params;
+const settings = await getSiteSettings();
+const article = slug ? await getLabArticleDetail(slug) : null;
+
+if (!article) {
+  return Astro.redirect('/lab/');
+}
+---
+
+<BaseLayout
+  title={article.title}
+  description={article.excerpt || article.title}
+  settings={settings}
+  currentPath="/lab/"
+>
+  <article id="top" class="site-shell" style="padding:clamp(2.5rem,6vw,4rem) 0">
+    {
+      article.audience === 'technician' && (
+        <p class="badge">技術者向け</p>
+      )
+    }
+    <h1 class="section__title">{article.title}</h1>
+    {article.series && <p class="section__lead">シリーズ: {article.series}</p>}
+    <div class="prose" set:html={article.body} />
+    <p style="margin-top:2rem">
+      <a href="/lab/">Labo CHONO 一覧へ戻る</a>
+    </p>
+  </article>
+</BaseLayout>

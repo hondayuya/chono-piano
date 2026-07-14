@@ -1,0 +1,27 @@
+---
+import type { Work } from '../lib/types';
+
+type Props = {
+  works: Work[];
+};
+
+const { works } = Astro.props;
+
+const typeLabel: Record<Work['mediaType'], string> = {
+  lp: 'LP',
+  cd: 'CD',
+  other: 'Other',
+};
+---
+
+<div class="works-row" role="list">
+  {
+    works.map((work) => (
+      <article class="work-tile" role="listitem">
+        <span class="work-tile__type">{typeLabel[work.mediaType]}</span>
+        <span class="work-tile__artist">{work.artist}</span>
+        <span>{work.title}</span>
+      </article>
+    ))
+  }
+</div>

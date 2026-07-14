@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSiteSettings } from '../../lib/microcms';
+
+const settings = await getSiteSettings();
+---
+
+<BaseLayout
+  title="送信完了"
+  description="お問い合わせの送信が完了しました"
+  settings={settings}
+  currentPath="/contact/"
+  noindex={true}
+>
+  <div id="top" class="contact-page site-shell">
+    <div class="contact-page__inner">
+      <h1 class="section__title">送信が完了しました</h1>
+      <p class="section__lead">
+        お問い合わせありがとうございました。内容を確認のうえ、必要に応じてご連絡いたします。調律中は電話に出られないことが多いため、折り返しまでお時間をいただく場合があります。
+      </p>
+      <div class="form-actions">
+        <a class="button" href="/">トップページへ</a>
+        <a class="button button--ghost" href="/contact/">相談シートへ戻る</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

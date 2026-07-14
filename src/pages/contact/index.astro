@@ -1,0 +1,180 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSiteSettings } from '../../lib/microcms';
+
+const settings = await getSiteSettings();
+---
+
+<BaseLayout
+  title="ご相談・連絡シート"
+  description="チョウノウ調律所への調律・修理・相談のご連絡シート"
+  settings={settings}
+  currentPath="/contact/"
+>
+  <div id="top" class="contact-page site-shell">
+    <div class="contact-page__inner">
+      <h1 class="section__title">ご相談・連絡シート</h1>
+      <p class="section__lead">
+        できるだけ詳細をご記入ください。訪問時間帯のご予約は基本的に電話で行います。電話番号はご相談後にメールでお伝えいただいても構いません。
+      </p>
+
+      <div id="form-status" class="form-status" aria-live="polite">送信準備中…</div>
+
+      <form
+        id="contact-form"
+        class="contact-form"
+        method="post"
+        action="/contact/send.php"
+        novalidate
+        hidden
+      >
+        <input type="hidden" name="csrf_token" id="csrf_token" value="" />
+        <input type="hidden" name="form_loaded_at" id="form_loaded_at" value="" />
+
+        <div class="hp" aria-hidden="true">
+          <label for="company_url">会社URL（入力しないでください）</label>
+          <input
+            type="text"
+            id="company_url"
+            name="company_url"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="field">
+          <label for="name">お名前 <span class="req">必須</span></label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            maxlength="100"
+            autocomplete="name"
+          />
+        </div>
+
+        <div class="field">
+          <label for="address">ご住所</label>
+          <input
+            type="text"
+            id="address"
+            name="address"
+            maxlength="200"
+            autocomplete="street-address"
+          />
+        </div>
+
+        <div class="field">
+          <label for="email">メールアドレス <span class="req">必須</span></label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            maxlength="200"
+            autocomplete="email"
+          />
+        </div>
+
+        <div class="field">
+          <label for="phone">電話番号</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            maxlength="30"
+            autocomplete="tel"
+          />
+          <span class="hint">
+            ※訪問時間帯のご予約は基本電話で行います。電話番号はご相談後にメールでお伝えいただいても結構です。
+          </span>
+        </div>
+
+        <div class="field">
+          <label for="piano_maker">ピアノのメーカー</label>
+          <input type="text" id="piano_maker" name="piano_maker" maxlength="100" />
+        </div>
+
+        <div class="field">
+          <label for="piano_age">ピアノの古さ（購入時期の目安）</label>
+          <input type="text" id="piano_age" name="piano_age" maxlength="100" />
+        </div>
+
+        <div class="field">
+          <label for="last_tuning">最後の調律時期</label>
+          <input type="text" id="last_tuning" name="last_tuning" maxlength="100" />
+        </div>
+
+        <div class="field">
+          <label for="message">ご相談内容 <span class="req">必須</span></label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            maxlength="5000"
+            placeholder="音が出ない／出にくいキー、特にこうしてほしいこと、調律のみか修理希望か、以前の調律師についてなど"
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="button" id="submit-btn">送信する</button>
+          <a class="button button--ghost" href="/">トップへ戻る</a>
+        </div>
+      </form>
+
+      <div class="privacy">
+        <p>
+          送信内容は調律・修理のご相談対応の目的でのみ利用します。調律の狂いが大きい場合や修理が必要な場合は、別料金が発生することがあります。古いピアノでは調律時に弦が切れる場合があるため、現地確認後に説明する場合があります。
+        </p>
+        <p>
+          原則として一度はお電話でお話しします。修理見積はメールでお送りし、承諾のご返信をいただく場合があります。
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const statusEl = document.getElementById('form-status');
+  const tokenInput = document.getElementById('csrf_token') as HTMLInputElement | null;
+  const loadedAtInput = document.getElementById('form_loaded_at') as HTMLInputElement | null;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+
+  if (form && statusEl && tokenInput && loadedAtInput && submitBtn) {
+    const showError = (message: string) => {
+      statusEl.textContent = message;
+      statusEl.className = 'notice notice--error';
+      form.hidden = true;
+    };
+
+    fetch('/contact/token.php', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: { Accept: 'application/json' },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('token');
+        return res.json() as Promise<{ token?: string }>;
+      })
+      .then((data) => {
+        if (!data?.token) throw new Error('token');
+        tokenInput.value = data.token;
+        loadedAtInput.value = String(Date.now());
+        statusEl.textContent = '';
+        statusEl.className = 'form-status';
+        form.hidden = false;
+      })
+      .catch(() => {
+        showError(
+          'フォームを準備できませんでした。PHP が有効なサーバーで再度お試しください。',
+        );
+      });
+
+    form.addEventListener('submit', () => {
+      submitBtn.disabled = true;
+      submitBtn.textContent = '送信中…';
+    });
+  }
+</script>

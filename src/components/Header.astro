@@ -1,0 +1,52 @@
+---
+import type { SiteSettings } from '../lib/types';
+
+type Props = {
+  settings: SiteSettings;
+  currentPath?: string;
+};
+
+const { settings, currentPath = '/' } = Astro.props;
+
+const links = [
+  { href: '/', label: 'ホーム' },
+  { href: '/news/', label: 'お知らせ' },
+  { href: '/profile/', label: '経歴・実績' },
+  { href: '/lab/', label: 'Labo CHONO' },
+  { href: '/contact/', label: 'ご相談・連絡' },
+];
+---
+
+<header class="site-header">
+  <div class="site-shell site-header__inner">
+    <a class="brand-lockup" href="/">
+      <span class="brand-lockup__main">{settings.companyName}</span>
+      <span class="brand-lockup__sub">{settings.labName}</span>
+    </a>
+    <nav aria-label="メインナビゲーション">
+      <ul class="nav">
+        {
+          links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                aria-current={currentPath === link.href ? 'page' : undefined}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+        {
+          settings.xUrl && (
+            <li>
+              <a href={settings.xUrl} target="_blank" rel="noopener noreferrer">
+                X
+              </a>
+            </li>
+          )
+        }
+      </ul>
+    </nav>
+  </div>
+</header>

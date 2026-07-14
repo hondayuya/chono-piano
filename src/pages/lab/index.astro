@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getLabArticles, getSiteSettings } from '../../lib/microcms';
+
+const settings = await getSiteSettings();
+const articles = await getLabArticles();
+
+const bySeries = articles.reduce<Record<string, typeof articles>>((acc, item) => {
+  const key = item.series || item.category || 'その他';
+  acc[key] ??= [];
+  acc[key].push(item);
+  return acc;
+}, {});
+---
+
+<BaseLayout
+  title="Labo CHONO"
+  description="調律技術者向けの知識・チョウノウ方式の解説"
+  settings={settings}
+  currentPath="/lab/"
+>
+  <div id="top" class="site-shell" style="padding-top:clamp(2.5rem,6vw,4rem)">
+    <h1 class="section__title">Labo CHONO 調律研究所</h1>
+    <p class="section__lead">
+      調律技術者向けの知識や記事、チョウノウ方式の解説、今後の活動予定を掲載するページです。
+    </p>
+  </div>
+
+  <section class="section">
+    <div class="site-shell">
+      <div class="meta-grid">
+        {
+          Object.entries(bySeries).map(([series, items]) => (
+            <div class="meta-block">
+              <h3>{series}</h3>
+              <ul class="stack" style="list-style:none;padding:0;margin:0.75rem 0 0">
+                {items.map((item) => (
+                  <li>
+                    <a href={`/lab/${item.id}/`}>{item.title}</a>
+                    {item.audience === 'technician' && (
+                      <span class="badge" style="margin-left:0.4rem">
+                        技術者向け
+                      </span>
+                    )}
+                    {item.excerpt && (
+                      <p style="margin:0.35rem 0 0;color:var(--ink-muted);font-size:0.92rem">
+                        {item.excerpt}
+                      </p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

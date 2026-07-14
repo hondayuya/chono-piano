@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NewsList from '../components/NewsList.astro';
+import WorksRow from '../components/WorksRow.astro';
+import {
+  getLabArticles,
+  getNewsList,
+  getSiteSettings,
+  getWorks,
+} from '../lib/microcms';
+
+const settings = await getSiteSettings();
+const news = (await getNewsList(5)).slice(0, 5);
+const works = await getWorks();
+const labArticles = await getLabArticles();
+const featuredLab = labArticles.find((a) => a.id.includes('chono-method-1')) ?? labArticles[0];
+---
+
+<BaseLayout title={settings.companyName} settings={settings} currentPath="/">
+  <div id="top"></div>
+  <section class="hero site-shell">
+    <p class="badge">Piano Tuning / Research</p>
+    <h1 class="hero__brand">
+      {settings.companyName}
+      <br />
+      <span style="font-size:0.55em;letter-spacing:0.12em">{settings.labName}</span>
+    </h1>
+    <p class="hero__lead">
+      {settings.catchphrase}
+    </p>
+    <div class="hero__actions">
+      <a class="button" href="/contact/">ご相談・ご連絡</a>
+      <a class="button button--ghost" href="/lab/">Labo CHONO</a>
+    </div>
+  </section>
+
+  <section class="section" id="news">
+    <div class="site-shell">
+      <h2 class="section__title">お知らせ</h2>
+      <p class="section__lead">直近のお知らせ・新記事をご案内します。</p>
+      <NewsList items={news} />
+      <p style="margin-top:1.25rem">
+        <a href="/news/">お知らせ一覧へ</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="site-shell">
+      <h2 class="section__title">私と調律について</h2>
+      <p class="section__lead">張能康博 — {settings.companyName}</p>
+      <div class="prose">
+        <p>{settings.aboutText}</p>
+        {
+          featuredLab && (
+            <p>
+              詳しくは
+              <a href={`/lab/${featuredLab.id}/`}>「{featuredLab.title}」</a>
+              をご覧ください。
+            </p>
+          )
+        }
+        <p>
+          <a href="/profile/">経歴・実績・注釈</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="works">
+    <div class="site-shell">
+      <h2 class="section__title">調律した音源・動画リンク</h2>
+      <p class="section__lead">
+        LP・CDのジャケットや関連音源を紹介するエリアです（内容は microCMS で更新）。
+      </p>
+      <WorksRow works={works} />
+    </div>
+  </section>
+
+  <section class="section" id="service">
+    <div class="site-shell">
+      <h2 class="section__title">業務内容</h2>
+      <div class="prose">
+        <p>{settings.businessText}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="fee">
+    <div class="site-shell">
+      <h2 class="section__title">調律料金・訪問可能地域</h2>
+      <div class="meta-grid">
+        <div class="meta-block">
+          <h3>基本料金（税込）</h3>
+          <p>グランドピアノ {settings.feeGp}</p>
+          <p style="margin-top:0.5rem">アップライト {settings.feeUp}</p>
+        </div>
+        <div class="meta-block">
+          <h3>訪問・出張</h3>
+          <p>{settings.areaText}</p>
+        </div>
+      </div>
+      <p style="margin-top:1.75rem">
+        <a class="button" href="/contact/">相談・連絡シートへ</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
