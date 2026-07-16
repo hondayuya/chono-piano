@@ -1,5 +1,5 @@
 ---
-import { formatDate } from '../lib/microcms';
+import { excerptFromHtml, formatDate } from '../lib/microcms';
 import type { News } from '../lib/types';
 
 type Props = {
@@ -8,6 +8,11 @@ type Props = {
 };
 
 const { items, emptyText = '現在お知らせはありません。' } = Astro.props;
+
+function thumbUrl(url: string): string {
+  const joiner = url.includes('?') ? '&' : '?';
+  return `${url}${joiner}w=240&h=160&fit=crop`;
+}
 ---
 
 {
@@ -15,16 +20,33 @@ const { items, emptyText = '現在お知らせはありません。' } = Astro.p
     <p>{emptyText}</p>
   ) : (
     <ul class="news-list">
-      {items.map((item) => (
-        <li>
-          <a href={`/news/${item.id}/`}>
-            <span class="news-list__date">{formatDate(item.date)}</span>
-            <span class="news-list__title">
-              {item.pinned && <span class="badge">注目</span>} {item.title}
-            </span>
-          </a>
-        </li>
-      ))}
+      {items.map((item) => {
+        const excerpt = excerptFromHtml(item.body);
+        return (
+          <li>
+            <a href={`/news/${item.id}/`}>
+              <div class="news-list__body">
+                <span class="news-list__date">{formatDate(item.date)}</span>
+                <span class="news-list__title">{item.title}</span>
+                {excerpt && <p class="news-list__excerpt">{excerpt}</p>}
+              </div>
+              <div class="news-list__thumb" aria-hidden={!item.eyecatch}>
+                {item.eyecatch ? (
+                  <img
+                    src={thumbUrl(item.eyecatch.url)}
+                    alt=""
+                    width="120"
+                    height="80"
+                    loading="lazy"
+                  />
+                ) : (
+                  <span class="news-list__thumb-placeholder" />
+                )}
+              </div>
+            </a>
+          </li>
+        );
+      })}
     </ul>
   )
 }

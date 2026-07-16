@@ -1,0 +1,21 @@
+---
+import { formatDate } from '../../lib/microcms';
+
+type Props = {
+  /** ISO date or `YYYY-MM-DD` string. */
+  date: string;
+  class?: string;
+};
+
+const { date, class: className } = Astro.props;
+
+const datetime = (() => {
+  const d = new Date(date);
+  if (Number.isNaN(d.getTime())) return date;
+  return date.length >= 10 ? date.slice(0, 10) : date;
+})();
+---
+
+<time class:list={['text-date', className]} datetime={datetime}>
+  {formatDate(date)}
+</time>

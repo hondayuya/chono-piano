@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import LabBanner from '../components/LabBanner.astro';
 import NewsList from '../components/NewsList.astro';
 import WorksRow from '../components/WorksRow.astro';
 import {
@@ -22,16 +23,11 @@ const featuredLab = labArticles.find((a) => a.id.includes('chono-method-1')) ?? 
     <p class="badge">Piano Tuning / Research</p>
     <h1 class="hero__brand">
       {settings.companyName}
-      <br />
-      <span style="font-size:0.55em;letter-spacing:0.12em">{settings.labName}</span>
     </h1>
     <p class="hero__lead">
       {settings.catchphrase}
     </p>
-    <div class="hero__actions">
-      <a class="button" href="/contact/">ご相談・ご連絡</a>
-      <a class="button button--ghost" href="/lab/">Labo CHONO</a>
-    </div>
+    <LabBanner settings={settings} class="hero__lab-banner" />
   </section>
 
   <section class="section" id="news">
@@ -61,7 +57,7 @@ const featuredLab = labArticles.find((a) => a.id.includes('chono-method-1')) ?? 
           )
         }
         <p>
-          <a href="/profile/">経歴・実績・注釈</a>
+          <a href="/profile/">経歴・実績</a>
         </p>
       </div>
     </div>

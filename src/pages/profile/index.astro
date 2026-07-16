@@ -1,45 +1,34 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import {
-  getGlossary,
-  getProfile,
-  getSiteSettings,
-} from '../../lib/microcms';
+import { applyGlossaryLinks } from '../../lib/glossary';
+import { getGlossary, getProfile, getSiteSettings } from '../../lib/microcms';
 
 const settings = await getSiteSettings();
 const profile = await getProfile();
 const glossary = await getGlossary();
 
-function initialGroup(term: string): string {
-  const reading = term;
-  const first = reading.charAt(0);
-  return first;
-}
-
-const grouped = glossary.reduce<Record<string, typeof glossary>>((acc, item) => {
-  const key = initialGroup(item.reading || item.term);
-  acc[key] ??= [];
-  acc[key].push(item);
-  return acc;
-}, {});
+const biographyHtml = profile.biography.includes('<')
+  ? profile.biography
+  : `<p>${profile.biography}</p>`;
+const biography = applyGlossaryLinks(biographyHtml, glossary);
 ---
 
 <BaseLayout
-  title="経歴・実績・注釈"
-  description="張能康博の経歴・実績とサイト内注釈"
+  title="経歴・実績"
+  description="張能康博の経歴・実績"
   settings={settings}
   currentPath="/profile/"
 >
   <div id="top" class="site-shell" style="padding-top:clamp(2.5rem,6vw,4rem)">
-    <h1 class="section__title">経歴・実績・注釈</h1>
-    <p class="section__lead">調律に関わる経歴・施設・音源、および記事内注釈のまとめです。</p>
+    <h1 class="section__title">経歴・実績</h1>
+    <p class="section__lead">調律に関わる経歴・施設・音源のまとめです。</p>
   </div>
 
   <section class="section">
     <div class="site-shell prose">
       <h2>{profile.name}の経歴</h2>
       {profile.birthText && <p>{profile.birthText}</p>}
-      <div set:html={profile.biography.includes('<') ? profile.biography : `<p>${profile.biography}</p>`} />
+      <div set:html={biography} />
     </div>
   </section>
 
@@ -56,39 +45,6 @@ const grouped = glossary.reduce<Record<string, typeof glossary>>((acc, item) => 
       <div class="meta-block">
         <h3>CD・音源・ライブ</h3>
         <p>{profile.discographyNote}</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="notes">
-    <div class="site-shell">
-      <h2 class="section__title">記事中の注釈・解説</h2>
-      <p class="section__lead">
-        本文中の「注釈あり」語彙をここにまとめます。ブラウザの戻る操作で元記事へ戻れます。
-      </p>
-      <div class="stack">
-        {
-          Object.entries(grouped).map(([key, items]) => (
-            <div>
-              <h3 style="margin:0 0 0.75rem">{key}</h3>
-              <dl class="stack">
-                {items.map((item) => (
-                  <div id={item.id}>
-                    <dt style="font-family:var(--font-display);font-size:1.1rem">
-                      {item.term}
-                      {item.reading && (
-                        <span style="color:var(--ink-muted);font-size:0.85rem;margin-left:0.5rem">
-                          {item.reading}
-                        </span>
-                      )}
-                    </dt>
-                    <dd style="margin:0.35rem 0 0;color:var(--ink-muted)">{item.body}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          ))
-        }
       </div>
     </div>
   </section>

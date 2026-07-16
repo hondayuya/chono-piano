@@ -17,12 +17,14 @@
 |-----|------|
 | `/` | トップ（お知らせ・紹介・料金・業務） |
 | `/news/` | お知らせ一覧・詳細 |
-| `/profile/` | 経歴・実績・注釈 |
+| `/profile/` | 経歴・実績 |
+| `/notes/` | 注釈・解説 |
 | `/lab/` | Labo CHONO（調律研究所） |
 | `/contact/` | 相談・連絡シート（Astro → 静的 HTML） |
 | `/contact/thanks/` | 送信完了 |
 | `/contact/error/` | 送信エラー |
 | `/contact/send.php` など | PHP 送信・CSRF（`public/contact/`） |
+| `/design/` | デザインシステム（ターゲット・コンセプト・配色・テキスト・コンポーネント／開発用・noindex） |
 
 ## セットアップ
 
@@ -73,7 +75,7 @@ npm run build
 
 **`news`**
 
-- `title` / `date` / `body` / `eyecatch` / `pinned`（真偽）
+- `title` / `date` / `body` / `eyecatch`
 
 **`lab-articles`**
 
@@ -87,6 +89,8 @@ npm run build
 **`glossary`**
 
 - `term` / `reading` / `body`
+
+記事本文（お知らせ・Labo CHONO・経歴）に `term` と一致する語句があると、ビルド時に注釈ページへのリンクが自動挿入されます。注釈ページには、その語が使われているページへの逆リンクも表示されます。
 
 API エンドポイント名は `src/lib/microcms.ts` の定義と一致させてください。
 

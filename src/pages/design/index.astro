@@ -1,0 +1,827 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LabBanner from '../../components/LabBanner.astro';
+import NewsList from '../../components/NewsList.astro';
+import WorksRow from '../../components/WorksRow.astro';
+import DateText from '../../components/text/DateText.astro';
+import Heading from '../../components/text/Heading.astro';
+import Lead from '../../components/text/Lead.astro';
+import Link from '../../components/text/Link.astro';
+import List from '../../components/text/List.astro';
+import Prose from '../../components/text/Prose.astro';
+import Table from '../../components/text/Table.astro';
+import Text from '../../components/text/Text.astro';
+import {
+  componentRegistry,
+  componentsByCategory,
+} from '../../lib/component-registry';
+import { colorTokens, designBrief, typeTokens } from '../../lib/design-tokens';
+import { fallbackNews, fallbackWorks } from '../../lib/fallback';
+import { getSiteSettings } from '../../lib/microcms';
+
+const settings = await getSiteSettings();
+const currentPath = '/design/';
+const groups = componentsByCategory();
+const { target, concept } = designBrief;
+---
+
+<BaseLayout
+  title="デザインシステム"
+  description="ターゲット・コンセプト・配色・タイポグラフィ・コンポーネントの設計カタログ（開発用）"
+  settings={settings}
+  currentPath={currentPath}
+  noindex={true}
+>
+  <div id="top" class="site-shell design-page">
+    <header class="design-page__intro">
+      <p class="design-page__eyebrow">Development</p>
+      <Heading level={1}>デザインシステム</Heading>
+      <Lead>
+        ターゲットとコンセプトを起点に、配色・テキスト・コンポーネントをまとめています。ブリーフは
+        <code>src/lib/design-tokens.ts</code>、コンポーネントは
+        <code>src/lib/component-registry.ts</code> を更新してください。
+      </Lead>
+      <p class="design-page__meta">
+        カラー {colorTokens.length} / テキスト {typeTokens.length} / コンポーネント{' '}
+        {componentRegistry.length} — このページは検索エンジンにインデックスしません
+      </p>
+    </header>
+
+    <nav class="design-page__toc" aria-label="ページ目次">
+      <div class="design-page__toc-group">
+        <p class="design-page__toc-label">設計の起点</p>
+        <ul>
+          <li><a href="#brief-target">ターゲット</a></li>
+          <li><a href="#brief-concept">コンセプト</a></li>
+        </ul>
+      </div>
+      <div class="design-page__toc-group">
+        <p class="design-page__toc-label">設計情報</p>
+        <ul>
+          <li><a href="#foundations-color">配色</a></li>
+          <li><a href="#foundations-type">テキスト</a></li>
+        </ul>
+      </div>
+      {
+        groups.map((group) => (
+          <div class="design-page__toc-group">
+            <p class="design-page__toc-label">{group.label}</p>
+            <ul>
+              {group.items.map((entry) => (
+                <li>
+                  <a href={`#${entry.id}`}>{entry.name}</a>
+                  <code>{entry.file.replace('src/components/', '')}</code>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </nav>
+
+    <section class="design-brief" aria-labelledby="brief-heading">
+      <h2 class="design-page__group-title" id="brief-heading">設計の起点</h2>
+
+      <div class="design-foundations__block" id="brief-target">
+        <h3 class="design-foundations__title">ターゲット</h3>
+        <p class="design-foundations__lead">{target.summary}</p>
+        <ul class="design-audience">
+          {
+            target.audiences.map((audience) => (
+              <li class="design-audience__item">
+                <div class="design-audience__head">
+                  <span
+                    class:list={[
+                      'design-audience__priority',
+                      audience.priority === 'primary' &&
+                        'design-audience__priority--primary',
+                    ]}
+                  >
+                    {audience.priority === 'primary' ? '主対象' : '副対象'}
+                  </span>
+                  <h4 class="design-audience__label">{audience.label}</h4>
+                </div>
+                <p class="design-audience__summary">{audience.summary}</p>
+                <ul class="design-audience__needs">
+                  {audience.needs.map((need) => (
+                    <li>{need}</li>
+                  ))}
+                </ul>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="design-foundations__block" id="brief-concept">
+        <h3 class="design-foundations__title">コンセプト</h3>
+        <p class="design-foundations__lead">{concept.summary}</p>
+        <ul class="design-pillars">
+          {
+            concept.pillars.map((pillar) => (
+              <li class="design-pillars__item">
+                <h4 class="design-pillars__title">{pillar.title}</h4>
+                <p class="design-pillars__body">{pillar.body}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="design-foundations" aria-labelledby="foundations-heading">
+      <h2 class="design-page__group-title" id="foundations-heading">設計情報</h2>
+
+      <div class="design-foundations__block" id="foundations-color">
+        <h3 class="design-foundations__title">配色</h3>
+        <p class="design-foundations__lead">
+          <code>src/styles/global.css</code> の <code>:root</code> で定義しているカラーです。
+        </p>
+        <ul class="design-swatches">
+          {
+            colorTokens.map((token) => (
+              <li class="design-swatch">
+                <span
+                  class="design-swatch__chip"
+                  style={`background: var(${token.cssVar})`}
+                  aria-hidden="true"
+                />
+                <span class="design-swatch__body">
+                  <span class="design-swatch__name">{token.name}</span>
+                  <code class="design-swatch__var">{token.cssVar}</code>
+                  <code class="design-swatch__value">{token.value}</code>
+                  <span class="design-swatch__role">{token.role}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="design-foundations__block" id="foundations-type">
+        <h3 class="design-foundations__title">テキスト</h3>
+        <p class="design-foundations__lead">
+          フォントファミリーと、サイト内で繰り返すテキストの役割です。
+        </p>
+        <ul class="design-type">
+          {
+            typeTokens.map((token) => (
+              <li class="design-type__item">
+                <div class="design-type__meta">
+                  <span class="design-type__name">{token.name}</span>
+                  {token.cssVar && <code>{token.cssVar}</code>}
+                  <span class="design-type__role">{token.role}</span>
+                  <span class="design-type__specs">{token.specs}</span>
+                </div>
+                <div
+                  class:list={[
+                    'design-type__sample',
+                    `design-type__sample--${token.preview}`,
+                  ]}
+                >
+                  {token.sample}
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <div class="stack design-page__list">
+      {
+        groups.map((group) => (
+          <div class="design-page__group">
+            <h2 class="design-page__group-title">{group.label}</h2>
+            {group.items.map((entry) => (
+              <section class="design-page__item" id={entry.id}>
+                <div class="design-page__head">
+                  <h3 class="design-page__name">{entry.name}</h3>
+                  <code class="design-page__path">{entry.file}</code>
+                </div>
+                <p class="design-page__desc">{entry.description}</p>
+
+                <div class="design-page__grid">
+                  <div>
+                    <h4 class="design-page__label">Props</h4>
+                    {entry.props.length === 0 ? (
+                      <p class="design-page__empty">なし</p>
+                    ) : (
+                      <table class="design-page__table">
+                        <thead>
+                          <tr>
+                            <th scope="col">名前</th>
+                            <th scope="col">型</th>
+                            <th scope="col">備考</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {entry.props.map((prop) => (
+                            <tr>
+                              <td>
+                                <code>{prop.name}</code>
+                                {prop.required && (
+                                  <span class="design-page__req">必須</span>
+                                )}
+                              </td>
+                              <td>
+                                <code>{prop.type}</code>
+                              </td>
+                              <td>{prop.note ?? '—'}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+
+                  <div>
+                    <h4 class="design-page__label">使用箇所</h4>
+                    <ul class="design-page__used">
+                      {entry.usedIn.map((place) => (
+                        <li>
+                          {place.href ? (
+                            <a href={place.href}>{place.label}</a>
+                          ) : (
+                            <span>{place.label}</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="design-page__preview">
+                  <h4 class="design-page__label">プレビュー</h4>
+
+                  {entry.id === 'lab-banner' && (
+                    <div class="design-page__frame">
+                      <LabBanner settings={settings} />
+                    </div>
+                  )}
+                  {entry.id === 'news-list' && (
+                    <div class="design-page__frame">
+                      <NewsList items={fallbackNews} />
+                    </div>
+                  )}
+                  {entry.id === 'works-row' && (
+                    <div class="design-page__frame">
+                      <WorksRow works={fallbackWorks} />
+                    </div>
+                  )}
+
+                  {entry.id === 'heading' && (
+                    <div class="design-page__frame stack">
+                      <Heading level={1}>見出しレベル 1（section）</Heading>
+                      <Heading level={2}>見出しレベル 2（section）</Heading>
+                      <Heading level={3} variant="meta">
+                        見出しレベル 3（meta）
+                      </Heading>
+                      <Heading level={3} variant="plain">
+                        見出しレベル 3（plain）
+                      </Heading>
+                    </div>
+                  )}
+                  {entry.id === 'lead' && (
+                    <div class="design-page__frame">
+                      <Lead>
+                        見出し直下のリード文です。補足説明や導入に使います。
+                      </Lead>
+                    </div>
+                  )}
+                  {entry.id === 'text' && (
+                    <div class="design-page__frame">
+                      <Text>
+                        標準の本文段落です。調律・修理・調整に関する説明などに使います。
+                      </Text>
+                      <Text muted>
+                        muted の本文です。補足や注記のトーンに適しています。
+                      </Text>
+                    </div>
+                  )}
+                  {entry.id === 'prose' && (
+                    <div class="design-page__frame">
+                      <Prose>
+                        <p>
+                          Prose は記事本文のコンテナです。段落やリストの余白を揃えます。
+                        </p>
+                        <p>複数段落をまとめて配置するときに使います。</p>
+                      </Prose>
+                    </div>
+                  )}
+                  {entry.id === 'list' && (
+                    <div class="design-page__frame stack">
+                      <List>
+                        <li>調律</li>
+                        <li>修理・調整</li>
+                        <li>購入相談</li>
+                      </List>
+                      <List as="ol">
+                        <li>お問い合わせ</li>
+                        <li>日程調整</li>
+                        <li>訪問・作業</li>
+                      </List>
+                    </div>
+                  )}
+                  {entry.id === 'table' && (
+                    <div class="design-page__frame">
+                      <Table caption="調律料金の例">
+                        <thead>
+                          <tr>
+                            <th scope="col">区分</th>
+                            <th scope="col">料金</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>グランドピアノ</td>
+                            <td>{settings.feeGp ?? '—'}</td>
+                          </tr>
+                          <tr>
+                            <td>アップライト</td>
+                            <td>{settings.feeUp ?? '—'}</td>
+                          </tr>
+                        </tbody>
+                      </Table>
+                    </div>
+                  )}
+                  {entry.id === 'link' && (
+                    <div class="design-page__frame stack">
+                      <p>
+                        <Link href="/news/">通常リンク</Link>
+                        {' / '}
+                        <Link href="/notes/" variant="glossary">
+                          注釈リンク
+                        </Link>
+                      </p>
+                      <p style="display:flex;flex-wrap:wrap;gap:0.75rem">
+                        <Link href="/contact/" variant="button">
+                          ボタンリンク
+                        </Link>
+                        <Link href="/profile/" variant="button-ghost">
+                          ゴーストボタン
+                        </Link>
+                      </p>
+                    </div>
+                  )}
+                  {entry.id === 'date-text' && (
+                    <div class="design-page__frame">
+                      <DateText date="2026-07-15" />
+                    </div>
+                  )}
+
+                  {entry.preview === 'in-layout' && (
+                    <p class="design-page__note">
+                      BaseLayout 経由で本ページのヘッダー／フッターとして表示されています。
+                    </p>
+                  )}
+                </div>
+              </section>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .design-page {
+    padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(3.5rem, 8vw, 5.5rem);
+  }
+
+  .design-page__intro {
+    margin-bottom: 2rem;
+  }
+
+  .design-page__eyebrow {
+    margin: 0 0 0.4rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .design-page__meta {
+    margin: -0.75rem 0 0;
+    font-size: 0.88rem;
+    color: var(--ink-muted);
+  }
+
+  .design-page__toc {
+    margin-bottom: 2.5rem;
+    padding: 1.25rem 1.35rem;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.35);
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .design-page__toc-label {
+    margin: 0 0 0.5rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .design-page__toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .design-page__toc li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1rem;
+  }
+
+  .design-page__toc code {
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+  }
+
+  .design-brief {
+    margin-bottom: 3rem;
+  }
+
+  .design-audience {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 720px) {
+    .design-audience {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .design-audience__item {
+    padding: 1.15rem 1.25rem;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.28);
+  }
+
+  .design-audience__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.75rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .design-audience__priority {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .design-audience__priority--primary {
+    color: var(--moss);
+  }
+
+  .design-audience__label {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .design-audience__summary {
+    margin: 0 0 0.85rem;
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+  }
+
+  .design-audience__needs {
+    margin: 0;
+    padding-left: 1.15rem;
+    display: grid;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+  }
+
+  .design-pillars {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 720px) {
+    .design-pillars {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .design-pillars__item {
+    padding: 1.15rem 1.25rem;
+    border-top: 2px solid var(--moss);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.28);
+  }
+
+  .design-pillars__title {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .design-pillars__body {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+  }
+
+  .design-foundations {
+    margin-bottom: 3rem;
+  }
+
+  .design-foundations__block {
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .design-foundations__title {
+    margin: 0 0 0.4rem;
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 500;
+  }
+
+  .design-foundations__lead {
+    margin: 0 0 1.25rem;
+    color: var(--ink-muted);
+    max-width: 42rem;
+  }
+
+  .design-swatches {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  }
+
+  .design-swatch {
+    display: grid;
+    grid-template-columns: 3.25rem 1fr;
+    gap: 0.85rem;
+    align-items: start;
+    padding: 0.75rem;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.28);
+  }
+
+  .design-swatch__chip {
+    display: block;
+    width: 3.25rem;
+    height: 3.25rem;
+    border: 1px solid var(--line);
+  }
+
+  .design-swatch__body {
+    display: grid;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .design-swatch__name {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+  }
+
+  .design-swatch__var,
+  .design-swatch__value {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    overflow-wrap: anywhere;
+  }
+
+  .design-swatch__role {
+    margin-top: 0.2rem;
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+  }
+
+  .design-type {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+
+  .design-type__item {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  @media (min-width: 720px) {
+    .design-type__item {
+      grid-template-columns: minmax(12rem, 0.9fr) minmax(0, 1.4fr);
+      align-items: center;
+    }
+  }
+
+  .design-type__meta {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .design-type__name {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+  }
+
+  .design-type__meta code {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+  }
+
+  .design-type__role,
+  .design-type__specs {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+  }
+
+  .design-type__sample--display {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    letter-spacing: 0.06em;
+    font-weight: 500;
+  }
+
+  .design-type__sample--body {
+    font-family: var(--font-body);
+    line-height: 1.75;
+  }
+
+  .design-type__sample--section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+
+  .design-type__sample--lead {
+    color: var(--ink-muted);
+    max-width: 40rem;
+  }
+
+  .design-type__sample--date {
+    color: var(--ink-muted);
+    font-size: 0.88rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+  }
+
+  .design-type__sample--meta {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .design-page__list {
+    gap: 3rem;
+  }
+
+  .design-page__group-title {
+    margin: 0 0 0.25rem;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+  }
+
+  .design-page__item {
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .design-page__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .design-page__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 500;
+  }
+
+  .design-page__path {
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+  }
+
+  .design-page__desc {
+    margin: 0 0 1.25rem;
+    color: var(--ink-muted);
+    max-width: 42rem;
+  }
+
+  .design-page__grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 720px) {
+    .design-page__grid {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.8fr);
+    }
+  }
+
+  .design-page__label {
+    margin: 0 0 0.65rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    font-weight: 500;
+    font-family: var(--font-body);
+  }
+
+  .design-page__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+
+  .design-page__table th,
+  .design-page__table td {
+    text-align: left;
+    padding: 0.45rem 0.55rem 0.45rem 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .design-page__table th {
+    font-weight: 500;
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+  }
+
+  .design-page__req {
+    display: inline-block;
+    margin-left: 0.4rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--rosewood);
+  }
+
+  .design-page__used {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .design-page__empty {
+    margin: 0;
+    color: var(--ink-muted);
+  }
+
+  .design-page__frame {
+    padding: 1rem;
+    border: 1px dashed var(--line);
+    background: rgba(255, 255, 255, 0.28);
+  }
+
+  .design-page__note {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--ink-muted);
+  }
+
+  .design-page code {
+    font-size: 0.88em;
+  }
+</style>

@@ -5,8 +5,6 @@ import { getNewsList, getSiteSettings } from '../../lib/microcms';
 
 const settings = await getSiteSettings();
 const news = await getNewsList();
-const recent = news.slice(0, 10);
-const archive = news.slice(10);
 ---
 
 <BaseLayout
@@ -15,28 +13,11 @@ const archive = news.slice(10);
   settings={settings}
   currentPath="/news/"
 >
-  <div id="top" class="site-shell" style="padding-top:clamp(2.5rem,6vw,4rem)">
+  <div id="top" class="site-shell" style="padding:clamp(2.5rem,6vw,4rem) 0">
     <h1 class="section__title">お知らせ / 更新記事</h1>
     <p class="section__lead">
-      トップページのお知らせ本文とアーカイブを掲載します。注目記事は日付に関わらず上位に表示されます。
+      チョウノウ調律所関連のお知らせと更新記事です。
     </p>
+    <NewsList items={news} />
   </div>
-
-  <section class="section">
-    <div class="site-shell">
-      <h2 class="section__title">最近のお知らせや記事</h2>
-      <NewsList items={recent} />
-    </div>
-  </section>
-
-  {
-    archive.length > 0 && (
-      <section class="section">
-        <div class="site-shell">
-          <h2 class="section__title">過去のお知らせや記事（アーカイブ）</h2>
-          <NewsList items={archive} />
-        </div>
-      </section>
-    )
-  }
 </BaseLayout>

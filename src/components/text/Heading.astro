@@ -1,0 +1,27 @@
+---
+type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+type HeadingVariant = 'section' | 'meta' | 'plain';
+
+type Props = {
+  /** HTML heading level. Defaults to 2. */
+  level?: HeadingLevel;
+  /** Visual style. `section` matches page/section titles. */
+  variant?: HeadingVariant;
+  class?: string;
+  id?: string;
+};
+
+const { level = 2, variant = 'section', class: className, id } = Astro.props;
+
+const Tag = `h${level}` as const;
+
+const variantClass: Record<HeadingVariant, string | undefined> = {
+  section: 'section__title',
+  meta: 'heading--meta',
+  plain: 'heading--plain',
+};
+---
+
+<Tag class:list={[variantClass[variant], className]} id={id}>
+  <slot />
+</Tag>

@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { applyGlossaryLinks } from '../../lib/glossary';
 import {
   formatDate,
+  getGlossary,
   getNewsDetail,
   getNewsList,
   getSiteSettings,
@@ -16,11 +18,14 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const settings = await getSiteSettings();
+const glossary = await getGlossary();
 const article = slug ? await getNewsDetail(slug) : null;
 
 if (!article) {
   return Astro.redirect('/news/');
 }
+
+const body = applyGlossaryLinks(article.body, glossary);
 ---
 
 <BaseLayout
@@ -43,7 +48,7 @@ if (!article) {
         />
       )
     }
-    <div class="prose" set:html={article.body} />
+    <div class="prose" set:html={body} />
     <p style="margin-top:2rem">
       <a href="/news/">お知らせ一覧へ戻る</a>
     </p>

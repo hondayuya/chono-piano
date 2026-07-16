@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { applyGlossaryLinks } from '../../lib/glossary';
 import {
+  getGlossary,
   getLabArticleDetail,
   getLabArticles,
   getSiteSettings,
@@ -15,11 +17,14 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const settings = await getSiteSettings();
+const glossary = await getGlossary();
 const article = slug ? await getLabArticleDetail(slug) : null;
 
 if (!article) {
   return Astro.redirect('/lab/');
 }
+
+const body = applyGlossaryLinks(article.body, glossary);
 ---
 
 <BaseLayout
@@ -36,7 +41,7 @@ if (!article) {
     }
     <h1 class="section__title">{article.title}</h1>
     {article.series && <p class="section__lead">シリーズ: {article.series}</p>}
-    <div class="prose" set:html={article.body} />
+    <div class="prose" set:html={body} />
     <p style="margin-top:2rem">
       <a href="/lab/">Labo CHONO 一覧へ戻る</a>
     </p>

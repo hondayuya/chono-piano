@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getGlossaryWithUsages } from '../../lib/glossary-pages';
+import { getSiteSettings } from '../../lib/microcms';
+
+const settings = await getSiteSettings();
+const { glossary, usages } = await getGlossaryWithUsages();
+
+function initialGroup(term: string): string {
+  return term.charAt(0);
+}
+
+const grouped = glossary.reduce<Record<string, typeof glossary>>((acc, item) => {
+  const key = initialGroup(item.reading || item.term);
+  acc[key] ??= [];
+  acc[key].push(item);
+  return acc;
+}, {});
+---
+
+<BaseLayout
+  title="注釈"
+  description="サイト内記事の注釈・解説"
+  settings={settings}
+  currentPath="/notes/"
+>
+  <div id="top" class="site-shell" style="padding:clamp(2.5rem,6vw,4rem) 0">
+    <h1 class="section__title">注釈・解説</h1>
+    <p class="section__lead">
+      本文中の語彙の解説です。各項目から、その言葉が使われているページへ移動できます。
+    </p>
+    {
+      glossary.length === 0 ? (
+        <p>現在、注釈はありません。</p>
+      ) : (
+        <div class="stack glossary-list">
+          {Object.entries(grouped).map(([key, items]) => (
+            <div>
+              <h2 style="margin:0 0 0.75rem;font-size:1.15rem">{key}</h2>
+              <dl class="stack">
+                {items.map((item) => {
+                  const refs = usages[item.id] ?? [];
+                  return (
+                    <div class="glossary-entry" id={item.id}>
+                      <dt style="font-family:var(--font-display);font-size:1.1rem">
+                        {item.term}
+                        {item.reading && (
+                          <span style="color:var(--ink-muted);font-size:0.85rem;margin-left:0.5rem">
+                            {item.reading}
+                          </span>
+                        )}
+                      </dt>
+                      <dd style="margin:0.35rem 0 0;color:var(--ink-muted)">{item.body}</dd>
+                      {refs.length > 0 && (
+                        <dd class="glossary-refs">
+                          <span class="glossary-refs__label">使用ページ</span>
+                          <ul>
+                            {refs.map((ref) => (
+                              <li>
+                                <a href={ref.href}>{ref.title}</a>
+                              </li>
+                            ))}
+                          </ul>
+                        </dd>
+                      )}
+                    </div>
+                  );
+                })}
+              </dl>
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>

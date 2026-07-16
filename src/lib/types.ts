@@ -21,7 +21,6 @@ export type News = {
   date: string;
   body: string;
   eyecatch?: MicroCMSImage;
-  pinned?: boolean;
 };
 
 export type LabArticle = {

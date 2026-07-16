@@ -1,0 +1,13 @@
+---
+type Props = {
+  /** Muted secondary body copy. */
+  muted?: boolean;
+  class?: string;
+};
+
+const { muted = false, class: className } = Astro.props;
+---
+
+<p class:list={['text-body', muted && 'text-body--muted', className]}>
+  <slot />
+</p>

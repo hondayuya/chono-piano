@@ -1,0 +1,19 @@
+---
+type Props = {
+  caption?: string;
+  class?: string;
+};
+
+const { caption, class: className } = Astro.props;
+---
+
+<div class="text-table-wrap">
+  <table class:list={['text-table', className]}>
+    {
+      caption && (
+        <caption class="text-table__caption">{caption}</caption>
+      )
+    }
+    <slot />
+  </table>
+</div>

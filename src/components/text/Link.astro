@@ -1,0 +1,38 @@
+---
+type LinkVariant = 'default' | 'glossary' | 'button' | 'button-ghost';
+
+type Props = {
+  href: string;
+  /** Open in a new tab with noopener. */
+  external?: boolean;
+  variant?: LinkVariant;
+  class?: string;
+  /** Sets aria-current="page" when true. */
+  current?: boolean;
+};
+
+const {
+  href,
+  external = false,
+  variant = 'default',
+  class: className,
+  current = false,
+} = Astro.props;
+
+const variantClass: Record<LinkVariant, string | undefined> = {
+  default: undefined,
+  glossary: 'glossary-link',
+  button: 'button',
+  'button-ghost': 'button button--ghost',
+};
+---
+
+<a
+  class:list={[variantClass[variant], className]}
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+  aria-current={current ? 'page' : undefined}
+>
+  <slot />
+</a>

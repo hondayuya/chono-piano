@@ -1,0 +1,25 @@
+---
+import { labNav } from '../lib/nav';
+import type { SiteSettings } from '../lib/types';
+
+type Props = {
+  settings: SiteSettings;
+  current?: boolean;
+  class?: string;
+};
+
+const { settings, current = false, class: className } = Astro.props;
+---
+
+<a
+  class:list={['lab-banner', current && 'lab-banner--current', className]}
+  href={labNav.href}
+  aria-current={current ? 'page' : undefined}
+>
+  <span class="lab-banner__content">
+    <span class="lab-banner__eyebrow">For piano technicians</span>
+    <span class="lab-banner__title">{settings.labName}</span>
+    <span class="lab-banner__text">知識・研究・チョウノウ方式の解説</span>
+  </span>
+  <span class="lab-banner__arrow" aria-hidden="true">→</span>
+</a>

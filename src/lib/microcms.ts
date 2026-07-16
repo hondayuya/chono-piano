@@ -84,13 +84,7 @@ export async function getNewsList(limit = 20): Promise<News[]> {
     orders: '-date',
   });
   if (!data) return fallbackNews;
-
-  return [...data.contents].sort((a, b) => {
-    if (Boolean(a.pinned) !== Boolean(b.pinned)) {
-      return a.pinned ? -1 : 1;
-    }
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  });
+  return data.contents;
 }
 
 export async function getNewsDetail(id: string): Promise<News | null> {
@@ -133,4 +127,21 @@ export function formatDate(date: string): string {
   const m = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
   return `${y}.${m}.${day}`;
+}
+
+/** Strip HTML tags and collapse whitespace for list excerpts. */
+export function excerptFromHtml(html: string, maxLength = 120): string {
+  const text = html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength).trimEnd()}…`;
 }
