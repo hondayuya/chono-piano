@@ -66,7 +66,7 @@ export const designBrief = {
   },
   concept: {
     summary:
-      '工房と研究所の二つの顔を、落ち着いた紙の質感と明朝の見出しで表現する。派手さより信頼と読みやすさを優先する。',
+      '白を基調にした爽やかな画面のうえに、工房と研究所の二つの顔を載せる。明朝の見出しと苔緑のアクセントで信頼と清涼感を両立する。',
     pillars: [
       {
         id: 'craft',
@@ -88,9 +88,9 @@ export const designBrief = {
       },
       {
         id: 'material',
-        title: '紙・木・苔の質感',
+        title: '白・緑の清涼感',
         body:
-          '紙色の背景、インクの文字、苔緑とローズウッドのアクセントで、工房・楽器・資料の雰囲気を想起させる。',
+          '白に近い背景と淡い緑の気配を基調にし、苔緑とやわらかいローズウッドでアクセントを置く。重さより風通しを優先する。',
       },
     ] satisfies DesignConceptPillar[],
   },
@@ -101,49 +101,49 @@ export const colorTokens: ColorToken[] = [
   {
     name: 'Ink',
     cssVar: '--ink',
-    value: '#1c1916',
+    value: '#1a221e',
     role: '本文・見出しの主色',
   },
   {
     name: 'Ink muted',
     cssVar: '--ink-muted',
-    value: '#5c564e',
+    value: '#5c6862',
     role: 'リード文・日付・補足',
   },
   {
     name: 'Paper',
     cssVar: '--paper',
-    value: '#f2efe9',
-    role: '背景の基調',
+    value: '#fbfcfb',
+    role: '背景の基調（白寄り）',
   },
   {
     name: 'Paper deep',
     cssVar: '--paper-deep',
-    value: '#e4dfd5',
+    value: '#f2f5f3',
     role: '背景グラデーション末端',
   },
   {
     name: 'Moss',
     cssVar: '--moss',
-    value: '#2f4a3c',
-    role: 'リンク・アクセント（緑）',
+    value: '#2d5a45',
+    role: 'リンク・ボタン・アクセント（緑）',
   },
   {
     name: 'Moss soft',
     cssVar: '--moss-soft',
-    value: '#3d5c4b',
+    value: '#3d6f55',
     role: 'Moss の補助トーン',
   },
   {
     name: 'Rosewood',
     cssVar: '--rosewood',
-    value: '#6a3d36',
+    value: '#8a524a',
     role: 'ホバー・強調（赤茶）',
   },
   {
     name: 'Line',
     cssVar: '--line',
-    value: 'rgba(28, 25, 22, 0.14)',
+    value: 'rgba(26, 34, 30, 0.1)',
     role: '区切り線・枠線',
   },
 ];
