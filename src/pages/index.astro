@@ -23,6 +23,41 @@ const heroLead = (settings.catchphrase ?? '')
   )
   .split(/\n/)
   .filter(Boolean);
+
+const aboutSliderImages = [
+  {
+    src: '/images/about-slider/germany-workshop-templates.png',
+    alt: 'ドイツの工房でピアノ部品の型と工具が並ぶ作業台',
+  },
+  {
+    src: '/images/about-slider/germany-upright-iron-plates.png',
+    alt: 'アップライトピアノの鋳造フレームが屋外に並ぶ様子',
+  },
+  {
+    src: '/images/about-slider/germany-pin-template.png',
+    alt: 'ピン配置の型紙と木製ガイドが置かれた作業台',
+  },
+  {
+    src: '/images/about-slider/germany-grand-iron-plates.png',
+    alt: 'グランドピアノの鋳造フレームが積み上げられた様子',
+  },
+  {
+    src: '/images/about-slider/germany-workshop-mold.png',
+    alt: '木材を曲げるための型が機械にセットされた様子',
+  },
+  {
+    src: '/images/about-slider/germany-keyboard-action.png',
+    alt: '鍵盤とアクション部品が並んだ工房の作業風景',
+  },
+  {
+    src: '/images/about-slider/germany-upright-piano.png',
+    alt: 'ドイツのアップライトピアノ',
+  },
+  {
+    src: '/images/about-slider/germany-soundboard-bracing.png',
+    alt: 'グランドピアノの響板と支柱構造',
+  },
+] as const;
 ---
 
 <BaseLayout title={settings.companyName} settings={settings} currentPath="/">
@@ -81,24 +116,64 @@ const heroLead = (settings.catchphrase ?? '')
     </div>
   </section>
 
-  <section class="section" id="about">
+  <section class="section section--about" id="about">
     <div class="site-shell">
       <h2 class="section__title">私と調律について</h2>
       <p class="section__lead">張能康博 — {settings.companyName}</p>
-      <div class="prose">
-        <p>{settings.aboutText}</p>
+      <div class="about-layout">
+        <div class="about-layout__copy">
+          <div class="prose">
+            {
+              (settings.aboutText ?? '')
+                .split(/\n\n+/)
+                .filter(Boolean)
+                .map((paragraph) => <p>{paragraph}</p>)
+            }
+          </div>
+          <div class="section__actions">
+            <a class="button" href="/profile/">経歴・実績を見る</a>
+            {
+              featuredLab && (
+                <a class="button button--ghost" href={`/lab/${featuredLab.id}/`}>
+                  チョウノウ方式について
+                </a>
+              )
+            }
+          </div>
+        </div>
+        <figure class="about-layout__media">
+          <img
+            src="/images/about-tuner-at-work.png"
+            alt="ピアノを調律する張能康博"
+            width="800"
+            height="800"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      </div>
+    </div>
+
+    <div class="about-marquee" aria-label="ドイツでの調律・製作に関する写真">
+      <div class="about-marquee__track">
         {
-          featuredLab && (
-            <p>
-              詳しくは
-              <a href={`/lab/${featuredLab.id}/`}>「{featuredLab.title}」</a>
-              をご覧ください。
-            </p>
-          )
+          [0, 1].map((copy) => (
+            <div class="about-marquee__group" aria-hidden={copy === 1 ? 'true' : undefined}>
+              {aboutSliderImages.map((image) => (
+                <figure class="about-marquee__item">
+                  <img
+                    src={image.src}
+                    alt={copy === 0 ? image.alt : ''}
+                    width="640"
+                    height="400"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </figure>
+              ))}
+            </div>
+          ))
         }
-        <p>
-          <a href="/profile/">経歴・実績</a>
-        </p>
       </div>
     </div>
   </section>

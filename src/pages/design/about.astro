@@ -1,0 +1,943 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { fallbackSettings } from '../../lib/fallback';
+import { getSiteSettings } from '../../lib/microcms';
+
+const settings = await getSiteSettings();
+
+const aboutParagraphs = (settings.aboutText ?? fallbackSettings.aboutText ?? '')
+  .split(/\n\n+/)
+  .filter(Boolean);
+
+const half = Math.ceil(aboutParagraphs.length / 2);
+const aboutLead = aboutParagraphs.slice(0, half);
+const aboutTail = aboutParagraphs.slice(half);
+
+const images = {
+  main: {
+    src: '/images/hero-tuning.webp',
+    alt: '調律をする様子（メイン）',
+    label: 'メイン・調律',
+    position: 'center 42%',
+  },
+  de1: {
+    src: '/images/hero-tuning.webp',
+    alt: 'ドイツでの写真（仮）',
+    label: 'ドイツ①',
+    position: '18% 30%',
+  },
+  de2: {
+    src: '/images/hero-tuning.webp',
+    alt: 'ドイツでの写真（仮）',
+    label: 'ドイツ②',
+    position: '72% 55%',
+  },
+} as const;
+
+const patterns = [
+  {
+    id: '01',
+    name: '縦の呼吸',
+    note: '本文前半 → メイン全幅 → 本文後半 → ドイツ2枚横並び。',
+  },
+  {
+    id: '02',
+    name: 'メイン脇にドイツ縦積み',
+    note: '左にメイン大、右にドイツ2枚を縦積み。テキストは下。',
+  },
+  {
+    id: '03',
+    name: 'ドイツがフレーム',
+    note: '左右にドイツ、中央にメイン。テキストはその下。',
+  },
+  {
+    id: '04',
+    name: 'ジグザグ',
+    note: '短段落＋ドイツを左右互い違い、中央にメイン全幅。',
+  },
+  {
+    id: '05',
+    name: '雑誌の見開き風',
+    note: '上段テキスト｜メイン、下段ドイツ2枚等幅。',
+  },
+  {
+    id: '06',
+    name: 'タイムライン帯',
+    note: '左に軸、右にドイツ→ドイツ→メインと段差オフセット。',
+  },
+  {
+    id: '07',
+    name: 'メイン全幅ヒーロー',
+    note: 'メインをヒーロー、直下にドイツ2枚＋キャプション、本文は下。',
+  },
+  {
+    id: '08',
+    name: 'モザイク非対称',
+    note: 'メイン約60%、ドイツ40%側で上下。テキストは下。',
+  },
+  {
+    id: '09',
+    name: 'スクロール章立て',
+    note: '導入→メイン→ドイツA→ドイツB→締め＋ボタンの縦章。',
+  },
+  {
+    id: '10',
+    name: '今と当時の対比',
+    note: '左「いま」メイン、右「ドイツ」2枚。本文はカード下。',
+  },
+] as const;
+---
+
+<BaseLayout
+  title="Aboutレイアウト検証"
+  description="私と調律についてセクションの写真レイアウト比較（開発用）"
+  settings={settings}
+  currentPath="/design/about/"
+  noindex={true}
+>
+  <div class="about-lab site-shell">
+    <header class="about-lab__intro">
+      <p class="about-lab__eyebrow">Development</p>
+      <h1 class="about-lab__title">Aboutレイアウト検証</h1>
+      <p class="about-lab__lead">
+        「調律する本人（メイン）＋ドイツ写真2枚」を同じコピー・ボタンで配置した10パターンです。ドイツ画像は仮素材（同一写真のクロップ差）です。
+      </p>
+      <p class="about-lab__meta">
+        <a href="/design/">デザインシステム</a>
+        ／
+        <a href="/design/fv/">FV検証</a>
+        ／
+        <a href="/#about">トップ（現行About）</a>
+      </p>
+      <nav class="about-lab__toc" aria-label="パターン一覧">
+        {
+          patterns.map((pattern) => (
+            <a href={`#pattern-${pattern.id}`}>{pattern.id}</a>
+          ))
+        }
+      </nav>
+    </header>
+
+    <div class="about-lab__grid">
+      {
+        patterns.map((pattern) => (
+          <article class="about-lab__card" id={`pattern-${pattern.id}`}>
+            <header class="about-lab__card-head">
+              <span class="about-lab__num">{pattern.id}</span>
+              <div>
+                <h2 class="about-lab__card-title">{pattern.name}</h2>
+                <p class="about-lab__card-note">{pattern.note}</p>
+              </div>
+            </header>
+
+            <div
+              class:list={['about-frame', `about-frame--${pattern.id}`]}
+              aria-label={`パターン ${pattern.id}: ${pattern.name}`}
+            >
+              <h3 class="about-frame__title">私と調律について</h3>
+              <p class="about-frame__lead">
+                張能康博 — {settings.companyName}
+              </p>
+
+              {pattern.id === '01' && (
+                <>
+                  <div class="about-frame__prose">
+                    {aboutLead.map((p) => (
+                      <p>{p}</p>
+                    ))}
+                  </div>
+                  <figure class="about-frame__fig about-frame__fig--main">
+                    <img
+                      src={images.main.src}
+                      alt={images.main.alt}
+                      style={`object-position:${images.main.position}`}
+                      loading="lazy"
+                    />
+                    <figcaption>{images.main.label}</figcaption>
+                  </figure>
+                  <div class="about-frame__prose">
+                    {aboutTail.map((p) => (
+                      <p>{p}</p>
+                    ))}
+                  </div>
+                  <div class="about-frame__pair">
+                    <figure class="about-frame__fig">
+                      <img
+                        src={images.de1.src}
+                        alt={images.de1.alt}
+                        style={`object-position:${images.de1.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.de1.label}</figcaption>
+                    </figure>
+                    <figure class="about-frame__fig">
+                      <img
+                        src={images.de2.src}
+                        alt={images.de2.alt}
+                        style={`object-position:${images.de2.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.de2.label}</figcaption>
+                    </figure>
+                  </div>
+                </>
+              )}
+
+              {pattern.id === '02' && (
+                <>
+                  <div class="about-frame__mosaic about-frame__mosaic--side">
+                    <figure class="about-frame__fig about-frame__fig--main">
+                      <img
+                        src={images.main.src}
+                        alt={images.main.alt}
+                        style={`object-position:${images.main.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.main.label}</figcaption>
+                    </figure>
+                    <div class="about-frame__stack">
+                      <figure class="about-frame__fig">
+                        <img
+                          src={images.de1.src}
+                          alt={images.de1.alt}
+                          style={`object-position:${images.de1.position}`}
+                          loading="lazy"
+                        />
+                        <figcaption>{images.de1.label}</figcaption>
+                      </figure>
+                      <figure class="about-frame__fig">
+                        <img
+                          src={images.de2.src}
+                          alt={images.de2.alt}
+                          style={`object-position:${images.de2.position}`}
+                          loading="lazy"
+                        />
+                        <figcaption>{images.de2.label}</figcaption>
+                      </figure>
+                    </div>
+                  </div>
+                  <div class="about-frame__prose">
+                    {aboutParagraphs.map((p) => (
+                      <p>{p}</p>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {pattern.id === '03' && (
+                <>
+                  <div class="about-frame__mosaic about-frame__mosaic--frame">
+                    <figure class="about-frame__fig">
+                      <img
+                        src={images.de1.src}
+                        alt={images.de1.alt}
+                        style={`object-position:${images.de1.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.de1.label}</figcaption>
+                    </figure>
+                    <figure class="about-frame__fig about-frame__fig--main">
+                      <img
+                        src={images.main.src}
+                        alt={images.main.alt}
+                        style={`object-position:${images.main.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.main.label}</figcaption>
+                    </figure>
+                    <figure class="about-frame__fig">
+                      <img
+                        src={images.de2.src}
+                        alt={images.de2.alt}
+                        style={`object-position:${images.de2.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.de2.label}</figcaption>
+                    </figure>
+                  </div>
+                  <div class="about-frame__prose">
+                    {aboutParagraphs.map((p) => (
+                      <p>{p}</p>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {pattern.id === '04' && (
+                <>
+                  <div class="about-frame__zigzag about-frame__zigzag--left">
+                    <div class="about-frame__prose">
+                      {aboutLead.map((p) => (
+                        <p>{p}</p>
+                      ))}
+                    </div>
+                    <figure class="about-frame__fig">
+                      <img
+                        src={images.de1.src}
+                        alt={images.de1.alt}
+                        style={`object-position:${images.de1.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.de1.label}</figcaption>
+                    </figure>
+                  </div>
+                  <figure class="about-frame__fig about-frame__fig--main">
+                    <img
+                      src={images.main.src}
+                      alt={images.main.alt}
+                      style={`object-position:${images.main.position}`}
+                      loading="lazy"
+                    />
+                    <figcaption>{images.main.label}</figcaption>
+                  </figure>
+                  <div class="about-frame__zigzag about-frame__zigzag--right">
+                    <figure class="about-frame__fig">
+                      <img
+                        src={images.de2.src}
+                        alt={images.de2.alt}
+                        style={`object-position:${images.de2.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.de2.label}</figcaption>
+                    </figure>
+                    <div class="about-frame__prose">
+                      {aboutTail.map((p) => (
+                        <p>{p}</p>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {pattern.id === '05' && (
+                <>
+                  <div class="about-frame__spread">
+                    <div class="about-frame__prose">
+                      {aboutParagraphs.map((p) => (
+                        <p>{p}</p>
+                      ))}
+                    </div>
+                    <figure class="about-frame__fig about-frame__fig--main">
+                      <img
+                        src={images.main.src}
+                        alt={images.main.alt}
+                        style={`object-position:${images.main.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.main.label}</figcaption>
+                    </figure>
+                  </div>
+                  <div class="about-frame__pair">
+                    <figure class="about-frame__fig">
+                      <img
+                        src={images.de1.src}
+                        alt={images.de1.alt}
+                        style={`object-position:${images.de1.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.de1.label}</figcaption>
+                    </figure>
+                    <figure class="about-frame__fig">
+                      <img
+                        src={images.de2.src}
+                        alt={images.de2.alt}
+                        style={`object-position:${images.de2.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.de2.label}</figcaption>
+                    </figure>
+                  </div>
+                </>
+              )}
+
+              {pattern.id === '06' && (
+                <div class="about-frame__timeline">
+                  <div class="about-frame__timeline-axis" aria-hidden="true" />
+                  <div class="about-frame__timeline-body">
+                    <div class="about-frame__prose">
+                      {aboutParagraphs.map((p) => (
+                        <p>{p}</p>
+                      ))}
+                    </div>
+                    <div class="about-frame__timeline-photos">
+                      <figure class="about-frame__fig about-frame__fig--offset-1">
+                        <img
+                          src={images.de1.src}
+                          alt={images.de1.alt}
+                          style={`object-position:${images.de1.position}`}
+                          loading="lazy"
+                        />
+                        <figcaption>{images.de1.label}</figcaption>
+                      </figure>
+                      <figure class="about-frame__fig about-frame__fig--offset-2">
+                        <img
+                          src={images.de2.src}
+                          alt={images.de2.alt}
+                          style={`object-position:${images.de2.position}`}
+                          loading="lazy"
+                        />
+                        <figcaption>{images.de2.label}</figcaption>
+                      </figure>
+                      <figure class="about-frame__fig about-frame__fig--main about-frame__fig--offset-3">
+                        <img
+                          src={images.main.src}
+                          alt={images.main.alt}
+                          style={`object-position:${images.main.position}`}
+                          loading="lazy"
+                        />
+                        <figcaption>{images.main.label}</figcaption>
+                      </figure>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {pattern.id === '07' && (
+                <>
+                  <figure class="about-frame__fig about-frame__fig--hero">
+                    <img
+                      src={images.main.src}
+                      alt={images.main.alt}
+                      style={`object-position:${images.main.position}`}
+                      loading="lazy"
+                    />
+                    <figcaption>{images.main.label}</figcaption>
+                  </figure>
+                  <div class="about-frame__pair about-frame__pair--captioned">
+                    <figure class="about-frame__fig">
+                      <img
+                        src={images.de1.src}
+                        alt={images.de1.alt}
+                        style={`object-position:${images.de1.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>ドイツ① — Karlsruhe 付近</figcaption>
+                    </figure>
+                    <figure class="about-frame__fig">
+                      <img
+                        src={images.de2.src}
+                        alt={images.de2.alt}
+                        style={`object-position:${images.de2.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>ドイツ② — Meister 資格</figcaption>
+                    </figure>
+                  </div>
+                  <div class="about-frame__prose">
+                    {aboutParagraphs.map((p) => (
+                      <p>{p}</p>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {pattern.id === '08' && (
+                <>
+                  <div class="about-frame__mosaic about-frame__mosaic--asymmetric">
+                    <figure class="about-frame__fig about-frame__fig--main">
+                      <img
+                        src={images.main.src}
+                        alt={images.main.alt}
+                        style={`object-position:${images.main.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.main.label}</figcaption>
+                    </figure>
+                    <div class="about-frame__stack">
+                      <figure class="about-frame__fig">
+                        <img
+                          src={images.de1.src}
+                          alt={images.de1.alt}
+                          style={`object-position:${images.de1.position}`}
+                          loading="lazy"
+                        />
+                        <figcaption>{images.de1.label}</figcaption>
+                      </figure>
+                      <figure class="about-frame__fig">
+                        <img
+                          src={images.de2.src}
+                          alt={images.de2.alt}
+                          style={`object-position:${images.de2.position}`}
+                          loading="lazy"
+                        />
+                        <figcaption>{images.de2.label}</figcaption>
+                      </figure>
+                    </div>
+                  </div>
+                  <div class="about-frame__prose">
+                    {aboutParagraphs.map((p) => (
+                      <p>{p}</p>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {pattern.id === '09' && (
+                <>
+                  <div class="about-frame__prose">
+                    {aboutLead.map((p) => (
+                      <p>{p}</p>
+                    ))}
+                  </div>
+                  <figure class="about-frame__fig about-frame__fig--main">
+                    <img
+                      src={images.main.src}
+                      alt={images.main.alt}
+                      style={`object-position:${images.main.position}`}
+                      loading="lazy"
+                    />
+                    <figcaption>{images.main.label}</figcaption>
+                  </figure>
+                  <div class="about-frame__chapter">
+                    <figure class="about-frame__fig">
+                      <img
+                        src={images.de1.src}
+                        alt={images.de1.alt}
+                        style={`object-position:${images.de1.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.de1.label}</figcaption>
+                    </figure>
+                    <p class="about-frame__aside">ドイツでの修業時代</p>
+                  </div>
+                  <div class="about-frame__chapter about-frame__chapter--flip">
+                    <p class="about-frame__aside">国家資格 Meister を取得</p>
+                    <figure class="about-frame__fig">
+                      <img
+                        src={images.de2.src}
+                        alt={images.de2.alt}
+                        style={`object-position:${images.de2.position}`}
+                        loading="lazy"
+                      />
+                      <figcaption>{images.de2.label}</figcaption>
+                    </figure>
+                  </div>
+                  <div class="about-frame__prose">
+                    {aboutTail.map((p) => (
+                      <p>{p}</p>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {pattern.id === '10' && (
+                <>
+                  <div class="about-frame__contrast">
+                    <div class="about-frame__card">
+                      <p class="about-frame__card-label">いま</p>
+                      <figure class="about-frame__fig about-frame__fig--main">
+                        <img
+                          src={images.main.src}
+                          alt={images.main.alt}
+                          style={`object-position:${images.main.position}`}
+                          loading="lazy"
+                        />
+                        <figcaption>{images.main.label}</figcaption>
+                      </figure>
+                    </div>
+                    <div class="about-frame__card">
+                      <p class="about-frame__card-label">ドイツ</p>
+                      <div class="about-frame__stack">
+                        <figure class="about-frame__fig">
+                          <img
+                            src={images.de1.src}
+                            alt={images.de1.alt}
+                            style={`object-position:${images.de1.position}`}
+                            loading="lazy"
+                          />
+                          <figcaption>{images.de1.label}</figcaption>
+                        </figure>
+                        <figure class="about-frame__fig">
+                          <img
+                            src={images.de2.src}
+                            alt={images.de2.alt}
+                            style={`object-position:${images.de2.position}`}
+                            loading="lazy"
+                          />
+                          <figcaption>{images.de2.label}</figcaption>
+                        </figure>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="about-frame__prose">
+                    {aboutParagraphs.map((p) => (
+                      <p>{p}</p>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              <div class="about-frame__actions">
+                <a class="button" href="/profile/">経歴・実績を見る</a>
+                <a class="button button--ghost" href="/lab/">
+                  チョウノウ方式について
+                </a>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-lab {
+    padding: 4rem 0 8rem;
+  }
+
+  .about-lab__intro {
+    margin-bottom: 4rem;
+    max-width: 72rem;
+  }
+
+  .about-lab__eyebrow {
+    margin: 0 0 0.8rem;
+    font-size: 1.25rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .about-lab__title {
+    margin: 0 0 1.2rem;
+    font-size: clamp(2.8rem, 3.4vw, 3.6rem);
+  }
+
+  .about-lab__lead {
+    margin: 0 0 1.2rem;
+    color: var(--ink-muted);
+    font-size: var(--font-size-lead);
+    line-height: 1.7;
+  }
+
+  .about-lab__meta {
+    margin: 0 0 1.6rem;
+    font-size: 1.36rem;
+    color: var(--ink-muted);
+  }
+
+  .about-lab__toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.64rem;
+  }
+
+  .about-lab__toc a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.2rem;
+    height: 3.2rem;
+    border: 1px solid var(--line);
+    text-decoration: none;
+    color: var(--accent);
+    font-size: 1.28rem;
+  }
+
+  .about-lab__toc a:hover {
+    border-color: var(--accent);
+  }
+
+  .about-lab__grid {
+    display: grid;
+    gap: 4.8rem;
+  }
+
+  .about-lab__card-head {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    margin-bottom: 1.2rem;
+  }
+
+  .about-lab__num {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.2rem;
+    height: 3.2rem;
+    border: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-size: 1.36rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+  }
+
+  .about-lab__card-title {
+    margin: 0 0 0.4rem;
+    font-size: 1.84rem;
+  }
+
+  .about-lab__card-note {
+    margin: 0;
+    font-size: 1.36rem;
+    color: var(--ink-muted);
+  }
+
+  .about-frame {
+    display: grid;
+    gap: 2.4rem;
+    padding: clamp(2.4rem, 4vw, 4rem);
+    border: 1px solid var(--line);
+    background: var(--paper);
+  }
+
+  .about-frame__title {
+    margin: 0;
+    font-size: clamp(2.4rem, 3vw, 3.2rem);
+  }
+
+  .about-frame__lead {
+    margin: -1.2rem 0 0;
+    color: var(--ink-muted);
+    font-size: var(--font-size-lead);
+  }
+
+  .about-frame__prose {
+    display: grid;
+    gap: 1.2rem;
+    max-width: 64rem;
+  }
+
+  .about-frame__prose p {
+    margin: 0;
+    font-size: 1.55rem;
+    line-height: 1.85;
+  }
+
+  .about-frame__fig {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    background: rgba(44, 38, 34, 0.06);
+  }
+
+  .about-frame__fig img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .about-frame__fig figcaption {
+    position: absolute;
+    left: 0.8rem;
+    bottom: 0.8rem;
+    padding: 0.32rem 0.64rem;
+    background: rgba(255, 255, 255, 0.88);
+    color: var(--ink-muted);
+    font-size: 1.12rem;
+    letter-spacing: 0.06em;
+  }
+
+  .about-frame__fig--main {
+    min-height: 28rem;
+    border-bottom-left-radius: 2.4rem;
+  }
+
+  .about-frame__fig--main img {
+    min-height: 28rem;
+  }
+
+  .about-frame__fig--hero {
+    min-height: 36rem;
+    border-bottom-left-radius: 3.2rem;
+  }
+
+  .about-frame__fig--hero img {
+    min-height: 36rem;
+  }
+
+  .about-frame__pair,
+  .about-frame__stack,
+  .about-frame__mosaic,
+  .about-frame__spread,
+  .about-frame__zigzag,
+  .about-frame__contrast,
+  .about-frame__chapter,
+  .about-frame__timeline {
+    display: grid;
+    gap: 1.6rem;
+  }
+
+  .about-frame__pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .about-frame__pair .about-frame__fig,
+  .about-frame__stack .about-frame__fig {
+    min-height: 16rem;
+  }
+
+  .about-frame__pair .about-frame__fig img,
+  .about-frame__stack .about-frame__fig img {
+    min-height: 16rem;
+  }
+
+  .about-frame__pair--captioned figcaption {
+    position: static;
+    background: transparent;
+    padding: 0.64rem 0 0;
+    color: var(--ink-muted);
+  }
+
+  .about-frame__mosaic--side {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
+    align-items: stretch;
+  }
+
+  .about-frame__mosaic--side .about-frame__fig--main,
+  .about-frame__mosaic--side .about-frame__fig--main img {
+    min-height: 100%;
+    height: 100%;
+  }
+
+  .about-frame__mosaic--frame {
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.4fr) minmax(0, 0.7fr);
+    align-items: stretch;
+  }
+
+  .about-frame__mosaic--frame .about-frame__fig,
+  .about-frame__mosaic--frame .about-frame__fig img {
+    min-height: 26rem;
+  }
+
+  .about-frame__mosaic--asymmetric {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  }
+
+  .about-frame__zigzag {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .about-frame__zigzag--right .about-frame__prose {
+    order: 2;
+  }
+
+  .about-frame__spread {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: start;
+    gap: 2.4rem;
+  }
+
+  .about-frame__timeline {
+    grid-template-columns: 1.6rem minmax(0, 1fr);
+    gap: 2.4rem;
+  }
+
+  .about-frame__timeline-axis {
+    width: 1px;
+    margin-inline: auto;
+    background: var(--line);
+  }
+
+  .about-frame__timeline-body {
+    display: grid;
+    gap: 2.4rem;
+  }
+
+  .about-frame__timeline-photos {
+    display: grid;
+    gap: 1.6rem;
+  }
+
+  .about-frame__fig--offset-1 {
+    width: min(100%, 36rem);
+  }
+
+  .about-frame__fig--offset-2 {
+    width: min(100%, 40rem);
+    margin-left: 8%;
+  }
+
+  .about-frame__fig--offset-3 {
+    width: min(100%, 48rem);
+    margin-left: 16%;
+  }
+
+  .about-frame__chapter {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    align-items: center;
+  }
+
+  .about-frame__chapter--flip .about-frame__aside {
+    order: 0;
+  }
+
+  .about-frame__aside {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.68rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+  }
+
+  .about-frame__contrast {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+  }
+
+  .about-frame__card {
+    display: grid;
+    gap: 1.2rem;
+    padding: 1.6rem;
+    background: var(--paper-deep);
+  }
+
+  .about-frame__card-label {
+    margin: 0;
+    font-size: 1.2rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .about-frame__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem 1.6rem;
+    margin-top: 0.8rem;
+  }
+
+  @media (max-width: 767px) {
+    .about-frame__pair,
+    .about-frame__mosaic--side,
+    .about-frame__mosaic--frame,
+    .about-frame__mosaic--asymmetric,
+    .about-frame__zigzag,
+    .about-frame__spread,
+    .about-frame__chapter,
+    .about-frame__contrast {
+      grid-template-columns: 1fr;
+    }
+
+    .about-frame__fig--offset-2,
+    .about-frame__fig--offset-3 {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    .about-frame__fig--main,
+    .about-frame__fig--main img {
+      min-height: 22rem;
+      border-bottom-left-radius: 0;
+    }
+
+    .about-frame__fig--hero,
+    .about-frame__fig--hero img {
+      min-height: 24rem;
+      border-bottom-left-radius: 0;
+    }
+
+    .about-frame__timeline {
+      grid-template-columns: 1fr;
+    }
+
+    .about-frame__timeline-axis {
+      display: none;
+    }
+  }
+</style>
