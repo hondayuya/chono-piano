@@ -73,12 +73,11 @@ const heroLead = (settings.catchphrase ?? '')
 
   <section class="section" id="news">
     <div class="site-shell">
-      <h2 class="section__title">お知らせ</h2>
-      <p class="section__lead">直近のお知らせ・新記事をご案内します。</p>
+      <div class="section__head">
+        <h2 class="section__title">お知らせ</h2>
+        <a class="button" href="/news/">お知らせ一覧へ</a>
+      </div>
       <NewsList items={news} />
-      <p style="margin-top:2rem">
-        <a href="/news/">お知らせ一覧へ</a>
-      </p>
     </div>
   </section>
 

@@ -780,12 +780,31 @@ body.is-nav-locked {
 }
 
 .hero + .section {
-  padding-top: clamp(9.6rem, 14.4vw, 17.28rem);
+  padding-top: clamp(5.6rem, 8vw, 10.4rem);
 }
 
 .section__title {
   margin: 0 0 0.96rem;
   font-size: clamp(2.8rem, 3.4vw, 3.6rem);
+}
+
+.section__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem 2rem;
+  margin-bottom: 2.4rem;
+}
+
+.section__head .section__title {
+  margin: 0;
+}
+
+.section__head .button {
+  flex-shrink: 0;
+  padding: 0.72rem 1.44rem;
+  font-size: 1.32rem;
 }
 
 .section__lead {
@@ -805,7 +824,19 @@ body.is-nav-locked {
   margin: 0;
   padding: 0;
   display: grid;
+  grid-template-columns: 1fr;
   gap: 0;
+}
+
+@media (min-width: 1024px) {
+  .news-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 3.2rem;
+  }
+
+  .news-list li:nth-last-child(2):nth-child(odd) {
+    border-bottom: 1px solid var(--line);
+  }
 }
 
 .news-list li {
@@ -831,7 +862,8 @@ body.is-nav-locked {
 }
 
 .news-list__body {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.56rem;
   min-width: 0;
 }
@@ -864,6 +896,31 @@ body.is-nav-locked {
   overflow: hidden;
 }
 
+@media (min-width: 768px) {
+  .news-list__body {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 2.4rem;
+    row-gap: 1.2rem;
+  }
+
+  .news-list__date {
+    flex: 0 0 auto;
+    width: 8rem;
+    min-width: 8rem;
+  }
+
+  .news-list__title {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .news-list__excerpt {
+    flex: 1 1 100%;
+  }
+}
+
 .news-list__thumb {
   width: 12rem;
   height: 8rem;
@@ -879,11 +936,24 @@ body.is-nav-locked {
 }
 
 .news-list__thumb-placeholder {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
+  padding: 0.64rem;
+  box-sizing: border-box;
   background:
     linear-gradient(145deg, rgba(107, 74, 54, 0.08), rgba(138, 98, 72, 0.06));
+  color: rgba(44, 38, 34, 0.28);
+  font-family: var(--font-brand);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-align: center;
+  font-feature-settings: var(--font-feature-display);
+  font-variant-east-asian: proportional-width;
+  user-select: none;
 }
 
 .glossary-link {
@@ -923,6 +993,12 @@ body.is-nav-locked {
 
 .glossary-refs a {
   font-size: 1.47rem;
+}
+
+@media (max-width: 767px) {
+  .news-list a {
+    align-items: start;
+  }
 }
 
 @media (max-width: 639px) {
