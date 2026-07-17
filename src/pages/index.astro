@@ -29,6 +29,13 @@ const heroLead = (settings.catchphrase ?? '')
   <div id="top"></div>
   <section class="hero hero--split" aria-label="メインビジュアル">
     <div class="hero__copy">
+      <div class="hero__bar">
+        <p class="brand-lockup hero__brand">
+          <span class="brand-lockup__main">{settings.companyName}</span>
+          <span class="brand-lockup__sub">{settings.labName}</span>
+        </p>
+      </div>
+
       <div class="hero__content">
         <h1 class="hero__catch">
           <span class="hero__catch-line">あなたの演奏</span>
@@ -46,13 +53,6 @@ const heroLead = (settings.catchphrase ?? '')
             </p>
           )
         }
-      </div>
-
-      <div class="hero__bar">
-        <p class="brand-lockup hero__brand">
-          <span class="brand-lockup__main">{settings.companyName}</span>
-          <span class="brand-lockup__sub">{settings.labName}</span>
-        </p>
       </div>
     </div>
 
