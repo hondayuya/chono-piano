@@ -15,7 +15,14 @@ import {
   componentRegistry,
   componentsByCategory,
 } from '../../lib/component-registry';
-import { colorTokens, designBrief, typeTokens } from '../../lib/design-tokens';
+import {
+  breakpointTokens,
+  colorTokens,
+  designBrief,
+  remSystem,
+  spaceTokens,
+  typeTokens,
+} from '../../lib/design-tokens';
 import { fallbackNews, fallbackWorks } from '../../lib/fallback';
 import { getSiteSettings } from '../../lib/microcms';
 
@@ -38,12 +45,13 @@ const { target, concept } = designBrief;
       <Heading level={1}>デザインシステム</Heading>
       <Lead>
         ターゲットとコンセプトを起点に、配色・テキスト・コンポーネントをまとめています。ブリーフは
-        <code>src/lib/design-tokens.ts</code>、コンポーネントは
-        <code>src/lib/component-registry.ts</code> を更新してください。
+        <code>src/lib/design-tokens.ts</code>、単位規約は
+        <code>docs/style_guide.md</code> を更新してください。
       </Lead>
       <p class="design-page__meta">
-        カラー {colorTokens.length} / テキスト {typeTokens.length} / コンポーネント{' '}
-        {componentRegistry.length} — このページは検索エンジンにインデックスしません
+        カラー {colorTokens.length} / テキスト {typeTokens.length} / BP{' '}
+        {breakpointTokens.length} / コンポーネント {componentRegistry.length} —
+        このページは検索エンジンにインデックスしません
       </p>
     </header>
 
@@ -58,6 +66,7 @@ const { target, concept } = designBrief;
       <div class="design-page__toc-group">
         <p class="design-page__toc-label">設計情報</p>
         <ul>
+          <li><a href="#foundations-rem">Rem / ブレイクポイント</a></li>
           <li><a href="#foundations-color">配色</a></li>
           <li><a href="#foundations-type">テキスト</a></li>
         </ul>
@@ -131,6 +140,69 @@ const { target, concept } = designBrief;
 
     <section class="design-foundations" aria-labelledby="foundations-heading">
       <h2 class="design-page__group-title" id="foundations-heading">設計情報</h2>
+
+      <div class="design-foundations__block" id="foundations-rem">
+        <h3 class="design-foundations__title">Rem / ブレイクポイント</h3>
+        <p class="design-foundations__lead">
+          kakko 準拠のルート rem スケールです。既定 <code>{remSystem.rootDefault}</code> で
+          {remSystem.rule}。デザイン幅 PC {remSystem.designWidths.pc} / SP{' '}
+          {remSystem.designWidths.sp}。
+        </p>
+        <List>
+          {remSystem.notes.map((note) => <li>{note}</li>)}
+        </List>
+
+        <h4 class="design-page__label" style="margin-top:2.4rem">Breakpoints</h4>
+        <Table caption="media query は必ず px で書く">
+          <thead>
+            <tr>
+              <th scope="col">名前</th>
+              <th scope="col">値</th>
+              <th scope="col">query</th>
+              <th scope="col">用途</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              breakpointTokens.map((token) => (
+                <tr>
+                  <td>
+                    <code>{token.name}</code>
+                  </td>
+                  <td>
+                    <code>{token.value}</code>
+                  </td>
+                  <td>
+                    <code>{token.query}</code>
+                  </td>
+                  <td>{token.role}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </Table>
+
+        <h4 class="design-page__label" style="margin-top:2.4rem">Spacing</h4>
+        <ul class="design-swatches">
+          {
+            spaceTokens.map((token) => (
+              <li class="design-swatch">
+                <span
+                  class="design-swatch__chip design-swatch__chip--space"
+                  style={`height: ${token.value}; min-height: 1.6rem`}
+                  aria-hidden="true"
+                />
+                <span class="design-swatch__body">
+                  <span class="design-swatch__name">{token.name}</span>
+                  <code class="design-swatch__var">{token.cssVar}</code>
+                  <code class="design-swatch__value">{token.value}</code>
+                  <span class="design-swatch__role">{token.role}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
 
       <div class="design-foundations__block" id="foundations-color">
         <h3 class="design-foundations__title">配色</h3>
@@ -354,7 +426,7 @@ const { target, concept } = designBrief;
                           注釈リンク
                         </Link>
                       </p>
-                      <p style="display:flex;flex-wrap:wrap;gap:0.75rem">
+                      <p style="display:flex;flex-wrap:wrap;gap:1.2rem">
                         <Link href="/contact/" variant="button">
                           ボタンリンク
                         </Link>
@@ -387,39 +459,39 @@ const { target, concept } = designBrief;
 
 <style>
   .design-page {
-    padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(3.5rem, 8vw, 5.5rem);
+    padding: clamp(4rem, 6vw, 6.4rem) 0 clamp(5.6rem, 8vw, 8.8rem);
   }
 
   .design-page__intro {
-    margin-bottom: 2rem;
+    margin-bottom: 3.2rem;
   }
 
   .design-page__eyebrow {
-    margin: 0 0 0.4rem;
-    font-size: 0.78rem;
+    margin: 0 0 0.64rem;
+    font-size: 1.25rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ink-muted);
   }
 
   .design-page__meta {
-    margin: -0.75rem 0 0;
-    font-size: 0.88rem;
+    margin: -1.2rem 0 0;
+    font-size: 1.41rem;
     color: var(--ink-muted);
   }
 
   .design-page__toc {
-    margin-bottom: 2.5rem;
-    padding: 1.25rem 1.35rem;
+    margin-bottom: 4rem;
+    padding: 2rem 2.16rem;
     border: 1px solid var(--line);
     background: rgba(255, 255, 255, 0.35);
     display: grid;
-    gap: 1.25rem;
+    gap: 2rem;
   }
 
   .design-page__toc-label {
-    margin: 0 0 0.5rem;
-    font-size: 0.78rem;
+    margin: 0 0 0.8rem;
+    font-size: 1.25rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--ink-muted);
@@ -430,23 +502,23 @@ const { target, concept } = designBrief;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.65rem;
+    gap: 1.04rem;
   }
 
   .design-page__toc li {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 0.5rem 1rem;
+    gap: 0.8rem 1.6rem;
   }
 
   .design-page__toc code {
-    font-size: 0.82rem;
+    font-size: 1.31rem;
     color: var(--ink-muted);
   }
 
   .design-brief {
-    margin-bottom: 3rem;
+    margin-bottom: 4.8rem;
   }
 
   .design-audience {
@@ -454,17 +526,17 @@ const { target, concept } = designBrief;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 1rem;
+    gap: 1.6rem;
   }
 
-  @media (min-width: 720px) {
+  @media (min-width: 768px) {
     .design-audience {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   .design-audience__item {
-    padding: 1.15rem 1.25rem;
+    padding: 1.84rem 2rem;
     border: 1px solid var(--line);
     background: rgba(255, 255, 255, 0.28);
   }
@@ -473,41 +545,41 @@ const { target, concept } = designBrief;
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 0.5rem 0.75rem;
-    margin-bottom: 0.65rem;
+    gap: 0.8rem 1.2rem;
+    margin-bottom: 1.04rem;
   }
 
   .design-audience__priority {
-    font-size: 0.72rem;
+    font-size: 1.15rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--ink-muted);
   }
 
   .design-audience__priority--primary {
-    color: var(--moss);
+    color: var(--walnut);
   }
 
   .design-audience__label {
     margin: 0;
     font-family: var(--font-display);
-    font-size: 1.15rem;
+    font-size: 1.84rem;
     font-weight: 500;
     letter-spacing: 0.04em;
   }
 
   .design-audience__summary {
-    margin: 0 0 0.85rem;
+    margin: 0 0 1.36rem;
     color: var(--ink-muted);
-    font-size: 0.95rem;
+    font-size: 1.52rem;
   }
 
   .design-audience__needs {
     margin: 0;
-    padding-left: 1.15rem;
+    padding-left: 1.84rem;
     display: grid;
-    gap: 0.3rem;
-    font-size: 0.9rem;
+    gap: 0.48rem;
+    font-size: 1.44rem;
   }
 
   .design-pillars {
@@ -515,18 +587,18 @@ const { target, concept } = designBrief;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 1rem;
+    gap: 1.6rem;
   }
 
-  @media (min-width: 720px) {
+  @media (min-width: 768px) {
     .design-pillars {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   .design-pillars__item {
-    padding: 1.15rem 1.25rem;
-    border-top: 2px solid var(--moss);
+    padding: 1.84rem 2rem;
+    border-top: 2px solid var(--walnut);
     border-right: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
     border-left: 1px solid var(--line);
@@ -534,9 +606,9 @@ const { target, concept } = designBrief;
   }
 
   .design-pillars__title {
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.8rem;
     font-family: var(--font-display);
-    font-size: 1.1rem;
+    font-size: 1.76rem;
     font-weight: 500;
     letter-spacing: 0.04em;
   }
@@ -544,29 +616,29 @@ const { target, concept } = designBrief;
   .design-pillars__body {
     margin: 0;
     color: var(--ink-muted);
-    font-size: 0.95rem;
+    font-size: 1.52rem;
   }
 
   .design-foundations {
-    margin-bottom: 3rem;
+    margin-bottom: 4.8rem;
   }
 
   .design-foundations__block {
-    padding-top: 1.75rem;
+    padding-top: 2.8rem;
     border-top: 1px solid var(--line);
   }
 
   .design-foundations__title {
-    margin: 0 0 0.4rem;
+    margin: 0 0 0.64rem;
     font-family: var(--font-display);
-    font-size: 1.45rem;
+    font-size: 2.32rem;
     font-weight: 500;
   }
 
   .design-foundations__lead {
-    margin: 0 0 1.25rem;
+    margin: 0 0 2rem;
     color: var(--ink-muted);
-    max-width: 42rem;
+    max-width: 67.2rem;
   }
 
   .design-swatches {
@@ -574,49 +646,56 @@ const { target, concept } = designBrief;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.85rem;
-    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1.36rem;
+    grid-template-columns: repeat(auto-fill, minmax(22.4rem, 1fr));
   }
 
   .design-swatch {
     display: grid;
-    grid-template-columns: 3.25rem 1fr;
-    gap: 0.85rem;
+    grid-template-columns: 5.2rem 1fr;
+    gap: 1.36rem;
     align-items: start;
-    padding: 0.75rem;
+    padding: 1.2rem;
     border: 1px solid var(--line);
     background: rgba(255, 255, 255, 0.28);
   }
 
   .design-swatch__chip {
     display: block;
-    width: 3.25rem;
-    height: 3.25rem;
+    width: 5.2rem;
+    height: 5.2rem;
     border: 1px solid var(--line);
+  }
+
+  .design-swatch__chip--space {
+    width: 5.2rem;
+    align-self: end;
+    background: var(--walnut);
+    opacity: 0.35;
   }
 
   .design-swatch__body {
     display: grid;
-    gap: 0.2rem;
+    gap: 0.32rem;
     min-width: 0;
   }
 
   .design-swatch__name {
     font-family: var(--font-display);
-    font-size: 1rem;
+    font-size: 1.6rem;
     letter-spacing: 0.04em;
   }
 
   .design-swatch__var,
   .design-swatch__value {
-    font-size: 0.78rem;
+    font-size: 1.25rem;
     color: var(--ink-muted);
     overflow-wrap: anywhere;
   }
 
   .design-swatch__role {
-    margin-top: 0.2rem;
-    font-size: 0.85rem;
+    margin-top: 0.32rem;
+    font-size: 1.36rem;
     color: var(--ink-muted);
   }
 
@@ -630,43 +709,43 @@ const { target, concept } = designBrief;
 
   .design-type__item {
     display: grid;
-    gap: 0.75rem;
-    padding: 1.15rem 0;
+    gap: 1.2rem;
+    padding: 1.84rem 0;
     border-bottom: 1px solid var(--line);
   }
 
-  @media (min-width: 720px) {
+  @media (min-width: 768px) {
     .design-type__item {
-      grid-template-columns: minmax(12rem, 0.9fr) minmax(0, 1.4fr);
+      grid-template-columns: minmax(19.2rem, 0.9fr) minmax(0, 1.4fr);
       align-items: center;
     }
   }
 
   .design-type__meta {
     display: grid;
-    gap: 0.25rem;
+    gap: 0.4rem;
   }
 
   .design-type__name {
     font-family: var(--font-display);
-    font-size: 1.05rem;
+    font-size: 1.68rem;
     letter-spacing: 0.04em;
   }
 
   .design-type__meta code {
-    font-size: 0.78rem;
+    font-size: 1.25rem;
     color: var(--ink-muted);
   }
 
   .design-type__role,
   .design-type__specs {
-    font-size: 0.85rem;
+    font-size: 1.36rem;
     color: var(--ink-muted);
   }
 
   .design-type__sample--display {
     font-family: var(--font-display);
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-size: clamp(2.56rem, 3vw, 3.52rem);
     letter-spacing: 0.06em;
     font-weight: 500;
   }
@@ -678,45 +757,45 @@ const { target, concept } = designBrief;
 
   .design-type__sample--section-title {
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-size: clamp(2.4rem, 3vw, 3.2rem);
     letter-spacing: 0.04em;
     font-weight: 500;
   }
 
   .design-type__sample--lead {
     color: var(--ink-muted);
-    max-width: 40rem;
+    max-width: 64rem;
   }
 
   .design-type__sample--date {
     color: var(--ink-muted);
-    font-size: 0.88rem;
+    font-size: 1.41rem;
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.04em;
   }
 
   .design-type__sample--meta {
-    font-size: 0.78rem;
+    font-size: 1.25rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ink-muted);
   }
 
   .design-page__list {
-    gap: 3rem;
+    gap: 4.8rem;
   }
 
   .design-page__group-title {
-    margin: 0 0 0.25rem;
+    margin: 0 0 0.4rem;
     font-family: var(--font-display);
-    font-size: 1.15rem;
+    font-size: 1.84rem;
     font-weight: 500;
     letter-spacing: 0.08em;
     color: var(--ink-muted);
   }
 
   .design-page__item {
-    padding-top: 1.75rem;
+    padding-top: 2.8rem;
     border-top: 1px solid var(--line);
   }
 
@@ -724,43 +803,43 @@ const { target, concept } = designBrief;
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 0.5rem 1rem;
-    margin-bottom: 0.65rem;
+    gap: 0.8rem 1.6rem;
+    margin-bottom: 1.04rem;
   }
 
   .design-page__name {
     margin: 0;
     font-family: var(--font-display);
-    font-size: 1.45rem;
+    font-size: 2.32rem;
     font-weight: 500;
   }
 
   .design-page__path {
-    font-size: 0.82rem;
+    font-size: 1.31rem;
     color: var(--ink-muted);
   }
 
   .design-page__desc {
-    margin: 0 0 1.25rem;
+    margin: 0 0 2rem;
     color: var(--ink-muted);
-    max-width: 42rem;
+    max-width: 67.2rem;
   }
 
   .design-page__grid {
     display: grid;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    gap: 2.4rem;
+    margin-bottom: 2.4rem;
   }
 
-  @media (min-width: 720px) {
+  @media (min-width: 768px) {
     .design-page__grid {
       grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.8fr);
     }
   }
 
   .design-page__label {
-    margin: 0 0 0.65rem;
-    font-size: 0.78rem;
+    margin: 0 0 1.04rem;
+    font-size: 1.25rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--ink-muted);
@@ -771,13 +850,13 @@ const { target, concept } = designBrief;
   .design-page__table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.92rem;
+    font-size: 1.47rem;
   }
 
   .design-page__table th,
   .design-page__table td {
     text-align: left;
-    padding: 0.45rem 0.55rem 0.45rem 0;
+    padding: 0.72rem 0.88rem 0.72rem 0;
     border-bottom: 1px solid var(--line);
     vertical-align: top;
   }
@@ -785,13 +864,13 @@ const { target, concept } = designBrief;
   .design-page__table th {
     font-weight: 500;
     color: var(--ink-muted);
-    font-size: 0.8rem;
+    font-size: 1.28rem;
   }
 
   .design-page__req {
     display: inline-block;
-    margin-left: 0.4rem;
-    font-size: 0.72rem;
+    margin-left: 0.64rem;
+    font-size: 1.15rem;
     letter-spacing: 0.04em;
     color: var(--rosewood);
   }
@@ -801,7 +880,7 @@ const { target, concept } = designBrief;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.4rem;
+    gap: 0.64rem;
   }
 
   .design-page__empty {
@@ -810,14 +889,14 @@ const { target, concept } = designBrief;
   }
 
   .design-page__frame {
-    padding: 1rem;
+    padding: 1.6rem;
     border: 1px dashed var(--line);
     background: rgba(255, 255, 255, 0.28);
   }
 
   .design-page__note {
     margin: 0;
-    font-size: 0.92rem;
+    font-size: 1.47rem;
     color: var(--ink-muted);
   }
 

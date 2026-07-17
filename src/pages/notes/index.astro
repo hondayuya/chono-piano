@@ -24,7 +24,7 @@ const grouped = glossary.reduce<Record<string, typeof glossary>>((acc, item) => 
   settings={settings}
   currentPath="/notes/"
 >
-  <div id="top" class="site-shell" style="padding:clamp(2.5rem,6vw,4rem) 0">
+  <div id="top" class="site-shell" style="padding:clamp(4rem,6vw,6.4rem) 0">
     <h1 class="section__title">注釈・解説</h1>
     <p class="section__lead">
       本文中の語彙の解説です。各項目から、その言葉が使われているページへ移動できます。
@@ -36,21 +36,21 @@ const grouped = glossary.reduce<Record<string, typeof glossary>>((acc, item) => 
         <div class="stack glossary-list">
           {Object.entries(grouped).map(([key, items]) => (
             <div>
-              <h2 style="margin:0 0 0.75rem;font-size:1.15rem">{key}</h2>
+              <h2 style="margin:0 0 1.2rem;font-size:1.84rem">{key}</h2>
               <dl class="stack">
                 {items.map((item) => {
                   const refs = usages[item.id] ?? [];
                   return (
                     <div class="glossary-entry" id={item.id}>
-                      <dt style="font-family:var(--font-display);font-size:1.1rem">
+                      <dt style="font-family:var(--font-display);font-size:1.76rem">
                         {item.term}
                         {item.reading && (
-                          <span style="color:var(--ink-muted);font-size:0.85rem;margin-left:0.5rem">
+                          <span style="color:var(--ink-muted);font-size:1.36rem;margin-left:0.8rem">
                             {item.reading}
                           </span>
                         )}
                       </dt>
-                      <dd style="margin:0.35rem 0 0;color:var(--ink-muted)">{item.body}</dd>
+                      <dd style="margin:0.56rem 0 0;color:var(--ink-muted)">{item.body}</dd>
                       {refs.length > 0 && (
                         <dd class="glossary-refs">
                           <span class="glossary-refs__label">使用ページ</span>

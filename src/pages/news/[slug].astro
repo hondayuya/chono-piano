@@ -34,7 +34,7 @@ const body = applyGlossaryLinks(article.body, glossary);
   settings={settings}
   currentPath="/news/"
 >
-  <article id="top" class="site-shell" style="padding:clamp(2.5rem,6vw,4rem) 0">
+  <article id="top" class="site-shell" style="padding:clamp(4rem,6vw,6.4rem) 0">
     <p class="news-list__date">{formatDate(article.date)}</p>
     <h1 class="section__title">{article.title}</h1>
     {
@@ -44,12 +44,12 @@ const body = applyGlossaryLinks(article.body, glossary);
           alt=""
           width={article.eyecatch.width}
           height={article.eyecatch.height}
-          style="margin:1.5rem 0;max-width:36rem"
+          style="margin:2.4rem 0;max-width:57.6rem"
         />
       )
     }
     <div class="prose" set:html={body} />
-    <p style="margin-top:2rem">
+    <p style="margin-top:3.2rem">
       <a href="/news/">お知らせ一覧へ戻る</a>
     </p>
   </article>

@@ -66,7 +66,7 @@ export const designBrief = {
   },
   concept: {
     summary:
-      '白を基調にした爽やかな画面のうえに、工房と研究所の二つの顔を載せる。明朝の見出しと苔緑のアクセントで信頼と清涼感を両立する。',
+      '白を基調にした画面のうえに、工房と研究所の二つの顔を載せる。明朝の見出しと胡桃ブラウンのアクセントで信頼と温かみを両立する。',
     pillars: [
       {
         id: 'craft',
@@ -88,9 +88,9 @@ export const designBrief = {
       },
       {
         id: 'material',
-        title: '白・緑の清涼感',
+        title: '白・ブラウンの温かみ',
         body:
-          '白に近い背景と淡い緑の気配を基調にし、苔緑とやわらかいローズウッドでアクセントを置く。重さより風通しを優先する。',
+          '白に近い背景と淡い茶の気配を基調にし、胡桃ブラウンとローズウッドでアクセントを置く。楽器・木・工房の質感を想起させる。',
       },
     ] satisfies DesignConceptPillar[],
   },
@@ -101,52 +101,152 @@ export const colorTokens: ColorToken[] = [
   {
     name: 'Ink',
     cssVar: '--ink',
-    value: '#1a221e',
+    value: '#1f1a17',
     role: '本文・見出しの主色',
   },
   {
     name: 'Ink muted',
     cssVar: '--ink-muted',
-    value: '#5c6862',
+    value: '#6a6058',
     role: 'リード文・日付・補足',
   },
   {
     name: 'Paper',
     cssVar: '--paper',
-    value: '#fbfcfb',
-    role: '背景の基調（白寄り）',
+    value: '#fbfaf8',
+    role: '背景の基調（白寄り・暖色）',
   },
   {
     name: 'Paper deep',
     cssVar: '--paper-deep',
-    value: '#f2f5f3',
+    value: '#f3f0ec',
     role: '背景グラデーション末端',
   },
   {
-    name: 'Moss',
-    cssVar: '--moss',
-    value: '#2d5a45',
-    role: 'リンク・ボタン・アクセント（緑）',
+    name: 'Walnut',
+    cssVar: '--walnut',
+    value: '#6b4a36',
+    role: 'リンク・ボタン・アクセント（胡桃ブラウン）',
   },
   {
-    name: 'Moss soft',
-    cssVar: '--moss-soft',
-    value: '#3d6f55',
-    role: 'Moss の補助トーン',
+    name: 'Walnut soft',
+    cssVar: '--walnut-soft',
+    value: '#8a6248',
+    role: 'Walnut の補助トーン',
   },
   {
     name: 'Rosewood',
     cssVar: '--rosewood',
-    value: '#8a524a',
+    value: '#9a4f3c',
     role: 'ホバー・強調（赤茶）',
   },
   {
     name: 'Line',
     cssVar: '--line',
-    value: 'rgba(26, 34, 30, 0.1)',
+    value: 'rgba(31, 26, 23, 0.1)',
     role: '区切り線・枠線',
   },
 ];
+
+export type BreakpointToken = {
+  name: string;
+  cssVar: string;
+  value: string;
+  query: string;
+  role: string;
+};
+
+export type SpaceToken = {
+  name: string;
+  cssVar: string;
+  value: string;
+  role: string;
+};
+
+/**
+ * Breakpoints (px). Always write media queries in px — never rem —
+ * so they stay stable while html font-size scales.
+ */
+export const breakpointTokens: BreakpointToken[] = [
+  {
+    name: 'xs',
+    cssVar: '--bp-xs',
+    value: '389px',
+    query: '(max-width: 389px)',
+    role: '極小 SP（デザイン幅 390 未満）',
+  },
+  {
+    name: 's',
+    cssVar: '--bp-s',
+    value: '767px',
+    query: '(max-width: 767px)',
+    role: 'スマホ〜狭いタブレット（ハンバーガー切替）',
+  },
+  {
+    name: 'm',
+    cssVar: '--bp-m',
+    value: '1023px',
+    query: '(max-width: 1023px)',
+    role: 'タブレット',
+  },
+  {
+    name: 'l',
+    cssVar: '--bp-l',
+    value: '1439px',
+    query: '(max-width: 1439px)',
+    role: 'PC デザイン幅 1440 未満',
+  },
+  {
+    name: 'xl',
+    cssVar: '--bp-xl',
+    value: '1600px',
+    query: '(min-width: 1600px)',
+    role: '大型ディスプレイ（ルート rem 上限へ）',
+  },
+];
+
+/** Spacing scale (rem @ html 10px). 1.6rem ≈ 16px. */
+export const spaceTokens: SpaceToken[] = [
+  { name: 'xxs', cssVar: '--space-xxs', value: '0.4rem', role: '極小ギャップ' },
+  { name: 'xs', cssVar: '--space-xs', value: '0.8rem', role: '密な余白' },
+  { name: 'sm', cssVar: '--space-sm', value: '1.2rem', role: '小さめ余白' },
+  { name: 'md', cssVar: '--space-md', value: '1.6rem', role: '基準余白（≈16px）' },
+  { name: 'lg', cssVar: '--space-lg', value: '2.4rem', role: 'ブロック間' },
+  { name: 'xl', cssVar: '--space-xl', value: '3.2rem', role: '大きめ余白' },
+  { name: 'xxl', cssVar: '--space-xxl', value: '4.8rem', role: 'セクション補助' },
+  {
+    name: 'section-sm',
+    cssVar: '--space-section-sm',
+    value: '6.4rem',
+    role: 'セクション上下（小）',
+  },
+  {
+    name: 'section',
+    cssVar: '--space-section',
+    value: '9.6rem',
+    role: 'セクション上下（標準）',
+  },
+  {
+    name: 'section-lg',
+    cssVar: '--space-section-lg',
+    value: '12.8rem',
+    role: 'セクション上下（大）',
+  },
+];
+
+export const remSystem = {
+  rootDefault: '10px',
+  rule: '1.6rem ≈ 16px（html font-size が 10px のとき）',
+  designWidths: {
+    pc: '1440px',
+    sp: '390px',
+  },
+  notes: [
+    'サイズ・余白・フォントは基本 rem（または em）。',
+    'ブレイクポイントの media query は必ず px。',
+    '14px 相当は 1.4rem、16px 相当は 1.6rem。',
+  ],
+};
 
 /** Typography tokens and common text roles. */
 export const typeTokens: TypeToken[] = [
@@ -155,7 +255,7 @@ export const typeTokens: TypeToken[] = [
     cssVar: '--font-display',
     sample: 'チョウノウ調律所',
     preview: 'display',
-    specs: "Shippori Mincho / weight 500 / letter-spacing 0.04–0.08em",
+    specs: 'Shippori Mincho / weight 500 / letter-spacing 0.04–0.08em',
     role: '見出し・ブランド名',
   },
   {
@@ -163,35 +263,35 @@ export const typeTokens: TypeToken[] = [
     cssVar: '--font-body',
     sample: 'お客様ファーストの、標準的な料金でのピアノ調律。',
     preview: 'body',
-    specs: 'Zen Kaku Gothic New / weight 400 / line-height 1.75',
+    specs: 'Zen Kaku Gothic New / weight 400 / line-height 1.75 / ≈1.6rem',
     role: '本文・UI テキスト',
   },
   {
     name: 'Section title',
     sample: 'お知らせ',
     preview: 'section-title',
-    specs: 'clamp(1.5rem, 3vw, 2rem) / Display',
+    specs: 'clamp(2.4rem, 3vw, 3.2rem) / Display',
     role: 'ページ・セクション見出し（Heading section）',
   },
   {
     name: 'Lead',
     sample: '直近のお知らせ・新記事をご案内します。',
     preview: 'lead',
-    specs: 'ink-muted / max-width 40rem',
+    specs: 'ink-muted / max-width 64rem',
     role: '見出し直下のリード（Lead）',
   },
   {
     name: 'Date',
     sample: '2026.07.15',
     preview: 'date',
-    specs: '0.88rem / tabular-nums / ink-muted',
+    specs: '1.41rem / tabular-nums / ink-muted',
     role: '日付表示（DateText）',
   },
   {
     name: 'Meta label',
     sample: 'Development',
     preview: 'meta',
-    specs: '0.78rem / letter-spacing 0.1–0.16em / uppercase',
+    specs: '1.25rem / letter-spacing 0.1–0.16em / uppercase',
     role: 'カテゴリラベル・小さなラベル',
   },
 ];

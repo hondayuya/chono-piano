@@ -10,6 +10,7 @@
 | サイト本体 | [Astro](https://astro.build/)（静的ビルド） |
 | CMS | [microCMS](https://microcms.io/) |
 | 問い合わせ | 静的 HTML + PHP（`mail()`） |
+| CSS | rem ベース（html 10px）+ px ブレイクポイント（[指示書](./docs/style_guide.md)） |
 
 ## ページ構成
 
@@ -24,7 +25,7 @@
 | `/contact/thanks/` | 送信完了 |
 | `/contact/error/` | 送信エラー |
 | `/contact/send.php` など | PHP 送信・CSRF（`public/contact/`） |
-| `/design/` | デザインシステム（ターゲット・コンセプト・配色・テキスト・コンポーネント／開発用・noindex） |
+| `/design/` | デザインシステム（ターゲット・コンセプト・rem/BP・配色・テキスト・コンポーネント／開発用・noindex） |
 
 ## セットアップ
 

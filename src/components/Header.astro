@@ -17,7 +17,23 @@ const contactCurrent = currentPath === contactNav.href;
       <span class="brand-lockup__main">{settings.companyName}</span>
       <span class="brand-lockup__sub">{settings.labName}</span>
     </a>
-    <div class="site-header__nav">
+
+    <button
+      class="site-header__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      data-nav-toggle
+    >
+      <span class="sr-only">メニューを開く</span>
+      <span class="site-header__toggle-bars" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <div class="site-header__nav" id="site-nav" data-nav-panel>
       <nav aria-label="メインナビゲーション">
         <ul class="nav">
           {
@@ -53,3 +69,46 @@ const contactCurrent = currentPath === contactNav.href;
     </div>
   </div>
 </header>
+
+<script>
+  function initHeaderNav() {
+    const header = document.querySelector('.site-header');
+    const toggle = document.querySelector('[data-nav-toggle]');
+    const panel = document.querySelector('[data-nav-panel]');
+    if (!(header instanceof HTMLElement)) return;
+    if (!(toggle instanceof HTMLButtonElement)) return;
+    if (!(panel instanceof HTMLElement)) return;
+    if (toggle.dataset.navReady === 'true') return;
+    toggle.dataset.navReady = 'true';
+
+    const label = toggle.querySelector('.sr-only');
+
+    const setOpen = (open) => {
+      header.classList.toggle('is-nav-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (label) {
+        label.textContent = open ? 'メニューを閉じる' : 'メニューを開く';
+      }
+      document.body.classList.toggle('is-nav-locked', open);
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(!header.classList.contains('is-nav-open'));
+    });
+
+    panel.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    });
+
+    const media = window.matchMedia('(min-width: 768px)');
+    media.addEventListener('change', () => {
+      if (media.matches) setOpen(false);
+    });
+  }
+
+  initHeaderNav();
+</script>

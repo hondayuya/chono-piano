@@ -20,7 +20,7 @@ const labCurrent = currentPath === '/lab/' || currentPath.startsWith('/lab/');
 
     <div class="site-footer__grid">
       <div>
-        <p class="brand-lockup__main" style="font-size:1.15rem;margin:0 0 0.35rem">
+        <p class="brand-lockup__main" style="font-size:1.84rem;margin:0 0 0.56rem">
           {settings.companyName}
         </p>
         <p style="margin:0">{settings.labName}</p>
@@ -28,12 +28,12 @@ const labCurrent = currentPath === '/lab/' || currentPath.startsWith('/lab/');
       <div>
         {
           settings.address && (
-            <p style="margin:0 0 0.35rem">{settings.address}</p>
+            <p style="margin:0 0 0.56rem">{settings.address}</p>
           )
         }
         {
           settings.phone && (
-            <p style="margin:0 0 0.35rem">
+            <p style="margin:0 0 0.56rem">
               TEL{' '}
               <a href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`}>
                 {settings.phone}
@@ -75,10 +75,10 @@ const labCurrent = currentPath === '/lab/' || currentPath.startsWith('/lab/');
             }
           </ul>
         </nav>
-        <p style="margin:1rem 0 0;font-size:0.88rem">
+        <p style="margin:1.6rem 0 0;font-size:1.41rem">
           調律中はお電話に出られないことが多いため、留守番電話・ショートメールのご利用をお願いします。
         </p>
-        <p style="margin:0.75rem 0 0">
+        <p style="margin:1.2rem 0 0">
           <a class="button button--ghost site-footer__top" href="#top">ページの先頭へ戻る</a>
         </p>
       </div>
