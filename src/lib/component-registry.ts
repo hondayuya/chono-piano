@@ -65,15 +65,16 @@ export const componentRegistry: ComponentEntry[] = [
     file: 'src/components/LabBanner.astro',
     category: 'content',
     description:
-      'Labo CHONO への導線バナー。フッターとトップページで使用します。',
+      'Labo CHONO への導線バナー。フッター（m）とトップ FV（s）で使用します。',
     props: [
       { name: 'settings', type: 'SiteSettings', required: true },
       { name: 'current', type: 'boolean', note: 'Lab ページ上の current 表示。既定 false' },
+      { name: 'size', type: "'m' | 's'", note: '既定 m。s は FV 画像上のコンパクト版' },
       { name: 'class', type: 'string', note: '追加の class' },
     ],
     usedIn: [
-      { href: '/', label: 'トップ' },
-      { label: 'Footer（全ページ）' },
+      { href: '/', label: 'トップ（size=s）' },
+      { label: 'Footer（全ページ・size=m）' },
     ],
     preview: 'live',
   },

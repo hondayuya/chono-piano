@@ -46,7 +46,8 @@ const { target, concept } = designBrief;
       <Lead>
         ターゲットとコンセプトを起点に、配色・テキスト・コンポーネントをまとめています。ブリーフは
         <code>src/lib/design-tokens.ts</code>、単位規約は
-        <code>docs/style_guide.md</code> を更新してください。
+        <code>docs/style_guide.md</code> を更新してください。FVレイアウト比較は
+        <a href="/design/fv/">/design/fv/</a> を参照。
       </Lead>
       <p class="design-page__meta">
         カラー {colorTokens.length} / テキスト {typeTokens.length} / BP{' '}
@@ -327,8 +328,9 @@ const { target, concept } = designBrief;
                   <h4 class="design-page__label">プレビュー</h4>
 
                   {entry.id === 'lab-banner' && (
-                    <div class="design-page__frame">
+                    <div class="design-page__frame stack">
                       <LabBanner settings={settings} />
+                      <LabBanner settings={settings} size="s" />
                     </div>
                   )}
                   {entry.id === 'news-list' && (
@@ -743,11 +745,20 @@ const { target, concept } = designBrief;
     color: var(--ink-muted);
   }
 
+  .design-type__sample--brand {
+    font-family: var(--font-brand);
+    font-size: clamp(2.56rem, 3vw, 3.52rem);
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+
   .design-type__sample--display {
     font-family: var(--font-display);
     font-size: clamp(2.56rem, 3vw, 3.52rem);
     letter-spacing: 0.06em;
     font-weight: 500;
+    font-feature-settings: var(--font-feature-display);
+    font-variant-east-asian: proportional-width;
   }
 
   .design-type__sample--body {
@@ -760,6 +771,8 @@ const { target, concept } = designBrief;
     font-size: clamp(2.4rem, 3vw, 3.2rem);
     letter-spacing: 0.04em;
     font-weight: 500;
+    font-feature-settings: var(--font-feature-display);
+    font-variant-east-asian: proportional-width;
   }
 
   .design-type__sample--lead {

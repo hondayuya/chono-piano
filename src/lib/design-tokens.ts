@@ -10,7 +10,7 @@ export type TypeToken = {
   cssVar?: string;
   sample: string;
   /** CSS class or inline preview style key used on the design page. */
-  preview: 'display' | 'body' | 'section-title' | 'lead' | 'date' | 'meta';
+  preview: 'brand' | 'display' | 'body' | 'section-title' | 'lead' | 'date' | 'meta';
   specs: string;
   role: string;
 };
@@ -66,31 +66,37 @@ export const designBrief = {
   },
   concept: {
     summary:
-      '白を基調にした画面のうえに、工房と研究所の二つの顔を載せる。明朝の見出しと胡桃ブラウンのアクセントで信頼と温かみを両立する。',
+      'やわらかく迎えて、静かに確かめる。入口は気軽さ、奥行きで技術の確かさを積む。白基調に胡桃ブラウンの手触りを置き、ソフトティールの差し色で焦点を締める。工房と Lab の二層で軽さと深さを役割分担する。',
     pillars: [
       {
-        id: 'craft',
-        title: '職人の信頼',
+        id: 'ease',
+        title: '気軽な入口',
         body:
-          'ドイツ・マイスターの経歴と長年の現場経験を、落ち着いたトーンと余白で伝える。誇張せず、事実が主役になる。',
+          '相談のハードルを下げる。短い言葉・余白・押しつけない CTA で、料金・対応範囲・連絡先がすぐ見える構成にする。専門用語は表に出さない。',
+      },
+      {
+        id: 'craft',
+        title: '静かな確かさ',
+        body:
+          'マイスター経歴・実績・音源を誇張せず事実で示す。権威アピールや装飾で信頼を作らず、読み進めるほど任せてよいと感じる深さを置く。',
       },
       {
         id: 'clarity',
         title: 'お客様ファーストの明快さ',
         body:
-          '料金・業務・連絡先など依頼に必要な情報を迷わず読める構成にする。装飾より階層と可読性を優先する。',
+          '料金・業務・連絡先など依頼に必要な情報を迷わず読める構成にする。装飾より階層と可読性を優先する。迷わせないこと自体が信頼になる。',
       },
       {
         id: 'dual',
         title: '調律所と Lab の二層',
         body:
-          '表層は調律依頼の導線、深層は Labo CHONO の研究領域。バナーとフッターで技術者向けへ橋渡しする。',
+          '表層は調律依頼の気軽な導線、深層は Labo CHONO の研究領域。一般向けの軽さと技術の深さを役割分担し、バナーとフッターで橋渡しする。',
       },
       {
         id: 'material',
-        title: '白・ブラウンの温かみ',
+        title: '白・ブラウンと差し色',
         body:
-          '白に近い背景と淡い茶の気配を基調にし、胡桃ブラウンとローズウッドでアクセントを置く。楽器・木・工房の質感を想起させる。',
+          '白基調に胡桃ブラウンの手触りを置き、ソフトティールを差し色にする。差し色は主CTA・現在地・Lab導線に限定し、全面には使わない。',
       },
     ] satisfies DesignConceptPillar[],
   },
@@ -101,49 +107,61 @@ export const colorTokens: ColorToken[] = [
   {
     name: 'Ink',
     cssVar: '--ink',
-    value: '#1f1a17',
+    value: '#2c2622',
     role: '本文・見出しの主色',
   },
   {
     name: 'Ink muted',
     cssVar: '--ink-muted',
-    value: '#6a6058',
+    value: '#7a7169',
     role: 'リード文・日付・補足',
   },
   {
     name: 'Paper',
     cssVar: '--paper',
-    value: '#fbfaf8',
-    role: '背景の基調（白寄り・暖色）',
+    value: '#ffffff',
+    role: '背景の基調（明るい白）',
   },
   {
     name: 'Paper deep',
     cssVar: '--paper-deep',
-    value: '#f3f0ec',
-    role: '背景グラデーション末端',
+    value: '#f7f5f2',
+    role: '背景グラデーション末端（ごく淡い暖色）',
   },
   {
     name: 'Walnut',
     cssVar: '--walnut',
-    value: '#6b4a36',
-    role: 'リンク・ボタン・アクセント（胡桃ブラウン）',
+    value: '#7d5740',
+    role: '本文リンク・ghostボタンなど暖色の基調アクセント',
   },
   {
     name: 'Walnut soft',
     cssVar: '--walnut-soft',
-    value: '#8a6248',
+    value: '#9c7355',
     role: 'Walnut の補助トーン',
   },
   {
     name: 'Rosewood',
     cssVar: '--rosewood',
-    value: '#9a4f3c',
-    role: 'ホバー・強調（赤茶）',
+    value: '#b05d48',
+    role: 'テキストリンクのホバーなど補助の強調',
+  },
+  {
+    name: 'Accent',
+    cssVar: '--accent',
+    value: '#5a7d78',
+    role: '差し色（主CTA・現在地・Lab導線）',
+  },
+  {
+    name: 'Accent soft',
+    cssVar: '--accent-soft',
+    value: '#6e908a',
+    role: 'Accent の補助トーン（グラデーションなど）',
   },
   {
     name: 'Line',
     cssVar: '--line',
-    value: 'rgba(31, 26, 23, 0.1)',
+    value: 'rgba(44, 38, 34, 0.1)',
     role: '区切り線・枠線',
   },
 ];
@@ -205,38 +223,38 @@ export const breakpointTokens: BreakpointToken[] = [
   },
 ];
 
-/** Spacing scale (rem @ html 10px). 1.6rem ≈ 16px. */
+/** Spacing scale (rem @ html 11px). 従来比 +20%。1.6rem ≈ 17.6px. */
 export const spaceTokens: SpaceToken[] = [
-  { name: 'xxs', cssVar: '--space-xxs', value: '0.4rem', role: '極小ギャップ' },
-  { name: 'xs', cssVar: '--space-xs', value: '0.8rem', role: '密な余白' },
-  { name: 'sm', cssVar: '--space-sm', value: '1.2rem', role: '小さめ余白' },
-  { name: 'md', cssVar: '--space-md', value: '1.6rem', role: '基準余白（≈16px）' },
-  { name: 'lg', cssVar: '--space-lg', value: '2.4rem', role: 'ブロック間' },
-  { name: 'xl', cssVar: '--space-xl', value: '3.2rem', role: '大きめ余白' },
-  { name: 'xxl', cssVar: '--space-xxl', value: '4.8rem', role: 'セクション補助' },
+  { name: 'xxs', cssVar: '--space-xxs', value: '0.48rem', role: '極小ギャップ' },
+  { name: 'xs', cssVar: '--space-xs', value: '0.96rem', role: '密な余白' },
+  { name: 'sm', cssVar: '--space-sm', value: '1.44rem', role: '小さめ余白' },
+  { name: 'md', cssVar: '--space-md', value: '1.92rem', role: '基準余白' },
+  { name: 'lg', cssVar: '--space-lg', value: '2.88rem', role: 'ブロック間' },
+  { name: 'xl', cssVar: '--space-xl', value: '3.84rem', role: '大きめ余白' },
+  { name: 'xxl', cssVar: '--space-xxl', value: '5.76rem', role: 'セクション補助' },
   {
     name: 'section-sm',
     cssVar: '--space-section-sm',
-    value: '6.4rem',
+    value: '7.68rem',
     role: 'セクション上下（小）',
   },
   {
     name: 'section',
     cssVar: '--space-section',
-    value: '9.6rem',
+    value: '11.52rem',
     role: 'セクション上下（標準）',
   },
   {
     name: 'section-lg',
     cssVar: '--space-section-lg',
-    value: '12.8rem',
+    value: '15.36rem',
     role: 'セクション上下（大）',
   },
 ];
 
 export const remSystem = {
-  rootDefault: '10px',
-  rule: '1.6rem ≈ 16px（html font-size が 10px のとき）',
+  rootDefault: '11px',
+  rule: '1.6rem ≈ 17.6px（html font-size が 11px のとき）。body は --font-size-body',
   designWidths: {
     pc: '1440px',
     sp: '390px',
@@ -244,33 +262,41 @@ export const remSystem = {
   notes: [
     'サイズ・余白・フォントは基本 rem（または em）。',
     'ブレイクポイントの media query は必ず px。',
-    '14px 相当は 1.4rem、16px 相当は 1.6rem。',
+    '本文は body の 1.6rem。14px 相当は約 1.3rem、18px 相当は約 1.65rem。',
   ],
 };
 
 /** Typography tokens and common text roles. */
 export const typeTokens: TypeToken[] = [
   {
+    name: 'Brand',
+    cssVar: '--font-brand',
+    sample: 'チョウノウ調律所',
+    preview: 'brand',
+    specs: 'Shippori Mincho / weight 500 / letter-spacing 0.08em',
+    role: 'ヘッダーのサイト名',
+  },
+  {
     name: 'Display',
     cssVar: '--font-display',
-    sample: 'チョウノウ調律所',
+    sample: 'あなたの演奏\n調律で損をして\nいませんか？',
     preview: 'display',
-    specs: 'Shippori Mincho / weight 500 / letter-spacing 0.04–0.08em',
-    role: '見出し・ブランド名',
+    specs: 'Shippori Mincho / weight 500 / palt（font-feature-settings） / letter-spacing 0.04–0.08em',
+    role: '見出し・キャッチ',
   },
   {
     name: 'Body',
     cssVar: '--font-body',
     sample: 'お客様ファーストの、標準的な料金でのピアノ調律。',
     preview: 'body',
-    specs: 'Zen Kaku Gothic New / weight 400 / line-height 1.75 / ≈1.6rem',
+    specs: 'Zen Kaku Gothic New / weight 400 / line-height 1.75 / 1.6rem（html 11px）',
     role: '本文・UI テキスト',
   },
   {
     name: 'Section title',
     sample: 'お知らせ',
     preview: 'section-title',
-    specs: 'clamp(2.4rem, 3vw, 3.2rem) / Display',
+    specs: 'clamp(2.8rem, 3.4vw, 3.6rem) / Display',
     role: 'ページ・セクション見出し（Heading section）',
   },
   {

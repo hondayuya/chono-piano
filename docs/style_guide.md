@@ -4,7 +4,8 @@ kakko プロジェクトの規約を Astro + CSS Variables 向けに短縮した
 
 ## 単位（rem ベース）
 
-- `html` の `font-size` 既定は **10px**（`1.6rem ≈ 16px`）
+- `html` の `font-size` 既定は **11px**（`1.6rem ≈ 17.6px`）
+- `body` に `font-size: 1.6rem` を指定（ルート値の継承で本文が小さくならないようにする）
 - ビューポートに応じてルート rem がスケールする（デザイン幅 PC 1440 / SP 390）
 - **width / height / margin / padding / font-size は基本 rem**
 - **line-height は比率（1.75 など）または単位なし**
@@ -12,14 +13,15 @@ kakko プロジェクトの規約を Astro + CSS Variables 向けに短縮した
 - **font-weight は数値（400 / 500）**
 - **ブレイクポイントの `@media` は必ず px**（rem だとルートスケールで閾値が動くため）
 
-換算の目安:
+換算の目安（html 11px 時）:
 
 | 意図する大きさ | rem |
 |---|---|
-| 10px | 1rem |
-| 14px | 1.4rem |
-| 16px | 1.6rem |
-| 24px | 2.4rem |
+| ≈11px | 1rem |
+| ≈16px | 1.45rem |
+| ≈17.6px（本文） | 1.6rem |
+| ≈22px | 2rem |
+| ≈26px | 2.4rem |
 
 ## ブレイクポイント
 
@@ -32,6 +34,20 @@ kakko プロジェクトの規約を Astro + CSS Variables 向けに短縮した
 | xl | min 1600px | 大型（ルート rem 上限） |
 
 定義は `src/styles/global.css` の `:root`（`--bp-*`）と `/design/` を参照。
+
+余白スケール（`--space-*` / `--gutter`）は従来比 **+20%**。
+
+## Webフォント
+
+| 役割 | 書体 | 読み込み |
+|---|---|---|
+| Brand（ヘッダーサイト名） | Shippori Mincho | Google Fonts |
+| Display（見出し） | Shippori Mincho | Google Fonts |
+| Body（本文） | Zen Kaku Gothic New | Google Fonts |
+
+- 定義・URL: `src/lib/fonts.ts`
+- 注入: `src/layouts/BaseLayout.astro`
+- 見出しの詰め: `font-feature-settings: "palt"`（`--font-feature-display`）＋ `font-variant-east-asian: proportional-width`
 
 ## 命名（今後の追加分）
 

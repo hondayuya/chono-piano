@@ -5,21 +5,30 @@ import type { SiteSettings } from '../lib/types';
 type Props = {
   settings: SiteSettings;
   current?: boolean;
+  /** `m` = フッター等の標準、`s` = FV 画像上のコンパクト版 */
+  size?: 'm' | 's';
   class?: string;
 };
 
-const { settings, current = false, class: className } = Astro.props;
+const { settings, current = false, size = 'm', class: className } = Astro.props;
 ---
 
 <a
-  class:list={['lab-banner', current && 'lab-banner--current', className]}
+  class:list={[
+    'lab-banner',
+    size === 's' && 'lab-banner--s',
+    current && 'lab-banner--current',
+    className,
+  ]}
   href={labNav.href}
   aria-current={current ? 'page' : undefined}
 >
   <span class="lab-banner__content">
-    <span class="lab-banner__eyebrow">For piano technicians</span>
+    <span class="lab-banner__eyebrow">ピアノ技術者の方へ</span>
     <span class="lab-banner__title">{settings.labName}</span>
-    <span class="lab-banner__text">知識・研究・チョウノウ方式の解説</span>
+    {size !== 's' && (
+      <span class="lab-banner__text">知識・研究・チョウノウ方式の解説</span>
+    )}
   </span>
   <span class="lab-banner__arrow" aria-hidden="true">→</span>
 </a>

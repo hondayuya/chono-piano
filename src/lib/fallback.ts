@@ -10,7 +10,8 @@ import type {
 export const fallbackSettings: SiteSettings = {
   companyName: 'チョウノウ調律所',
   labName: 'Labo CHONO',
-  catchphrase: 'お客様ファーストの、標準的な料金でのピアノ調律。',
+  catchphrase:
+    '目の肥えたお客様にも応えてきた、\n確かな経験があります。',
   aboutText:
     '「チョウノウ方式の調律」を守り、ドイツでの経験を活かした外国製ピアノや古いピアノの調律にも自信があります。仕事内容はお客様ファーストであること、標準的な料金であること。',
   businessText:

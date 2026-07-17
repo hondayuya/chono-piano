@@ -9,9 +9,13 @@ type Props = {
 
 const { settings, currentPath = '/' } = Astro.props;
 const contactCurrent = currentPath === contactNav.href;
+const revealOnScroll = currentPath === '/';
 ---
 
-<header class="site-header">
+<header
+  class:list={['site-header', revealOnScroll && 'site-header--reveal']}
+  data-reveal-on-scroll={revealOnScroll ? 'true' : undefined}
+>
   <div class="site-shell site-header__inner">
     <a class="brand-lockup" href="/">
       <span class="brand-lockup__main">{settings.companyName}</span>
@@ -82,6 +86,19 @@ const contactCurrent = currentPath === contactNav.href;
     toggle.dataset.navReady = 'true';
 
     const label = toggle.querySelector('.sr-only');
+    const revealOnScroll = header.dataset.revealOnScroll === 'true';
+    const revealThreshold = 64;
+    const desktopQuery = window.matchMedia('(min-width: 768px)');
+
+    const updateReveal = () => {
+      if (!revealOnScroll || !desktopQuery.matches) {
+        header.classList.toggle('is-revealed', false);
+        return;
+      }
+      const show =
+        window.scrollY > revealThreshold || header.classList.contains('is-nav-open');
+      header.classList.toggle('is-revealed', show);
+    };
 
     const setOpen = (open) => {
       header.classList.toggle('is-nav-open', open);
@@ -90,6 +107,7 @@ const contactCurrent = currentPath === contactNav.href;
         label.textContent = open ? 'メニューを閉じる' : 'メニューを開く';
       }
       document.body.classList.toggle('is-nav-locked', open);
+      updateReveal();
     };
 
     toggle.addEventListener('click', () => {
@@ -104,10 +122,15 @@ const contactCurrent = currentPath === contactNav.href;
       if (event.key === 'Escape') setOpen(false);
     });
 
-    const media = window.matchMedia('(min-width: 768px)');
-    media.addEventListener('change', () => {
-      if (media.matches) setOpen(false);
+    desktopQuery.addEventListener('change', () => {
+      if (desktopQuery.matches) setOpen(false);
+      updateReveal();
     });
+
+    if (revealOnScroll) {
+      updateReveal();
+      window.addEventListener('scroll', updateReveal, { passive: true });
+    }
   }
 
   initHeaderNav();
