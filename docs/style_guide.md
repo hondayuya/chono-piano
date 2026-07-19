@@ -41,13 +41,15 @@ kakko プロジェクトの規約を Astro + CSS Variables 向けに短縮した
 
 | 役割 | 書体 | 読み込み |
 |---|---|---|
-| Brand（ヘッダーサイト名） | Shippori Mincho | Google Fonts |
-| Display（見出し） | Shippori Mincho | Google Fonts |
-| Body（本文） | Zen Kaku Gothic New | Google Fonts |
+| Brand（ヘッダーサイト名） | A1明朝 | XServer Webフォント |
+| Display（見出し） | 見出しゴMB31 | XServer Webフォント |
+| Body（本文） | 中ゴシックBBB | XServer Webフォント |
 
-- 定義・URL: `src/lib/fonts.ts`
-- 注入: `src/layouts/BaseLayout.astro`
+- 定義・スクリプト: `src/lib/fonts.ts`
+- 注入: `src/layouts/BaseLayout.astro`（`</head>` 直前に `webfonts.xserver.jp` の JS）
+- 本番は [サーバーパネルの Webフォント設定](https://www.xserver.ne.jp/manual/man_server_webfont_html.php) にドメイン登録が必要
 - 見出しの詰め: `font-feature-settings: "palt"`（`--font-feature-display`）＋ `font-variant-east-asian: proportional-width`
+- `font-weight` による太字は無効なため、太さを変える場合は別書体を指定する
 
 ## 命名（今後の追加分）
 

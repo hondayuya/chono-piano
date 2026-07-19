@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import { resolveBreadcrumbs, type BreadcrumbItem } from '../lib/breadcrumb';
-import { googleFonts } from '../lib/fonts';
+import { xserverWebfont } from '../lib/fonts';
 import type { SiteSettings } from '../lib/types';
 
 type Props = {
@@ -45,11 +45,8 @@ const breadcrumbItems = resolveBreadcrumbs(currentPath, breadcrumbTrail);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
 
-    <link rel="preconnect" href={googleFonts.preconnect[0]} />
-    <link rel="preconnect" href={googleFonts.preconnect[1]} crossorigin />
-    <link rel="stylesheet" href={googleFonts.stylesheetHref} />
-
     <title>{pageTitle}</title>
+    <script is:inline type="text/javascript" src={xserverWebfont.scriptSrc}></script>
   </head>
   <body>
     <Header settings={settings} currentPath={currentPath} />

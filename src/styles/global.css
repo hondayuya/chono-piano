@@ -28,12 +28,13 @@
   --moss: var(--walnut);
   --moss-soft: var(--walnut-soft);
 
-  /* Typography — Google Fonts（定義・読み込み: src/lib/fonts.ts）
-     Brand / Display: Shippori Mincho / Body: Zen Kaku Gothic New
-     見出しの詰め: font-feature-settings "palt" */
-  --font-brand: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
-  --font-display: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
-  --font-body: 'Zen Kaku Gothic New', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+  /* Typography — XServer Webフォント（定義・読み込み: src/lib/fonts.ts）
+     Brand: A1明朝 / Display: 見出しゴMB31 / Body: 中ゴシックBBB
+     見出しの詰め: font-feature-settings "palt"
+     ※本番はサーバーパネル「Webフォント設定」へのドメイン登録が必要 */
+  --font-brand: "A1明朝", "A1 Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-display: "見出しゴMB31", "Midashi Go MB31", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  --font-body: "中ゴシックBBB", "Gothic Medium BBB", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
   --font-feature-display: 'palt' 1;
 
   /* Layout (1.6rem ≈ 基準本文。html 既定 11px 時 ≈ 17.6px) */

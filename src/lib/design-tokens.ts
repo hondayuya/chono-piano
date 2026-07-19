@@ -273,7 +273,7 @@ export const typeTokens: TypeToken[] = [
     cssVar: '--font-brand',
     sample: 'チョウノウ調律所',
     preview: 'brand',
-    specs: 'Shippori Mincho / weight 500 / letter-spacing 0.08em',
+    specs: 'A1明朝 / letter-spacing 0.08em',
     role: 'ヘッダーのサイト名',
   },
   {
@@ -281,7 +281,7 @@ export const typeTokens: TypeToken[] = [
     cssVar: '--font-display',
     sample: 'あなたの演奏\n調律で損をして\nいませんか？',
     preview: 'display',
-    specs: 'Shippori Mincho / weight 500 / palt（font-feature-settings） / letter-spacing 0.04–0.08em',
+    specs: '見出しゴMB31 / palt（font-feature-settings） / letter-spacing 0.04–0.08em',
     role: '見出し・キャッチ',
   },
   {
@@ -289,7 +289,7 @@ export const typeTokens: TypeToken[] = [
     cssVar: '--font-body',
     sample: 'お客様ファーストの、標準的な料金でのピアノ調律。',
     preview: 'body',
-    specs: 'Zen Kaku Gothic New / weight 400 / line-height 1.75 / 1.6rem（html 11px）',
+    specs: '中ゴシックBBB / weight 400 / line-height 1.75 / 1.6rem（html 11px）',
     role: '本文・UI テキスト',
   },
   {
