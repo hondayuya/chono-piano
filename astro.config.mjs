@@ -4,7 +4,7 @@ import { downloadMicroCMSAssetsPlugin } from './integrations/vite-download-micro
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://example.com',
+  site: 'https://chono-piano.com',
   trailingSlash: 'always',
   output: 'static',
   build: {

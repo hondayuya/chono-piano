@@ -17,9 +17,6 @@ pnpm-debug.log*
 .env.production
 .env.local
 
-# PHP runtime config (secrets)
-public/contact/config.php
-
 # local CMS snapshots（`npm run update-mocks` で再生成）
 # 初期サンプルはリポジトリに含める。上書き後の差分を無視したい場合はコメント解除
 # src/mocks/*.json

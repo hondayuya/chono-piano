@@ -1,23 +1,22 @@
 <?php
 /**
- * 問い合わせフォーム設定のサンプル。
- * 実運用値は config.php を編集してください。
+ * 問い合わせフォーム設定（リポジトリに含めます）。
  */
 declare(strict_types=1);
 
 return [
-    // Destination inbox
+    // Destination inbox（仮）
     'to_email' => 'yuya.honda33@gmail.com',
     'to_name' => 'チョウノウ調律所',
 
-    // Envelope / From (use a domain you control)
+    // Envelope / From（本番ドメイン）
     'from_email' => 'noreply@chono-piano.com',
     'from_name' => 'チョウノウ調律所 Webフォーム',
 
     // Optional Reply-To uses the visitor address when valid
     'use_visitor_reply_to' => true,
 
-    // Allowed Origin / Referer hosts (no scheme). Empty = same-host only via HTTPS check helpers.
+    // Allowed Origin / Referer hosts (no scheme)
     'allowed_hosts' => [
         'localhost',
         '127.0.0.1',
