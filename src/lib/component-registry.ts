@@ -105,8 +105,11 @@ export const componentRegistry: ComponentEntry[] = [
     file: 'src/components/WorksRow.astro',
     category: 'content',
     description:
-      '実績作品の横並び行。媒体種別・アーティスト・タイトルをタイル表示します。',
-    props: [{ name: 'works', type: 'Work[]', required: true }],
+      'microCMS sounds（音源・動画リンク）の横スクロール行。タイトル・サムネ・外部URL。',
+    props: [{ name: 'sounds', type: 'Sound[]', required: true }],
+    notes: [
+      'microCMS `sounds`（title / url / thumbnail）を表示します。',
+    ],
     usedIn: [{ href: '/', label: 'トップ' }],
     preview: 'live',
   },

@@ -20,10 +20,10 @@ const labCurrent = currentPath === '/lab/' || currentPath.startsWith('/lab/');
 
     <div class="site-footer__grid">
       <div>
-        <p class="brand-lockup__main" style="font-size:1.84rem;margin:0 0 0.56rem">
-          {settings.companyName}
+        <p class="brand-lockup site-footer__brand">
+          <span class="brand-lockup__main">{settings.companyName}</span>
+          <span class="brand-lockup__sub">{settings.labName}</span>
         </p>
-        <p style="margin:0">{settings.labName}</p>
       </div>
       <div>
         {

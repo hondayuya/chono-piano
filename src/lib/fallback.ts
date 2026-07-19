@@ -4,7 +4,7 @@ import type {
   News,
   Profile,
   SiteSettings,
-  Work,
+  Sound,
 } from './types';
 
 export const fallbackSettings: SiteSettings = {
@@ -56,8 +56,8 @@ export const fallbackNews: News[] = [
     publishedAt: '2026-07-15T00:00:00.000Z',
     revisedAt: '2026-07-15T00:00:00.000Z',
     title: 'HP更新のお知らせ',
-    date: '2026-07-15',
-    body: '<p>チョウノウ調律所 / Labo CHONO のホームページを公開しました。調律・修理のご相談や Labo CHONO の記事も順次掲載していきます。</p>',
+    content:
+      '<p>チョウノウ調律所 / Labo CHONO のホームページを公開しました。調律・修理のご相談や Labo CHONO の記事も順次掲載していきます。</p>',
   },
   {
     id: 'demo-open-tuning',
@@ -66,31 +66,31 @@ export const fallbackNews: News[] = [
     publishedAt: '2026-08-01T00:00:00.000Z',
     revisedAt: '2026-08-01T00:00:00.000Z',
     title: 'ミントホールで張能の公開調律',
-    date: '2026-08-01',
-    body: '<p>公開調律の詳細は microCMS で記事本文を編集してください。会場や時間などの情報をここに追記します。</p>',
+    content:
+      '<p>公開調律の詳細は microCMS で記事本文を編集してください。会場や時間などの情報をここに追記します。</p>',
   },
 ];
 
-export const fallbackWorks: Work[] = [
+export const fallbackSounds: Sound[] = [
   {
-    id: 'w1',
+    id: 'sound-1',
     title: '（タイトル）',
-    artist: '磯村由紀子',
-    mediaType: 'cd',
+    url: 'https://example.com',
   },
   {
-    id: 'w2',
+    id: 'sound-2',
     title: '（タイトル）',
-    artist: 'モーガン・フィッシャー',
-    mediaType: 'cd',
+    url: 'https://example.com',
   },
   {
-    id: 'w3',
+    id: 'sound-3',
     title: '（タイトル）',
-    artist: 'マル・ウォルドロン',
-    mediaType: 'lp',
+    url: 'https://example.com',
   },
 ];
+
+/** @deprecated Use fallbackSounds */
+export const fallbackWorks = fallbackSounds;
 
 export const fallbackLabArticles: LabArticle[] = [
   {

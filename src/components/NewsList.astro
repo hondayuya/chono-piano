@@ -1,5 +1,5 @@
 ---
-import { excerptFromHtml, formatDate } from '../lib/microcms';
+import { excerptFromHtml, newsDisplayDate } from '../lib/microcms';
 import type { News } from '../lib/types';
 
 type Props = {
@@ -21,19 +21,19 @@ function thumbUrl(url: string): string {
   ) : (
     <ul class="news-list">
       {items.map((item) => {
-        const excerpt = excerptFromHtml(item.body);
+        const excerpt = excerptFromHtml(item.content);
         return (
           <li>
             <a href={`/news/${item.id}/`}>
               <div class="news-list__body">
-                <span class="news-list__date">{formatDate(item.date)}</span>
+                <span class="news-list__date">{newsDisplayDate(item)}</span>
                 <span class="news-list__title">{item.title}</span>
                 {excerpt && <p class="news-list__excerpt">{excerpt}</p>}
               </div>
-              <div class="news-list__thumb" aria-hidden={!item.eyecatch}>
-                {item.eyecatch ? (
+              <div class="news-list__thumb" aria-hidden={!item.thumbnail}>
+                {item.thumbnail ? (
                   <img
-                    src={thumbUrl(item.eyecatch.url)}
+                    src={thumbUrl(item.thumbnail.url)}
                     alt=""
                     width="120"
                     height="80"

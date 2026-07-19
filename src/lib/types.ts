@@ -11,17 +11,32 @@ export type MicroCMSListResponse<T> = {
   limit: number;
 };
 
+/** microCMS `news` API */
 export type News = {
   id: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  revisedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  revisedAt?: string;
   title: string;
-  date: string;
-  body: string;
-  eyecatch?: MicroCMSImage;
+  content: string;
+  thumbnail?: MicroCMSImage;
 };
+
+/** microCMS `sounds` API（調律した音源・動画リンク） */
+export type Sound = {
+  id: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  revisedAt?: string;
+  title: string;
+  url: string;
+  thumbnail?: MicroCMSImage;
+};
+
+/** @deprecated Use Sound — kept as alias for gradual rename */
+export type Work = Sound;
 
 export type LabArticle = {
   id: string;
@@ -35,16 +50,6 @@ export type LabArticle = {
   body: string;
   audience?: 'general' | 'technician';
   series?: string;
-};
-
-export type Work = {
-  id: string;
-  title: string;
-  artist: string;
-  mediaType: 'lp' | 'cd' | 'other';
-  jacket?: MicroCMSImage;
-  url?: string;
-  note?: string;
 };
 
 export type Glossary = {

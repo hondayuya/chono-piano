@@ -1,0 +1,65 @@
+# main への push / microCMS Webhook / 手動実行で本番ビルドし、FTP にアップロードします。
+#
+# === GitHub Secrets ===
+# MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY
+# FTP_SERVER / FTP_USERNAME / FTP_PASSWORD / FTP_SERVER_DIR
+#
+# === microCMS Webhook（API 設定 → Webhook → GitHub Actions） ===
+# - トリガーイベント名: microcms-publish
+# - 通知タイミング: news / sounds の「公開時」
+# - 下書き時の draftKey 付き dispatch はスキップします
+
+name: Deploy production (FTP)
+
+on:
+  push:
+    branches:
+      - main
+  repository_dispatch:
+    types:
+      - microcms-publish
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name != 'repository_dispatch' ||
+      github.event.client_payload.draftKey == null ||
+      github.event.client_payload.draftKey == ''
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
+          MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
+
+      - name: Deploy to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          dangerous-clean-slate: false

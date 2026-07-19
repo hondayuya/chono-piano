@@ -1,0 +1,26 @@
+[
+  {
+    "id": "sound-1",
+    "title": "（タイトル）",
+    "url": "https://example.com",
+    "publishedAt": "2026-01-01T00:00:00.000Z",
+    "revisedAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "sound-2",
+    "title": "（タイトル）",
+    "url": "https://example.com",
+    "publishedAt": "2026-01-02T00:00:00.000Z",
+    "revisedAt": "2026-01-02T00:00:00.000Z",
+    "updatedAt": "2026-01-02T00:00:00.000Z"
+  },
+  {
+    "id": "sound-3",
+    "title": "（タイトル）",
+    "url": "https://example.com",
+    "publishedAt": "2026-01-03T00:00:00.000Z",
+    "revisedAt": "2026-01-03T00:00:00.000Z",
+    "updatedAt": "2026-01-03T00:00:00.000Z"
+  }
+]

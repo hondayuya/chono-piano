@@ -20,6 +20,13 @@ pnpm-debug.log*
 # PHP runtime config (secrets)
 public/contact/config.php
 
+# local CMS snapshots（`npm run update-mocks` で再生成）
+# 初期サンプルはリポジトリに含める。上書き後の差分を無視したい場合はコメント解除
+# src/mocks/*.json
+
+# ビルド時にダウンロードした microCMS 画像
+public/_generated/
+
 # macOS-specific files
 .DS_Store
 

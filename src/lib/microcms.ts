@@ -1,132 +1,184 @@
-import { createClient } from 'microcms-js-sdk';
+import { MICROCMS_ENDPOINTS } from '../config/microcms';
 import {
   fallbackGlossary,
   fallbackLabArticles,
   fallbackNews,
   fallbackProfile,
   fallbackSettings,
-  fallbackWorks,
+  fallbackSounds,
 } from './fallback';
+import {
+  getList,
+  getListAll,
+  getListDetail,
+  isMicroCMSConfigured,
+  useLocalMock,
+} from './microcms-client';
+import {
+  getBundledMicroCMSImageSrc,
+  loadMicroCMSAssetsManifest,
+  type MicroCMSAssetsManifest,
+} from './microcms-assets';
 import type {
   Glossary,
   LabArticle,
-  MicroCMSListResponse,
   News,
   Profile,
   SiteSettings,
-  Work,
+  Sound,
 } from './types';
 
-const serviceDomain = import.meta.env.MICROCMS_SERVICE_DOMAIN;
-const apiKey = import.meta.env.MICROCMS_API_KEY;
-const hasCredentials = Boolean(serviceDomain && apiKey);
+export {
+  isMicroCMSConfigured,
+  useLocalMock,
+} from './microcms-client';
+export {
+  getBundledMicroCMSImageSrc,
+  loadMicroCMSAssetsManifest,
+} from './microcms-assets';
+export type { MicroCMSAssetsManifest };
 
-const client = hasCredentials
-  ? createClient({
-      serviceDomain,
+import localNewsMock from '../mocks/news-list.json';
+import localSoundsMock from '../mocks/sounds-list.json';
+
+const NEWS_FIELDS =
+  'id,title,content,thumbnail,publishedAt,revisedAt,updatedAt,createdAt';
+const SOUNDS_FIELDS =
+  'id,title,url,thumbnail,publishedAt,revisedAt,updatedAt,createdAt';
+
+function withBundledThumbnails<T extends { id: string; thumbnail?: { url: string }; revisedAt?: string; updatedAt?: string }>(
+  items: T[],
+  apiKey: 'news' | 'sounds',
+  manifest: MicroCMSAssetsManifest,
+): T[] {
+  return items.map((item) => {
+    const url = getBundledMicroCMSImageSrc(
+      manifest,
       apiKey,
-    })
-  : null;
-
-async function getList<T>(
-  endpoint: string,
-  queries?: Record<string, unknown>,
-): Promise<MicroCMSListResponse<T> | null> {
-  if (!client) return null;
-  try {
-    return await client.getList<T>({ endpoint, queries });
-  } catch (error) {
-    console.warn(`[microCMS] Failed to fetch list: ${endpoint}`, error);
-    return null;
-  }
-}
-
-async function getObject<T>(endpoint: string): Promise<T | null> {
-  if (!client) return null;
-  try {
-    return await client.getObject<T>({ endpoint });
-  } catch (error) {
-    console.warn(`[microCMS] Failed to fetch object: ${endpoint}`, error);
-    return null;
-  }
-}
-
-async function getListDetail<T>(
-  endpoint: string,
-  contentId: string,
-): Promise<T | null> {
-  if (!client) return null;
-  try {
-    return await client.getListDetail<T>({ endpoint, contentId });
-  } catch (error) {
-    console.warn(`[microCMS] Failed to fetch detail: ${endpoint}/${contentId}`, error);
-    return null;
-  }
-}
-
-export function isMicroCMSConfigured(): boolean {
-  return hasCredentials;
+      item.id,
+      'thumbnail',
+      item.thumbnail?.url,
+      item.revisedAt,
+      item.updatedAt,
+    );
+    if (!url || !item.thumbnail) return item;
+    return {
+      ...item,
+      thumbnail: { ...item.thumbnail, url },
+    };
+  });
 }
 
 export async function getSiteSettings(): Promise<SiteSettings> {
-  const data = await getObject<SiteSettings>('site-settings');
-  return data ?? fallbackSettings;
+  // site-settings API は未接続。文言・料金などはローカル設定を使用。
+  return fallbackSettings;
 }
 
 export async function getProfile(): Promise<Profile> {
-  const data = await getObject<Profile>('profile');
-  return data ?? fallbackProfile;
+  return fallbackProfile;
 }
 
 export async function getNewsList(limit = 20): Promise<News[]> {
-  const data = await getList<News>('news', {
-    limit,
-    orders: '-date',
-  });
-  if (!data) return fallbackNews;
-  return data.contents;
+  const manifest = loadMicroCMSAssetsManifest();
+
+  if (useLocalMock()) {
+    const list = (localNewsMock as News[]).slice(0, limit);
+    return withBundledThumbnails(list, 'news', manifest);
+  }
+
+  try {
+    const data = await getList<News>(MICROCMS_ENDPOINTS.news, {
+      limit,
+      orders: '-publishedAt',
+      fields: NEWS_FIELDS,
+    });
+    if (!data) return withBundledThumbnails(fallbackNews, 'news', manifest);
+    return withBundledThumbnails(data.contents, 'news', manifest);
+  } catch (error) {
+    console.warn('[microCMS] Failed to fetch news list', error);
+    return withBundledThumbnails(fallbackNews, 'news', manifest);
+  }
 }
 
 export async function getNewsDetail(id: string): Promise<News | null> {
-  const detail = await getListDetail<News>('news', id);
-  if (detail) return detail;
-  return fallbackNews.find((item) => item.id === id) ?? null;
+  const manifest = loadMicroCMSAssetsManifest();
+
+  if (useLocalMock()) {
+    const found = (localNewsMock as News[]).find((item) => item.id === id);
+    if (!found) return fallbackNews.find((item) => item.id === id) ?? null;
+    return withBundledThumbnails([found], 'news', manifest)[0] ?? null;
+  }
+
+  try {
+    const detail = await getListDetail<News>(MICROCMS_ENDPOINTS.news, id, {
+      fields: NEWS_FIELDS,
+    });
+    if (detail) {
+      return withBundledThumbnails([detail], 'news', manifest)[0] ?? null;
+    }
+  } catch (error) {
+    console.warn(`[microCMS] Failed to fetch news detail: ${id}`, error);
+  }
+
+  const fallback = fallbackNews.find((item) => item.id === id) ?? null;
+  return fallback
+    ? withBundledThumbnails([fallback], 'news', manifest)[0] ?? null
+    : null;
 }
 
-export async function getWorks(limit = 12): Promise<Work[]> {
-  const data = await getList<Work>('works', { limit, orders: '-publishedAt' });
-  return data?.contents ?? fallbackWorks;
+export async function getSounds(limit = 100): Promise<Sound[]> {
+  const manifest = loadMicroCMSAssetsManifest();
+
+  if (useLocalMock()) {
+    const list = (localSoundsMock as Sound[]).slice(0, limit);
+    return withBundledThumbnails(list, 'sounds', manifest);
+  }
+
+  try {
+    const data = await getListAll<Sound>(MICROCMS_ENDPOINTS.sounds, {
+      orders: '-publishedAt',
+      fields: SOUNDS_FIELDS,
+    });
+    if (!data) {
+      return withBundledThumbnails(fallbackSounds.slice(0, limit), 'sounds', manifest);
+    }
+    return withBundledThumbnails(data.contents.slice(0, limit), 'sounds', manifest);
+  } catch (error) {
+    console.warn('[microCMS] Failed to fetch sounds list', error);
+    return withBundledThumbnails(fallbackSounds.slice(0, limit), 'sounds', manifest);
+  }
+}
+
+/** @deprecated Use getSounds */
+export async function getWorks(limit = 12): Promise<Sound[]> {
+  return getSounds(limit);
 }
 
 export async function getLabArticles(limit = 50): Promise<LabArticle[]> {
-  const data = await getList<LabArticle>('lab-articles', {
-    limit,
-    orders: '-publishedAt',
-  });
-  return data?.contents ?? fallbackLabArticles;
+  return fallbackLabArticles.slice(0, limit);
 }
 
 export async function getLabArticleDetail(id: string): Promise<LabArticle | null> {
-  const detail = await getListDetail<LabArticle>('lab-articles', id);
-  if (detail) return detail;
   return fallbackLabArticles.find((item) => item.id === id) ?? null;
 }
 
 export async function getGlossary(): Promise<Glossary[]> {
-  const data = await getList<Glossary>('glossary', {
-    limit: 100,
-    orders: 'term',
-  });
-  return data?.contents ?? fallbackGlossary;
+  return fallbackGlossary;
 }
 
-export function formatDate(date: string): string {
+export function formatDate(date: string | undefined): string {
+  if (!date) return '';
   const d = new Date(date);
   if (Number.isNaN(d.getTime())) return date;
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
   return `${y}.${m}.${day}`;
+}
+
+/** お知らせの表示日（publishedAt 優先） */
+export function newsDisplayDate(item: Pick<News, 'publishedAt' | 'createdAt'>): string {
+  return formatDate(item.publishedAt ?? item.createdAt);
 }
 
 /** Strip HTML tags and collapse whitespace for list excerpts. */

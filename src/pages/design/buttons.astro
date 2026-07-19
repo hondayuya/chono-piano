@@ -1,0 +1,675 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSiteSettings } from '../../lib/microcms';
+
+const settings = await getSiteSettings();
+
+const patterns = [
+  {
+    id: '01',
+    name: 'ヘアライン・テキスト',
+    note: '枠・塗りなし。ホバーで下線が伸びる。',
+  },
+  {
+    id: '02',
+    name: 'アンダーラインCTA',
+    note: '文字下にアクセント帯。FVマーカーと同系。',
+  },
+  {
+    id: '03',
+    name: '左バー付き',
+    note: '左端の縦バーで導線を示す。本体は余白中心。',
+  },
+  {
+    id: '04',
+    name: '角ばったソリッド',
+    note: '角丸ゼロ。ホバーで塗りを抜き枠だけ残す。',
+  },
+  {
+    id: '05',
+    name: 'アウトライン二層',
+    note: '二重のヘアライン枠。ホバーで内枠が埋まる。',
+  },
+  {
+    id: '06',
+    name: '胡桃ソリッド＋インク枠',
+    note: '主CTAを胡桃塗り、副をインク枠。Lab導線と一致。',
+  },
+  {
+    id: '07',
+    name: 'アイコン＋キャプション',
+    note: '矢印とラベルを縦積み。余白広め。',
+  },
+  {
+    id: '08',
+    name: '短冊ボタン',
+    note: '横長・低め・ごく浅い角。字間広め。',
+  },
+  {
+    id: '09',
+    name: '反転ホバー',
+    note: '紙地＋胡桃から、ホバーで胡桃塗り＋白へ反転。',
+  },
+  {
+    id: '10',
+    name: '面は1つ・他は文字リンク',
+    note: 'プライマリだけ面ボタン。セカンダリはテキスト級。',
+  },
+] as const;
+---
+
+<BaseLayout
+  title="ボタンデザイン検証"
+  description="ボタンスタイルの比較カタログ（開発用）"
+  settings={settings}
+  currentPath="/design/buttons/"
+  noindex={true}
+>
+  <div class="btn-lab site-shell">
+    <header class="btn-lab__intro">
+      <p class="btn-lab__eyebrow">Development</p>
+      <h1 class="btn-lab__title">ボタンデザイン検証</h1>
+      <p class="btn-lab__lead">
+        同じラベルで見た目だけを変えた10パターンです。各案にプライマリ／セカンダリを並べています（検索非公開）。
+      </p>
+      <p class="btn-lab__meta">
+        <a href="/design/">デザインシステム</a>
+        ／
+        <a href="/design/fv/">FV検証</a>
+        ／
+        <a href="/design/about/">About検証</a>
+        ／
+        <a href="/#about">トップ（現行ボタン）</a>
+      </p>
+      <nav class="btn-lab__toc" aria-label="パターン一覧">
+        {
+          patterns.map((pattern) => (
+            <a href={`#pattern-${pattern.id}`}>{pattern.id}</a>
+          ))
+        }
+      </nav>
+    </header>
+
+    <section class="btn-lab__current" aria-label="現行スタイル">
+      <h2 class="btn-lab__section-title">現行（比較基準）</h2>
+      <div class="btn-lab__row">
+        <a class="button" href="#">経歴・実績を見る</a>
+        <a class="button button--ghost" href="#">チョウノウ方式について</a>
+      </div>
+    </section>
+
+    <div class="btn-lab__grid">
+      {
+        patterns.map((pattern) => (
+          <article class="btn-lab__card" id={`pattern-${pattern.id}`}>
+            <header class="btn-lab__card-head">
+              <span class="btn-lab__num">{pattern.id}</span>
+              <div>
+                <h2 class="btn-lab__card-title">{pattern.name}</h2>
+                <p class="btn-lab__card-note">{pattern.note}</p>
+              </div>
+            </header>
+
+            <div
+              class:list={['btn-stage', `btn-stage--${pattern.id}`]}
+              aria-label={`パターン ${pattern.id}: ${pattern.name}`}
+            >
+              {pattern.id === '01' && (
+                <div class="btn-lab__row">
+                  <a class="btn-p01 btn-p01--primary" href="#">
+                    経歴・実績を見る
+                  </a>
+                  <a class="btn-p01" href="#">チョウノウ方式について</a>
+                </div>
+              )}
+
+              {pattern.id === '02' && (
+                <div class="btn-lab__row">
+                  <a class="btn-p02 btn-p02--primary" href="#">
+                    経歴・実績を見る
+                  </a>
+                  <a class="btn-p02" href="#">チョウノウ方式について</a>
+                </div>
+              )}
+
+              {pattern.id === '03' && (
+                <div class="btn-lab__row">
+                  <a class="btn-p03 btn-p03--primary" href="#">
+                    経歴・実績を見る
+                  </a>
+                  <a class="btn-p03" href="#">チョウノウ方式について</a>
+                </div>
+              )}
+
+              {pattern.id === '04' && (
+                <div class="btn-lab__row">
+                  <a class="btn-p04 btn-p04--primary" href="#">
+                    経歴・実績を見る
+                  </a>
+                  <a class="btn-p04" href="#">チョウノウ方式について</a>
+                </div>
+              )}
+
+              {pattern.id === '05' && (
+                <div class="btn-lab__row">
+                  <a class="btn-p05 btn-p05--primary" href="#">
+                    経歴・実績を見る
+                  </a>
+                  <a class="btn-p05" href="#">チョウノウ方式について</a>
+                </div>
+              )}
+
+              {pattern.id === '06' && (
+                <div class="btn-lab__row">
+                  <a class="btn-p06 btn-p06--primary" href="#">
+                    経歴・実績を見る
+                  </a>
+                  <a class="btn-p06" href="#">チョウノウ方式について</a>
+                </div>
+              )}
+
+              {pattern.id === '07' && (
+                <div class="btn-lab__row">
+                  <a class="btn-p07 btn-p07--primary" href="#">
+                    <span class="btn-p07__icon" aria-hidden="true">→</span>
+                    <span class="btn-p07__label">経歴・実績を見る</span>
+                  </a>
+                  <a class="btn-p07" href="#">
+                    <span class="btn-p07__icon" aria-hidden="true">→</span>
+                    <span class="btn-p07__label">チョウノウ方式について</span>
+                  </a>
+                </div>
+              )}
+
+              {pattern.id === '08' && (
+                <div class="btn-lab__row">
+                  <a class="btn-p08 btn-p08--primary" href="#">
+                    経歴・実績を見る
+                  </a>
+                  <a class="btn-p08" href="#">チョウノウ方式について</a>
+                </div>
+              )}
+
+              {pattern.id === '09' && (
+                <div class="btn-lab__row">
+                  <a class="btn-p09 btn-p09--primary" href="#">
+                    経歴・実績を見る
+                  </a>
+                  <a class="btn-p09" href="#">チョウノウ方式について</a>
+                </div>
+              )}
+
+              {pattern.id === '10' && (
+                <div class="btn-lab__row btn-lab__row--mixed">
+                  <a class="btn-p10 btn-p10--primary" href="#">
+                    経歴・実績を見る
+                  </a>
+                  <a class="btn-p10" href="#">チョウノウ方式について</a>
+                </div>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .btn-lab {
+    padding: 4rem 0 8rem;
+  }
+
+  .btn-lab__intro {
+    margin-bottom: 3.2rem;
+    max-width: 72rem;
+  }
+
+  .btn-lab__eyebrow {
+    margin: 0 0 0.8rem;
+    font-size: 1.25rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .btn-lab__title {
+    margin: 0 0 1.2rem;
+    font-size: clamp(2.8rem, 3.4vw, 3.6rem);
+  }
+
+  .btn-lab__lead {
+    margin: 0 0 1.2rem;
+    color: var(--ink-muted);
+    font-size: var(--font-size-lead);
+    line-height: 1.7;
+  }
+
+  .btn-lab__meta {
+    margin: 0 0 1.6rem;
+    font-size: 1.36rem;
+    color: var(--ink-muted);
+  }
+
+  .btn-lab__toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.64rem;
+  }
+
+  .btn-lab__toc a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.2rem;
+    height: 3.2rem;
+    border: 1px solid var(--line);
+    text-decoration: none;
+    color: var(--accent);
+    font-size: 1.28rem;
+  }
+
+  .btn-lab__toc a:hover {
+    border-color: var(--accent);
+  }
+
+  .btn-lab__current {
+    margin-bottom: 4rem;
+    padding: 2.4rem;
+    border: 1px solid var(--line);
+    background: var(--paper-deep);
+  }
+
+  .btn-lab__section-title {
+    margin: 0 0 1.6rem;
+    font-size: 1.68rem;
+  }
+
+  .btn-lab__grid {
+    display: grid;
+    gap: 2.4rem;
+  }
+
+  .btn-lab__card {
+    border: 1px solid var(--line);
+    background: var(--paper);
+  }
+
+  .btn-lab__card-head {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    padding: 1.6rem 2rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .btn-lab__num {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.2rem;
+    height: 3.2rem;
+    border: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-size: 1.36rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+  }
+
+  .btn-lab__card-title {
+    margin: 0 0 0.4rem;
+    font-size: 1.84rem;
+  }
+
+  .btn-lab__card-note {
+    margin: 0;
+    font-size: 1.36rem;
+    color: var(--ink-muted);
+  }
+
+  .btn-stage {
+    padding: 2.8rem 2rem;
+    background:
+      linear-gradient(90deg, transparent 49.5%, rgba(44, 38, 34, 0.04) 49.5%, rgba(44, 38, 34, 0.04) 50.5%, transparent 50.5%),
+      linear-gradient(0deg, transparent 49.5%, rgba(44, 38, 34, 0.04) 49.5%, rgba(44, 38, 34, 0.04) 50.5%, transparent 50.5%);
+    background-size: 2.4rem 2.4rem;
+  }
+
+  .btn-lab__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.6rem 2.4rem;
+  }
+
+  .btn-lab__row--mixed {
+    align-items: baseline;
+  }
+
+  /* 01 — hairline text */
+  .btn-p01 {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 1.47rem;
+    letter-spacing: 0.08em;
+    position: relative;
+  }
+
+  .btn-p01::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.28s ease;
+  }
+
+  .btn-p01:hover::after {
+    transform: scaleX(1);
+  }
+
+  .btn-p01--primary {
+    color: var(--walnut);
+    font-family: var(--font-display);
+    font-feature-settings: var(--font-feature-display);
+  }
+
+  /* 02 — underline CTA marker */
+  .btn-p02 {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.32rem 0.08rem 0.48rem;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 1.47rem;
+    letter-spacing: 0.06em;
+    background: linear-gradient(
+      transparent 72%,
+      color-mix(in srgb, var(--accent) 28%, transparent) 72%,
+      color-mix(in srgb, var(--accent) 28%, transparent) 88%,
+      transparent 88%
+    );
+    transition: filter 0.2s ease;
+  }
+
+  .btn-p02:hover {
+    filter: brightness(0.92);
+  }
+
+  .btn-p02--primary {
+    font-family: var(--font-display);
+    font-feature-settings: var(--font-feature-display);
+    background: linear-gradient(
+      transparent 72%,
+      color-mix(in srgb, var(--walnut) 40%, transparent) 72%,
+      color-mix(in srgb, var(--walnut) 40%, transparent) 88%,
+      transparent 88%
+    );
+  }
+
+  /* 03 — left bar */
+  .btn-p03 {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.88rem 1.44rem 0.88rem 1.28rem;
+    border-left: 3px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 1.47rem;
+    letter-spacing: 0.06em;
+    transition: border-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
+  }
+
+  .btn-p03:hover {
+    border-left-color: var(--walnut);
+    color: var(--walnut);
+    padding-left: 1.44rem;
+  }
+
+  .btn-p03--primary {
+    border-left-color: var(--walnut);
+    font-family: var(--font-display);
+    font-feature-settings: var(--font-feature-display);
+  }
+
+  .btn-p03--primary:hover {
+    border-left-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* 04 — sharp solid */
+  .btn-p04 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.12rem 1.92rem;
+    border: 1px solid var(--walnut);
+    background: transparent;
+    color: var(--walnut);
+    text-decoration: none;
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    border-radius: 0;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .btn-p04:hover {
+    background: var(--walnut);
+    color: #ffffff;
+  }
+
+  .btn-p04--primary {
+    background: var(--walnut);
+    color: #ffffff;
+    border-color: var(--walnut);
+  }
+
+  .btn-p04--primary:hover {
+    background: transparent;
+    color: var(--walnut);
+  }
+
+  /* 05 — double outline */
+  .btn-p05 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.04rem 1.84rem;
+    border: 1px solid var(--ink);
+    outline: 1px solid var(--ink);
+    outline-offset: 3px;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    background: transparent;
+    transition: background 0.2s ease, color 0.2s ease, outline-color 0.2s ease;
+  }
+
+  .btn-p05:hover {
+    background: var(--ink);
+    color: #ffffff;
+  }
+
+  .btn-p05--primary {
+    border-color: var(--walnut);
+    outline-color: var(--walnut);
+    color: var(--walnut);
+  }
+
+  .btn-p05--primary:hover {
+    background: var(--walnut);
+    color: #ffffff;
+  }
+
+  /* 06 — walnut solid + ink outline */
+  .btn-p06 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem 2rem;
+    border: 1px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 1.47rem;
+    letter-spacing: 0.06em;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .btn-p06:hover {
+    background: var(--ink);
+    color: #ffffff;
+  }
+
+  .btn-p06--primary {
+    background: var(--walnut);
+    border-color: var(--walnut);
+    color: #ffffff;
+  }
+
+  .btn-p06--primary:hover {
+    background: transparent;
+    color: var(--walnut);
+  }
+
+  /* 07 — icon + caption stacked */
+  .btn-p07 {
+    display: inline-grid;
+    gap: 0.48rem;
+    justify-items: start;
+    padding: 1.2rem 1.6rem;
+    color: var(--ink-muted);
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .btn-p07:hover {
+    color: var(--walnut);
+    border-color: var(--line);
+  }
+
+  .btn-p07__icon {
+    font-size: 1.6rem;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+
+  .btn-p07:hover .btn-p07__icon {
+    transform: translateX(4px);
+  }
+
+  .btn-p07__label {
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+  }
+
+  .btn-p07--primary {
+    color: var(--ink);
+  }
+
+  .btn-p07--primary .btn-p07__label {
+    font-family: var(--font-display);
+    font-feature-settings: var(--font-feature-display);
+  }
+
+  /* 08 — strip / shortbook */
+  .btn-p08 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22rem;
+    padding: 0.88rem 2.4rem;
+    border: 1px solid var(--walnut);
+    border-radius: 0.24rem;
+    background: transparent;
+    color: var(--walnut);
+    text-decoration: none;
+    font-size: 1.32rem;
+    letter-spacing: 0.14em;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .btn-p08:hover {
+    background: color-mix(in srgb, var(--walnut) 8%, transparent);
+  }
+
+  .btn-p08--primary {
+    background: var(--walnut);
+    color: #ffffff;
+  }
+
+  .btn-p08--primary:hover {
+    background: var(--walnut-soft);
+    border-color: var(--walnut-soft);
+    color: #ffffff;
+  }
+
+  /* 09 — invert hover */
+  .btn-p09 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem 2rem;
+    border: 1px solid var(--walnut);
+    background: var(--paper);
+    color: var(--walnut);
+    text-decoration: none;
+    font-size: 1.47rem;
+    letter-spacing: 0.06em;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .btn-p09:hover {
+    background: var(--walnut);
+    color: #ffffff;
+  }
+
+  .btn-p09--primary {
+    border-width: 2px;
+    font-family: var(--font-display);
+    font-feature-settings: var(--font-feature-display);
+  }
+
+  /* 10 — one solid, rest text links */
+  .btn-p10 {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 1.47rem;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .btn-p10:hover {
+    color: var(--walnut);
+    border-bottom-color: var(--walnut);
+  }
+
+  .btn-p10--primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem 2.16rem;
+    border: 0;
+    border-bottom: 0;
+    background: var(--walnut);
+    color: #ffffff;
+    letter-spacing: 0.06em;
+  }
+
+  .btn-p10--primary:hover {
+    background: var(--walnut-soft);
+    color: #ffffff;
+    border-bottom-color: transparent;
+  }
+</style>

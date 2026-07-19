@@ -38,62 +38,43 @@ npm install
 cp .env.example .env
 ```
 
-`.env` に microCMS のサービスドメインと API キーを設定します。未設定でもフォールバック用のデモデータで表示・ビルドできます。
+`.env` に microCMS のサービスドメインと API キーを設定します。未設定、または `USE_LOCAL_MOCK=true` のときは `src/mocks/` と `src/lib/fallback.ts` のデモデータで表示・ビルドできます。
 
 ```bash
 npm run dev
 npm run build
+
+# CMS からローカルモックを更新（要 .env）
+npm run update-mocks
 ```
 
 ビルド成果物は `dist/` です。問い合わせ画面は Astro が HTML を生成し、`public/contact/` 配下の PHP も同じディレクトリへコピーされます。
 
-### 2. microCMS API 設計（推奨）
+### 2. microCMS API（接続対象）
 
-サービス内に次の API を作成してください。
-
-#### オブジェクト形式
-
-**`site-settings`**
-
-- `companyName` (テキスト)
-- `labName` (テキスト)
-- `catchphrase` (テキスト)
-- `aboutText` (テキストエリア)
-- `businessText` (テキストエリア)
-- `feeGp` / `feeUp` (テキスト)
-- `areaText` (テキストエリア)
-- `address` / `phone` / `email` / `xUrl` (テキスト)
-- `heroImage` (画像・任意)
-
-**`profile`**
-
-- `name` (テキスト)
-- `birthText` (テキスト)
-- `biography` (リッチエディタ推奨)
-- `studios` / `liveHouses` / `discographyNote` (テキストエリア)
+CMS から取得するのは次の **2 API のみ**です（エンドポイント名は `src/config/microcms.ts`）。
 
 #### リスト形式
 
-**`news`**
+**`news`（お知らせ）**
 
-- `title` / `date` / `body` / `eyecatch`
+| フィールド | 種別 |
+|-----------|------|
+| `title` | テキスト |
+| `content` | リッチエディタ |
+| `thumbnail` | 画像 |
 
-**`lab-articles`**
+**`sounds`（音源・動画リンク）**
 
-- `title` / `category` / `series` / `excerpt` / `body`
-- `audience`（`general` | `technician`）
+| フィールド | 種別 |
+|-----------|------|
+| `title` | テキスト |
+| `url` | テキスト |
+| `thumbnail` | 画像 |
 
-**`works`**
+サイト設定・プロフィール・Labo 記事・用語集は現状ローカル（`fallback.ts`）です。ビルド時に microCMS 画像は `public/_generated/microcms/` へダウンロードされ、本番ではローカルパスで配信されます。
 
-- `title` / `artist` / `mediaType`（`lp` | `cd` | `other`） / `jacket` / `url` / `note`
-
-**`glossary`**
-
-- `term` / `reading` / `body`
-
-記事本文（お知らせ・Labo CHONO・経歴）に `term` と一致する語句があると、ビルド時に注釈ページへのリンクが自動挿入されます。注釈ページには、その語が使われているページへの逆リンクも表示されます。
-
-API エンドポイント名は `src/lib/microcms.ts` の定義と一致させてください。
+公開時の再ビルドは GitHub Actions（`repository_dispatch` / `microcms-publish`）→ FTP デプロイです。Webhook 設定の詳細は `.github/workflows/deploy-production.yml` を参照してください。
 
 ### 3. 問い合わせフォーム（PHP）
 
@@ -128,13 +109,15 @@ cp public/contact/config.sample.php public/contact/config.php
 
 ## デプロイの目安
 
-1. `npm run build`
-2. `dist/` を公開ディレクトリへ配置
+1. GitHub Secrets に `MICROCMS_*` と `FTP_*` を登録
+2. `main` への push、または microCMS 公開 Webhook で Actions がビルド→FTP
 3. サーバー上で `contact/config.php` を配置（リポジトリには載せない）
 4. HTTPS を有効化し、`allowed_hosts` を本番ドメインに合わせる
 5. 必要に応じて SPF / DKIM を送信ドメインに設定
 
+手動の場合は `npm run build` 後に `dist/` を公開ディレクトリへ配置してください。
+
 ## 開発メモ
 
 - 問い合わせの表示は `src/pages/contact/`（Astro）。送信処理は `public/contact/*.php` です。
-- CMS 未接続時は `src/lib/fallback.ts` のデモ内容が表示されます。
+- ローカル開発は `USE_LOCAL_MOCK=true` 推奨。CMS 未接続時は `src/mocks/` + `fallback.ts` です。

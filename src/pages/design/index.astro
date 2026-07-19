@@ -23,7 +23,7 @@ import {
   spaceTokens,
   typeTokens,
 } from '../../lib/design-tokens';
-import { fallbackNews, fallbackWorks } from '../../lib/fallback';
+import { fallbackNews, fallbackSounds } from '../../lib/fallback';
 import { getSiteSettings } from '../../lib/microcms';
 
 const settings = await getSiteSettings();
@@ -48,7 +48,8 @@ const { target, concept } = designBrief;
         <code>src/lib/design-tokens.ts</code>、単位規約は
         <code>docs/style_guide.md</code> を更新してください。FVレイアウト比較は
         <a href="/design/fv/">/design/fv/</a>、About写真レイアウト比較は
-        <a href="/design/about/">/design/about/</a> を参照。
+        <a href="/design/about/">/design/about/</a>、ボタン比較は
+        <a href="/design/buttons/">/design/buttons/</a> を参照。
       </Lead>
       <p class="design-page__meta">
         カラー {colorTokens.length} / テキスト {typeTokens.length} / BP{' '}
@@ -341,7 +342,7 @@ const { target, concept } = designBrief;
                   )}
                   {entry.id === 'works-row' && (
                     <div class="design-page__frame">
-                      <WorksRow works={fallbackWorks} />
+                      <WorksRow sounds={fallbackSounds} />
                     </div>
                   )}
 

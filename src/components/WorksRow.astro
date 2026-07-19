@@ -1,27 +1,62 @@
 ---
-import type { Work } from '../lib/types';
+import type { Sound } from '../lib/types';
 
 type Props = {
-  works: Work[];
+  sounds: Sound[];
+  /** @deprecated Use sounds */
+  works?: Sound[];
 };
 
-const { works } = Astro.props;
-
-const typeLabel: Record<Work['mediaType'], string> = {
-  lp: 'LP',
-  cd: 'CD',
-  other: 'Other',
-};
+const { sounds: soundsProp, works } = Astro.props;
+const sounds = soundsProp ?? works ?? [];
 ---
 
 <div class="works-row" role="list">
   {
-    works.map((work) => (
-      <article class="work-tile" role="listitem">
-        <span class="work-tile__type">{typeLabel[work.mediaType]}</span>
-        <span class="work-tile__artist">{work.artist}</span>
-        <span>{work.title}</span>
-      </article>
-    ))
+    sounds.length === 0 ? (
+      <p>現在登録されている音源はありません。</p>
+    ) : (
+      sounds.map((sound) =>
+        sound.url ? (
+          <a
+            class="work-tile"
+            role="listitem"
+            href={sound.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {sound.thumbnail ? (
+              <img
+                class="work-tile__thumb"
+                src={sound.thumbnail.url}
+                alt=""
+                width="240"
+                height="160"
+                loading="lazy"
+              />
+            ) : (
+              <span class="work-tile__thumb work-tile__thumb--empty" aria-hidden="true" />
+            )}
+            <span class="work-tile__title">{sound.title}</span>
+          </a>
+        ) : (
+          <article class="work-tile" role="listitem">
+            {sound.thumbnail ? (
+              <img
+                class="work-tile__thumb"
+                src={sound.thumbnail.url}
+                alt=""
+                width="240"
+                height="160"
+                loading="lazy"
+              />
+            ) : (
+              <span class="work-tile__thumb work-tile__thumb--empty" aria-hidden="true" />
+            )}
+            <span class="work-tile__title">{sound.title}</span>
+          </article>
+        ),
+      )
+    )
   }
 </div>

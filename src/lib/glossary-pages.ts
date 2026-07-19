@@ -23,7 +23,7 @@ export async function getGlossaryWithUsages(): Promise<{
     ...news.map((item) => ({
       href: `/news/${item.id}/`,
       title: item.title,
-      html: item.body,
+      html: item.content,
     })),
     ...labArticles.map((item) => ({
       href: `/lab/${item.id}/`,

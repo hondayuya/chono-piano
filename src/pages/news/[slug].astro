@@ -25,7 +25,7 @@ if (!article) {
   return Astro.redirect('/news/');
 }
 
-const body = applyGlossaryLinks(article.body, glossary);
+const body = applyGlossaryLinks(article.content, glossary);
 ---
 
 <BaseLayout
@@ -35,15 +35,15 @@ const body = applyGlossaryLinks(article.body, glossary);
   currentPath="/news/"
 >
   <article id="top" class="site-shell" style="padding:clamp(4rem,6vw,6.4rem) 0">
-    <p class="news-list__date">{formatDate(article.date)}</p>
+    <p class="news-list__date">{formatDate(article.publishedAt ?? article.createdAt)}</p>
     <h1 class="section__title">{article.title}</h1>
     {
-      article.eyecatch && (
+      article.thumbnail && (
         <img
-          src={article.eyecatch.url}
+          src={article.thumbnail.url}
           alt=""
-          width={article.eyecatch.width}
-          height={article.eyecatch.height}
+          width={article.thumbnail.width}
+          height={article.thumbnail.height}
           style="margin:2.4rem 0;max-width:57.6rem"
         />
       )
