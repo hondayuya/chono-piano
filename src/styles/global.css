@@ -2005,6 +2005,17 @@ body.is-nav-locked {
   font-size: 1.31rem;
 }
 
+.field__error {
+  margin: 0.56rem 0 0;
+  color: var(--rosewood);
+  font-size: 1.31rem;
+}
+
+.field--error input,
+.field--error textarea {
+  border-color: rgba(154, 79, 60, 0.55);
+}
+
 .req {
   color: var(--rosewood);
   font-size: 1.25rem;
@@ -2072,6 +2083,10 @@ body.is-nav-locked {
   color: var(--ink-muted);
   font-size: 1.44rem;
   margin-bottom: 1.6rem;
+}
+
+.form-status--error {
+  color: var(--rosewood);
 }
 
 .privacy {

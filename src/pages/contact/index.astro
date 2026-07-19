@@ -42,7 +42,7 @@ const settings = await getSiteSettings();
           />
         </div>
 
-        <div class="field">
+        <div class="field" data-field="name">
           <label for="name">お名前 <span class="req">必須</span></label>
           <input
             type="text"
@@ -51,10 +51,12 @@ const settings = await getSiteSettings();
             required
             maxlength="100"
             autocomplete="name"
+            aria-describedby="name-error"
           />
+          <p class="field__error" id="name-error" role="alert" hidden></p>
         </div>
 
-        <div class="field">
+        <div class="field" data-field="address">
           <label for="address">ご住所</label>
           <input
             type="text"
@@ -62,10 +64,12 @@ const settings = await getSiteSettings();
             name="address"
             maxlength="200"
             autocomplete="street-address"
+            aria-describedby="address-error"
           />
+          <p class="field__error" id="address-error" role="alert" hidden></p>
         </div>
 
-        <div class="field">
+        <div class="field" data-field="email">
           <label for="email">メールアドレス <span class="req">必須</span></label>
           <input
             type="email"
@@ -74,10 +78,13 @@ const settings = await getSiteSettings();
             required
             maxlength="200"
             autocomplete="email"
+            inputmode="email"
+            aria-describedby="email-error"
           />
+          <p class="field__error" id="email-error" role="alert" hidden></p>
         </div>
 
-        <div class="field">
+        <div class="field" data-field="phone">
           <label for="phone">電話番号</label>
           <input
             type="tel"
@@ -85,28 +92,52 @@ const settings = await getSiteSettings();
             name="phone"
             maxlength="30"
             autocomplete="tel"
+            inputmode="tel"
+            aria-describedby="phone-hint phone-error"
           />
-          <span class="hint">
+          <span class="hint" id="phone-hint">
             ※訪問時間帯のご予約は基本電話で行います。電話番号はご相談後にメールでお伝えいただいても結構です。
           </span>
+          <p class="field__error" id="phone-error" role="alert" hidden></p>
         </div>
 
-        <div class="field">
+        <div class="field" data-field="piano_maker">
           <label for="piano_maker">ピアノのメーカー</label>
-          <input type="text" id="piano_maker" name="piano_maker" maxlength="100" />
+          <input
+            type="text"
+            id="piano_maker"
+            name="piano_maker"
+            maxlength="100"
+            aria-describedby="piano_maker-error"
+          />
+          <p class="field__error" id="piano_maker-error" role="alert" hidden></p>
         </div>
 
-        <div class="field">
+        <div class="field" data-field="piano_age">
           <label for="piano_age">ピアノの古さ（購入時期の目安）</label>
-          <input type="text" id="piano_age" name="piano_age" maxlength="100" />
+          <input
+            type="text"
+            id="piano_age"
+            name="piano_age"
+            maxlength="100"
+            aria-describedby="piano_age-error"
+          />
+          <p class="field__error" id="piano_age-error" role="alert" hidden></p>
         </div>
 
-        <div class="field">
+        <div class="field" data-field="last_tuning">
           <label for="last_tuning">最後の調律時期</label>
-          <input type="text" id="last_tuning" name="last_tuning" maxlength="100" />
+          <input
+            type="text"
+            id="last_tuning"
+            name="last_tuning"
+            maxlength="100"
+            aria-describedby="last_tuning-error"
+          />
+          <p class="field__error" id="last_tuning-error" role="alert" hidden></p>
         </div>
 
-        <div class="field">
+        <div class="field" data-field="message">
           <label for="message">ご相談内容 <span class="req">必須</span></label>
           <textarea
             id="message"
@@ -114,7 +145,9 @@ const settings = await getSiteSettings();
             required
             maxlength="5000"
             placeholder="音が出ない／出にくいキー、特にこうしてほしいこと、調律のみか修理希望か、以前の調律師についてなど"
+            aria-describedby="message-error"
           ></textarea>
+          <p class="field__error" id="message-error" role="alert" hidden></p>
         </div>
 
         <div class="form-actions">
@@ -142,12 +175,139 @@ const settings = await getSiteSettings();
   const loadedAtInput = document.getElementById('form_loaded_at') as HTMLInputElement | null;
   const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
 
+  const LIMITS = {
+    name: 100,
+    address: 200,
+    email: 200,
+    phone: 30,
+    piano_maker: 100,
+    piano_age: 100,
+    last_tuning: 100,
+    message: 5000,
+  } as const;
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const PHONE_RE = /^[0-9+\-()（）.\s　]{10,30}$/;
+  const HEADER_INJECTION_RE = /[\r\n]/;
+
+  type FieldName = keyof typeof LIMITS;
+
+  const fieldNames = Object.keys(LIMITS) as FieldName[];
+
+  const trimValue = (el: HTMLInputElement | HTMLTextAreaElement) => el.value.trim();
+
+  const setError = (name: FieldName, message: string | null) => {
+    const wrap = form?.querySelector(`[data-field="${name}"]`);
+    const input = form?.elements.namedItem(name);
+    const errorEl = document.getElementById(`${name}-error`);
+    if (!(wrap instanceof HTMLElement) || !(errorEl instanceof HTMLElement)) return;
+
+    const control =
+      input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement ? input : null;
+
+    if (message) {
+      wrap.classList.add('field--error');
+      errorEl.hidden = false;
+      errorEl.textContent = message;
+      control?.setAttribute('aria-invalid', 'true');
+    } else {
+      wrap.classList.remove('field--error');
+      errorEl.hidden = true;
+      errorEl.textContent = '';
+      control?.removeAttribute('aria-invalid');
+    }
+  };
+
+  const validateField = (name: FieldName): boolean => {
+    const el = form?.elements.namedItem(name);
+    if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement)) return true;
+
+    const value = trimValue(el);
+    const max = LIMITS[name];
+
+    if (value.length > max) {
+      setError(name, `${max}文字以内で入力してください。`);
+      return false;
+    }
+
+    if ((name === 'name' || name === 'phone' || name === 'address') && HEADER_INJECTION_RE.test(value)) {
+      setError(name, '改行を含めることはできません。');
+      return false;
+    }
+
+    if (name === 'name') {
+      if (value === '') {
+        setError(name, 'お名前を入力してください。');
+        return false;
+      }
+    }
+
+    if (name === 'email') {
+      if (value === '') {
+        setError(name, 'メールアドレスを入力してください。');
+        return false;
+      }
+      if (!EMAIL_RE.test(value)) {
+        setError(name, '正しいメールアドレスの形式で入力してください。');
+        return false;
+      }
+    }
+
+    if (name === 'phone' && value !== '') {
+      const digits = value.replace(/\D/g, '');
+      if (digits.length < 10 || !PHONE_RE.test(value)) {
+        setError(name, '電話番号の形式をご確認ください（例: 080-1234-5678）。');
+        return false;
+      }
+    }
+
+    if (name === 'message') {
+      if (value === '') {
+        setError(name, 'ご相談内容を入力してください。');
+        return false;
+      }
+    }
+
+    setError(name, null);
+    return true;
+  };
+
+  const validateAll = (): boolean => {
+    let ok = true;
+    let firstInvalid: FieldName | null = null;
+    for (const name of fieldNames) {
+      if (!validateField(name)) {
+        ok = false;
+        if (!firstInvalid) firstInvalid = name;
+      }
+    }
+    if (firstInvalid) {
+      const el = form?.elements.namedItem(firstInvalid);
+      if (el instanceof HTMLElement) el.focus();
+    }
+    return ok;
+  };
+
   if (form && statusEl && tokenInput && loadedAtInput && submitBtn) {
     const showError = (message: string) => {
       statusEl.textContent = message;
       statusEl.className = 'notice notice--error';
       form.hidden = true;
     };
+
+    for (const name of fieldNames) {
+      const el = form.elements.namedItem(name);
+      if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement)) continue;
+      el.addEventListener('blur', () => {
+        validateField(name);
+      });
+      el.addEventListener('input', () => {
+        const wrap = form.querySelector(`[data-field="${name}"]`);
+        if (wrap?.classList.contains('field--error')) {
+          validateField(name);
+        }
+      });
+    }
 
     fetch('/contact/token.php', {
       method: 'GET',
@@ -172,7 +332,16 @@ const settings = await getSiteSettings();
         );
       });
 
-    form.addEventListener('submit', () => {
+    form.addEventListener('submit', (event) => {
+      if (!validateAll()) {
+        event.preventDefault();
+        statusEl.textContent = '入力内容をご確認ください。';
+        statusEl.className = 'form-status form-status--error';
+        return;
+      }
+
+      statusEl.textContent = '';
+      statusEl.className = 'form-status';
       submitBtn.disabled = true;
       submitBtn.textContent = '送信中…';
     });

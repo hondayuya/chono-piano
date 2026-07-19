@@ -16,6 +16,11 @@ return [
     // Optional Reply-To uses the visitor address when valid
     'use_visitor_reply_to' => true,
 
+    // Auto-reply to the visitor after a successful notify mail
+    'auto_reply_enabled' => true,
+    'auto_reply_subject' => '[チョウノウ調律所] お問い合わせを受け付けました',
+    'site_url' => 'https://chono-piano.com',
+
     // Allowed Origin / Referer hosts (no scheme)
     'allowed_hosts' => [
         'localhost',

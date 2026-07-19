@@ -77,17 +77,19 @@ if (!chono_validate_email($to) || !chono_validate_email($fromEmail)) {
     fail('mail');
 }
 
+$blank = static fn(string $v): string => $v !== '' ? $v : '（未記入）';
+
 $subject = $subjectPrefix . ' / ' . chono_strip_headers($name);
 $bodyLines = [
     'チョウノウ調律所 Webフォームからのお問い合わせ',
     '----------------------------------------',
     'お名前: ' . $name,
     'メール: ' . $email,
-    '電話: ' . ($phone !== '' ? $phone : '（未記入）'),
-    'ご住所: ' . ($address !== '' ? $address : '（未記入）'),
-    'ピアノメーカー: ' . ($pianoMaker !== '' ? $pianoMaker : '（未記入）'),
-    'ピアノの古さ: ' . ($pianoAge !== '' ? $pianoAge : '（未記入）'),
-    '最後の調律: ' . ($lastTuning !== '' ? $lastTuning : '（未記入）'),
+    '電話: ' . $blank($phone),
+    'ご住所: ' . $blank($address),
+    'ピアノメーカー: ' . $blank($pianoMaker),
+    'ピアノの古さ: ' . $blank($pianoAge),
+    '最後の調律: ' . $blank($lastTuning),
     '----------------------------------------',
     'ご相談内容:',
     $message,
@@ -97,30 +99,57 @@ $bodyLines = [
 ];
 $body = implode("\n", $bodyLines);
 
-$encodedFromName = '=?UTF-8?B?' . base64_encode($fromName) . '?=';
-$headers = [
-    'MIME-Version: 1.0',
-    'Content-Type: text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding: base64',
-    'From: ' . $encodedFromName . ' <' . $fromEmail . '>',
-    'X-Mailer: ChonoContactForm',
-];
-
-if (!empty($config['use_visitor_reply_to'])) {
-    $headers[] = 'Reply-To: ' . $email;
-}
-
-$encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
-$encodedBody = chunk_split(base64_encode($body));
-
 $toHeader = $toName !== ''
     ? '=?UTF-8?B?' . base64_encode($toName) . '?= <' . $to . '>'
     : $to;
 
-$sent = @mail($toHeader, $encodedSubject, $encodedBody, implode("\r\n", $headers));
+$notifyReplyTo = !empty($config['use_visitor_reply_to']) ? $email : null;
+$sent = chono_send_mail($toHeader, $subject, $body, $fromEmail, $fromName, $notifyReplyTo);
 
 if (!$sent) {
     fail('mail');
+}
+
+// Auto-reply to visitor (best-effort after notify succeeds)
+if (!empty($config['auto_reply_enabled'])) {
+    $autoSubject = chono_strip_headers((string) (
+        $config['auto_reply_subject'] ?? '[チョウノウ調律所] お問い合わせを受け付けました'
+    ));
+    $shopName = $toName !== '' ? $toName : 'チョウノウ調律所';
+    $siteUrl = rtrim((string) ($config['site_url'] ?? 'https://chono-piano.com'), '/');
+
+    $autoBody = implode("\n", [
+        $name . ' 様',
+        '',
+        'このたびは' . $shopName . 'へお問い合わせいただき、ありがとうございます。',
+        '以下の内容で受け付けました。内容を確認のうえ、ご連絡いたします。',
+        '',
+        '訪問時間帯のご予約は基本的に電話で行います。',
+        '電話番号をご記入いただいていない場合は、メールにてご案内する場合があります。',
+        '',
+        '----------------------------------------',
+        '【お問い合わせ内容】',
+        'お名前: ' . $name,
+        'メール: ' . $email,
+        '電話: ' . $blank($phone),
+        'ご住所: ' . $blank($address),
+        'ピアノメーカー: ' . $blank($pianoMaker),
+        'ピアノの古さ: ' . $blank($pianoAge),
+        '最後の調律: ' . $blank($lastTuning),
+        '',
+        'ご相談内容:',
+        $message,
+        '----------------------------------------',
+        '',
+        '本メールは自動送信です。返信いただいても内容を確認できない場合があります。',
+        'お急ぎの場合はお電話にてご連絡ください。',
+        '',
+        $shopName . ' / Labo CHONO',
+        $siteUrl,
+    ]);
+
+    // Reply-To: shop inbox so visitors can continue the conversation
+    chono_send_mail($email, $autoSubject, $autoBody, $fromEmail, $fromName, $to);
 }
 
 chono_redirect('/contact/thanks/');

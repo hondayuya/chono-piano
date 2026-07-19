@@ -194,3 +194,34 @@ function chono_csrf_token_validate(?string $token): bool
     unset($_SESSION['csrf_token'], $_SESSION['csrf_token_time']);
     return $ok;
 }
+
+/**
+ * Send a UTF-8 plain-text mail with base64 body/subject.
+ */
+function chono_send_mail(
+    string $to,
+    string $subject,
+    string $body,
+    string $fromEmail,
+    string $fromName,
+    ?string $replyTo = null
+): bool {
+    $fromName = chono_strip_headers($fromName);
+    $encodedFromName = '=?UTF-8?B?' . base64_encode($fromName) . '?=';
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Transfer-Encoding: base64',
+        'From: ' . $encodedFromName . ' <' . $fromEmail . '>',
+        'X-Mailer: ChonoContactForm',
+    ];
+
+    if ($replyTo !== null && $replyTo !== '' && chono_validate_email($replyTo)) {
+        $headers[] = 'Reply-To: ' . $replyTo;
+    }
+
+    $encodedSubject = '=?UTF-8?B?' . base64_encode(chono_strip_headers($subject)) . '?=';
+    $encodedBody = chunk_split(base64_encode($body));
+
+    return (bool) @mail($to, $encodedSubject, $encodedBody, implode("\r\n", $headers));
+}
