@@ -50,6 +50,8 @@ npm run update-mocks
 
 ビルド成果物は `dist/` です。問い合わせ画面は Astro が HTML を生成し、`public/contact/` 配下の PHP も同じディレクトリへコピーされます。
 
+`/design/` 以下の検証ページは **本番ビルドでは除外**されます（`astro dev` では利用可）。ビルド成果物に含めたい場合のみ `INCLUDE_DESIGN_PAGES=true` を指定してください。
+
 ### 2. microCMS API（接続対象）
 
 CMS から取得するのは次の **2 API のみ**です（エンドポイント名は `src/config/microcms.ts`）。

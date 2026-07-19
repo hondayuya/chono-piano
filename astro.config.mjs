@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { excludeDesignPagesOnBuild } from './integrations/exclude-design-pages.mjs';
 import { downloadMicroCMSAssetsPlugin } from './integrations/vite-download-microcms-assets.mjs';
 
 // https://astro.build/config
@@ -10,6 +11,7 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  integrations: [excludeDesignPagesOnBuild()],
   vite: {
     plugins: [downloadMicroCMSAssetsPlugin()],
   },
