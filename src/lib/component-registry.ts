@@ -105,10 +105,10 @@ export const componentRegistry: ComponentEntry[] = [
     file: 'src/components/WorksRow.astro',
     category: 'content',
     description:
-      'microCMS sounds（音源・動画リンク）の横スクロール行。タイトル・サムネ・外部URL。',
+      'microCMS sounds（音源・動画）の横スクロール行。正方形サムネ＋下キャプション。',
     props: [{ name: 'sounds', type: 'Sound[]', required: true }],
     notes: [
-      'microCMS `sounds`（title / url / thumbnail）を表示します。',
+      '枠付き正方形画像の下にタイトルを置きます。',
     ],
     usedIn: [{ href: '/', label: 'トップ' }],
     preview: 'live',

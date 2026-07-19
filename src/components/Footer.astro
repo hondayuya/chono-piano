@@ -1,7 +1,7 @@
 ---
 import LabBanner from './LabBanner.astro';
+import { contactNav, footerSecondaryNav } from '../lib/nav';
 import type { SiteSettings } from '../lib/types';
-import { contactNav, footerSecondaryNav, primaryNav } from '../lib/nav';
 
 type Props = {
   settings: SiteSettings;
@@ -10,78 +10,81 @@ type Props = {
 
 const { settings, currentPath = '/' } = Astro.props;
 
-const navLinks = [...primaryNav, contactNav, ...footerSecondaryNav];
 const labCurrent = currentPath === '/lab/' || currentPath.startsWith('/lab/');
+const copyrightYear = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="site-shell">
-    <LabBanner settings={settings} current={labCurrent} />
-
-    <div class="site-footer__grid">
-      <div>
+    <div class="site-footer__row">
+      <div class="site-footer__main">
         <p class="brand-lockup site-footer__brand">
           <span class="brand-lockup__main">{settings.companyName}</span>
           <span class="brand-lockup__sub">{settings.labName}</span>
         </p>
+
+        <div class="site-footer__contact">
+          {
+            settings.address && (
+              <p class="site-footer__line">{settings.address}</p>
+            )
+          }
+          {
+            (settings.phone || settings.fax) && (
+              <p class="site-footer__tels">
+                {settings.phone && (
+                  <span class="site-footer__line">
+                    TEL{' '}
+                    <a href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`}>
+                      {settings.phone}
+                    </a>
+                  </span>
+                )}
+                {settings.fax && (
+                  <span class="site-footer__line">
+                    FAX{' '}
+                    <a href={`tel:${settings.fax.replace(/[^\d+]/g, '')}`}>
+                      {settings.fax}
+                    </a>
+                  </span>
+                )}
+              </p>
+            )
+          }
+          <p class="site-footer__note">
+            調律中はお電話に出られないことが多いため、留守番電話・ショートメールのご利用をお願いします。
+          </p>
+        </div>
+
+        <div class="site-footer__inquiry">
+          <p class="site-footer__inquiry-label">問い合わせ</p>
+          <a class="button site-footer__inquiry-btn" href={contactNav.href}>
+            相談・連絡シートへ
+          </a>
+        </div>
       </div>
-      <div>
-        {
-          settings.address && (
-            <p style="margin:0 0 0.56rem">{settings.address}</p>
-          )
-        }
-        {
-          settings.phone && (
-            <p style="margin:0 0 0.56rem">
-              TEL{' '}
-              <a href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`}>
-                {settings.phone}
-              </a>
-            </p>
-          )
-        }
-        {
-          settings.email && (
-            <p style="margin:0">
-              <a href={`mailto:${settings.email}`}>{settings.email}</a>
-            </p>
-          )
-        }
+
+      <div class="site-footer__lab">
+        <LabBanner settings={settings} current={labCurrent} />
       </div>
-      <div>
-        <nav class="footer-nav" aria-label="フッターナビゲーション">
-          <ul>
-            {
-              navLinks.map((link) => (
-                <li>
-                  <a
-                    href={link.href}
-                    aria-current={currentPath === link.href ? 'page' : undefined}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))
-            }
-            {
-              settings.xUrl && (
-                <li>
-                  <a href={settings.xUrl} target="_blank" rel="noopener noreferrer">
-                    X
-                  </a>
-                </li>
-              )
-            }
-          </ul>
-        </nav>
-        <p style="margin:1.6rem 0 0;font-size:1.41rem">
-          調律中はお電話に出られないことが多いため、留守番電話・ショートメールのご利用をお願いします。
+    </div>
+
+    <div class="site-footer__bottom">
+      <div class="site-footer__meta">
+        {
+          footerSecondaryNav.map((link) => (
+            <a class="site-footer__note-link" href={link.href}>
+              {link.label}
+            </a>
+          ))
+        }
+        <p class="site-footer__copyright">
+          © {copyrightYear} {settings.companyName} / {settings.labName}
         </p>
-        <p style="margin:1.2rem 0 0">
-          <a class="button button--ghost site-footer__top" href="#top">ページの先頭へ戻る</a>
-        </p>
       </div>
+      <p class="site-footer__top-wrap">
+        <a class="site-footer__top" href="#top">ページの先頭へ戻る</a>
+      </p>
     </div>
   </div>
 </footer>

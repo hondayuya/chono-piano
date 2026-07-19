@@ -20,9 +20,10 @@ export const fallbackSettings: SiteSettings = {
   feeUp: '¥16,500（税込）',
   areaText:
     '訪問範囲は東京周辺。都内は原則として出張費無料。その他の地域は予約時に金額をお伝えします。調律の狂いが大きい場合や修理希望がある場合は、予定を決める前に電話でお見積りが可能です。',
-  address: '（住所は公開前に設定）',
-  phone: '（電話番号は公開前に設定）',
-  email: 'info@example.com',
+  address: '〒120-0025 東京都足立区千住東１丁目１１－６',
+  phone: '080-5028-4732',
+  fax: '03-3879-7060',
+  email: 'y-chono@labo-chono.com',
   xUrl: '',
 };
 

@@ -119,14 +119,14 @@ export const colorTokens: ColorToken[] = [
   {
     name: 'Paper',
     cssVar: '--paper',
-    value: '#ffffff',
-    role: '背景の基調（明るい白）',
+    value: '#fefdfd',
+    role: 'ページ背景（単色）',
   },
   {
     name: 'Paper deep',
     cssVar: '--paper-deep',
     value: '#f7f5f2',
-    role: '背景グラデーション末端（ごく淡い暖色）',
+    role: 'フッター背景など、一段落ち着いた面',
   },
   {
     name: 'Walnut',

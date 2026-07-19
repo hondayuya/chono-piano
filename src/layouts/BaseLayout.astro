@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { resolveBreadcrumbs, type BreadcrumbItem } from '../lib/breadcrumb';
 import { googleFonts } from '../lib/fonts';
 import type { SiteSettings } from '../lib/types';
 
@@ -11,6 +13,8 @@ type Props = {
   settings: SiteSettings;
   currentPath?: string;
   noindex?: boolean;
+  /** ホーム以降のパンくず。未指定時は currentPath から自動生成 */
+  breadcrumbs?: BreadcrumbItem[];
 };
 
 const {
@@ -19,12 +23,15 @@ const {
   settings,
   currentPath = '/',
   noindex = false,
+  breadcrumbs: breadcrumbTrail,
 } = Astro.props;
 
 const pageTitle =
   title === settings.companyName
     ? `${settings.companyName} / ${settings.labName}`
     : `${title} | ${settings.companyName}`;
+
+const breadcrumbItems = resolveBreadcrumbs(currentPath, breadcrumbTrail);
 ---
 
 <!doctype html>
@@ -46,6 +53,7 @@ const pageTitle =
   </head>
   <body>
     <Header settings={settings} currentPath={currentPath} />
+    {breadcrumbItems && <Breadcrumb items={breadcrumbItems} />}
     <main>
       <slot />
     </main>

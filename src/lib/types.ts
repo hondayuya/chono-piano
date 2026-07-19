@@ -70,6 +70,7 @@ export type SiteSettings = {
   areaText?: string;
   address?: string;
   phone?: string;
+  fax?: string;
   email?: string;
   xUrl?: string;
   heroImage?: MicroCMSImage;

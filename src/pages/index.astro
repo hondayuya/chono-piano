@@ -108,12 +108,10 @@ const aboutSliderImages = [
   </section>
 
   <section class="section" id="news">
-    <div class="site-shell">
-      <div class="section__head">
-        <h2 class="section__title">お知らせ</h2>
-        <a class="button" href="/news/">お知らせ一覧へ</a>
-      </div>
+    <div class="site-shell news-block">
+      <h2 class="section__title">お知らせ</h2>
       <NewsList items={news} />
+      <a class="button button--ghost news-block__more" href="/news/">お知らせ一覧へ</a>
     </div>
   </section>
 
@@ -132,10 +130,10 @@ const aboutSliderImages = [
             }
           </div>
           <div class="section__actions">
-            <a class="button" href="/profile/">経歴・実績を見る</a>
+            <a class="button button--ghost" href="/profile/">経歴・実績を見る</a>
             {
               featuredLab && (
-                <a class="button button--lab" href={`/lab/${featuredLab.id}/`}>
+                <a class="button button--ghost button--lab" href={`/lab/${featuredLab.id}/`}>
                   チョウノウ方式について
                 </a>
               )
@@ -181,9 +179,9 @@ const aboutSliderImages = [
 
   <section class="section" id="works">
     <div class="site-shell">
-      <h2 class="section__title">調律した音源・動画リンク</h2>
+      <h2 class="section__title">調律した音源・動画</h2>
       <p class="section__lead">
-        LP・CDのジャケットや関連音源を紹介するエリアです（内容は microCMS で更新）。
+        調律を手がけたピアノの響きを、音源や映像でお聴きいただけます。
       </p>
       <WorksRow sounds={sounds} />
     </div>

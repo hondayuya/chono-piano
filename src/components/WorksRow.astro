@@ -25,34 +25,38 @@ const sounds = soundsProp ?? works ?? [];
             target="_blank"
             rel="noopener noreferrer"
           >
-            {sound.thumbnail ? (
-              <img
-                class="work-tile__thumb"
-                src={sound.thumbnail.url}
-                alt=""
-                width="240"
-                height="160"
-                loading="lazy"
-              />
-            ) : (
-              <span class="work-tile__thumb work-tile__thumb--empty" aria-hidden="true" />
-            )}
+            <span class="work-tile__media">
+              {sound.thumbnail ? (
+                <img
+                  class="work-tile__thumb"
+                  src={sound.thumbnail.url}
+                  alt=""
+                  width="320"
+                  height="320"
+                  loading="lazy"
+                />
+              ) : (
+                <span class="work-tile__thumb work-tile__thumb--empty" aria-hidden="true" />
+              )}
+            </span>
             <span class="work-tile__title">{sound.title}</span>
           </a>
         ) : (
           <article class="work-tile" role="listitem">
-            {sound.thumbnail ? (
-              <img
-                class="work-tile__thumb"
-                src={sound.thumbnail.url}
-                alt=""
-                width="240"
-                height="160"
-                loading="lazy"
-              />
-            ) : (
-              <span class="work-tile__thumb work-tile__thumb--empty" aria-hidden="true" />
-            )}
+            <span class="work-tile__media">
+              {sound.thumbnail ? (
+                <img
+                  class="work-tile__thumb"
+                  src={sound.thumbnail.url}
+                  alt=""
+                  width="320"
+                  height="320"
+                  loading="lazy"
+                />
+              ) : (
+                <span class="work-tile__thumb work-tile__thumb--empty" aria-hidden="true" />
+              )}
+            </span>
             <span class="work-tile__title">{sound.title}</span>
           </article>
         ),

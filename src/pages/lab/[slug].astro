@@ -31,7 +31,11 @@ const body = applyGlossaryLinks(article.body, glossary);
   title={article.title}
   description={article.excerpt || article.title}
   settings={settings}
-  currentPath="/lab/"
+  currentPath={`/lab/${article.id}/`}
+  breadcrumbs={[
+    { label: 'Labo CHONO', href: '/lab/' },
+    { label: article.title },
+  ]}
 >
   <article id="top" class="site-shell" style="padding:clamp(4rem,6vw,6.4rem) 0">
     {

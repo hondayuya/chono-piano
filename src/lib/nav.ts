@@ -8,6 +8,7 @@ export const primaryNav: NavLink[] = [
   { href: '/', label: 'ホーム' },
   { href: '/news/', label: 'お知らせ' },
   { href: '/profile/', label: '経歴・実績' },
+  { href: '/#service', label: '料金' },
 ];
 
 export const contactNav: NavLink = {

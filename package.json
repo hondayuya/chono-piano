@@ -6,7 +6,7 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "node integrations/seed-empty-mocks.mjs && astro dev",
+    "dev": "node integrations/seed-empty-mocks.mjs && astro dev --force",
     "build": "node integrations/seed-empty-mocks.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",

@@ -32,7 +32,11 @@ const body = applyGlossaryLinks(article.content, glossary);
   title={article.title}
   description={article.title}
   settings={settings}
-  currentPath="/news/"
+  currentPath={`/news/${article.id}/`}
+  breadcrumbs={[
+    { label: 'お知らせ', href: '/news/' },
+    { label: article.title },
+  ]}
 >
   <article id="top" class="site-shell" style="padding:clamp(4rem,6vw,6.4rem) 0">
     <p class="news-list__date">{formatDate(article.publishedAt ?? article.createdAt)}</p>
