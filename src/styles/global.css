@@ -1302,6 +1302,45 @@ body.is-nav-locked {
   text-underline-offset: 0.2em;
 }
 
+.notes-page {
+  padding: clamp(4rem, 6vw, 6.4rem) 0;
+}
+
+.glossary-list {
+  display: grid;
+  gap: 4.8rem;
+}
+
+.glossary-group {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4.8rem 6.4rem;
+  align-items: start;
+}
+
+.glossary-group__initial {
+  margin: 0;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-family: var(--font-display);
+  font-size: clamp(3.6rem, 5.5vw, 5.2rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  font-feature-settings: var(--font-feature-display);
+  font-variant-east-asian: proportional-width;
+  color: var(--ink);
+}
+
+.glossary-group__body {
+  min-width: 0;
+  margin-block: 0;
+}
+
+.glossary-group__body > :first-child {
+  margin-top: 0;
+}
+
 .glossary-entry {
   padding-bottom: 1.6rem;
   border-bottom: 1px solid var(--line);
@@ -1312,16 +1351,40 @@ body.is-nav-locked {
   padding-bottom: 0;
 }
 
+.glossary-entry__term {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.76rem;
+  font-feature-settings: var(--font-feature-display);
+}
+
+.glossary-entry__reading {
+  margin-left: 0.8rem;
+  color: var(--ink-muted);
+  font-size: 1.36rem;
+  font-family: var(--font-body);
+  font-feature-settings: normal;
+}
+
+.glossary-entry__body {
+  margin: 0.56rem 0 0;
+  color: var(--ink-muted);
+}
+
 .glossary-refs {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.8rem 1.6rem;
+  align-items: baseline;
   margin: 1.2rem 0 0;
 }
 
 .glossary-refs__label {
-  display: block;
-  margin-bottom: 0.56rem;
-  font-size: 1.25rem;
+  margin: 0;
+  font-size: 1.12rem;
   letter-spacing: 0.08em;
   color: var(--ink-muted);
+  white-space: nowrap;
 }
 
 .glossary-refs ul {
@@ -1329,14 +1392,23 @@ body.is-nav-locked {
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0.4rem;
+  gap: 0.24rem;
+  line-height: 1.6;
 }
 
 .glossary-refs a {
-  font-size: 1.47rem;
+  font-size: 1.28rem;
 }
 
 @media (max-width: 767px) {
+  .glossary-group {
+    gap: 3.2rem 4rem;
+  }
+
+  .glossary-group__initial {
+    font-size: clamp(2.8rem, 9vw, 4.4rem);
+  }
+
   .news-list a {
     align-items: start;
   }
@@ -1555,7 +1627,6 @@ body.is-nav-locked {
 .site-footer {
   margin-top: 3.84rem;
   padding: 4.8rem 0 5.76rem;
-  border-top: 1px solid var(--line);
   background: var(--paper-deep);
   color: var(--ink-muted);
   font-size: 1.44rem;
