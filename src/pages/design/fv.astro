@@ -7,7 +7,7 @@ const settings = await getSiteSettings();
 const catchLines = ['あなたの演奏', '調律で損をして', 'いませんか？'] as const;
 const leadLines = (
   settings.catchphrase ??
-  '目の肥えたお客様にも応えてきた、\n確かな経験があります。'
+  'プロのお客様にも対応してきた、\n確かな経験があります。'
 ).split(/\n/);
 const lead = leadLines.join(' ');
 const imageSrc = '/images/hero-tuning.webp';

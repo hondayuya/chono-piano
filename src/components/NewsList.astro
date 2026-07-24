@@ -11,7 +11,7 @@ const { items, emptyText = '現在お知らせはありません。' } = Astro.p
 
 function thumbUrl(url: string): string {
   const joiner = url.includes('?') ? '&' : '?';
-  return `${url}${joiner}w=240&h=160&fit=crop`;
+  return `${url}${joiner}w=480`;
 }
 ---
 
@@ -22,6 +22,7 @@ function thumbUrl(url: string): string {
     <ul class="news-list">
       {items.map((item) => {
         const excerpt = excerptFromHtml(item.content);
+        const thumb = item.thumbnail;
         return (
           <li>
             <a href={`/news/${item.id}/`}>
@@ -30,13 +31,13 @@ function thumbUrl(url: string): string {
                 <span class="news-list__title">{item.title}</span>
                 {excerpt && <p class="news-list__excerpt">{excerpt}</p>}
               </div>
-              <div class="news-list__thumb" aria-hidden={!item.thumbnail}>
-                {item.thumbnail ? (
+              <div class="news-list__thumb" aria-hidden={!thumb}>
+                {thumb ? (
                   <img
-                    src={thumbUrl(item.thumbnail.url)}
+                    src={thumbUrl(thumb.url)}
                     alt=""
-                    width="120"
-                    height="80"
+                    width={thumb.width}
+                    height={thumb.height}
                     loading="lazy"
                   />
                 ) : (

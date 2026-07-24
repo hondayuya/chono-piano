@@ -19,8 +19,8 @@ const featuredLab = labArticles.find((a) => a.id.includes('chono-method-1')) ?? 
 
 const heroLead = (settings.catchphrase ?? '')
   .replace(
-    '目の肥えたお客様にも応えてきた、確かな経験があります。',
-    '目の肥えたお客様にも応えてきた、\n確かな経験があります。',
+    'プロのお客様にも対応してきた、確かな経験があります。',
+    'プロのお客様にも対応してきた、\n確かな経験があります。',
   )
   .split(/\n/)
   .filter(Boolean);
@@ -75,9 +75,7 @@ const aboutSliderImages = [
       <div class="hero__content">
         <h1 class="hero__catch">
           <span class="hero__catch-line">あなたの演奏</span>
-          <span class="hero__catch-line">
-            <mark class="hero__mark">調律で損</mark>をして
-          </span>
+          <span class="hero__catch-line">調律で損をして</span>
           <span class="hero__catch-line">いませんか？</span>
         </h1>
         {
