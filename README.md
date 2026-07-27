@@ -72,6 +72,8 @@ CMS から取得するのは次の **2 API のみ**です（エンドポイン�
 |-----------|------|
 | `title` | テキスト |
 | `url` | テキスト |
+| `year` | 数字（西暦） |
+| `description` | テキスト |
 | `thumbnail` | 画像 |
 
 サイト設定・プロフィール・Labo 記事・用語集は現状ローカル（`fallback.ts`）です。ビルド時に microCMS 画像は `public/_generated/microcms/` へダウンロードされ、本番ではローカルパスで配信されます。

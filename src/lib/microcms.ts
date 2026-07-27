@@ -44,7 +44,7 @@ import localSoundsMock from '../mocks/sounds-list.json';
 const NEWS_FIELDS =
   'id,title,content,thumbnail,publishedAt,revisedAt,updatedAt,createdAt';
 const SOUNDS_FIELDS =
-  'id,title,url,thumbnail,publishedAt,revisedAt,updatedAt,createdAt';
+  'id,title,url,year,description,thumbnail,publishedAt,revisedAt,updatedAt,createdAt';
 
 function withBundledThumbnails<T extends { id: string; thumbnail?: { url: string }; revisedAt?: string; updatedAt?: string }>(
   items: T[],

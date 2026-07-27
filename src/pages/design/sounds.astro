@@ -9,32 +9,41 @@ const settings = await getSiteSettings();
 const samples: Sound[] = [
   {
     id: 's1',
-    title: 'グランドの響き — 調律後',
-    url: '#',
+    title: 'グッドマンズ / 助川太郎 渋谷毅',
+    year: 2023,
+    url: 'https://music.amazon.co.jp/',
+    description:
+      '2006年に高円寺に移転してから毎月調律しています。当時のオーナーの方が音にこだわりがある方で、ピアニストの方々を呼んでレコーディングをされていました。Amazon musicで聴けます。',
     thumbnail: {
       url: '/images/about-slider/germany-grand-iron-plates.png',
       width: 640,
-      height: 480,
+      height: 640,
     },
   },
   {
     id: 's2',
-    title: 'アップライト 試作録音',
-    url: '#',
+    title: '裏窓での渋谷さん',
+    year: 2011,
+    url: 'https://www.youtube.com/watch?v=example',
+    description:
+      '新宿ゴールデン街の「裏窓」では2010年からライブが始まりました。1970年製ヤマハU1のピアノを調律しています。https://www.youtube.com/watch?v=example',
     thumbnail: {
       url: '/images/about-slider/germany-upright-piano.png',
       width: 640,
-      height: 480,
+      height: 640,
     },
   },
   {
     id: 's3',
-    title: '響板とブレイシング',
+    title: '月光 / 吉田達也 × 三柴理',
+    year: 2022,
     url: '#',
+    description:
+      '高円寺・JIROKICHIでの調律は1996年から。ピアノとドラムの10番勝負として収録された一枚です。古いピアノであっても省略せず通して調律しています。',
     thumbnail: {
       url: '/images/about-slider/germany-soundboard-bracing.png',
       width: 640,
-      height: 480,
+      height: 640,
     },
   },
 ];
@@ -42,60 +51,64 @@ const samples: Sound[] = [
 const patterns = [
   {
     id: '01',
-    name: 'シネマ・オーバーレイ',
-    note: '画面いっぱいにジャケット。下端に暗グラデとタイトル。ホバーでわずかにズーム。',
+    name: 'ギャラリー対置',
+    note: '参考案に近い構成。正方形サムネ左・説明文右。キャプションは画像直下に「タイトル（西暦年）」。',
   },
   {
     id: '02',
-    name: 'ジャケット・スクエア',
-    note: 'LPジャケットの正方形。タイトルは下に小さく、字間を開く。',
+    name: '縦積みエントリ（採用）',
+    note: '画像→キャプション＋年→説明文の縦積み。モバイルでも階層が崩れない。本番 WorksRow に反映済み。',
   },
   {
     id: '03',
-    name: 'フィルム・ストリップ',
-    note: '上下にパーフォレーション。PLAY ラベルと微かな光沢。',
+    name: '年号柱',
+    note: '左に大きな西暦を立て、右にジャケット・タイトル・説明文。年代のカタログ感。',
   },
   {
     id: '04',
-    name: '横長リール',
-    note: 'サムネ左・タイトル右の横帯。外部リンク矢印を添える。',
+    name: 'シート帯',
+    note: '横長の紙面。左に正方形、中央にタイトルと年、右に説明文が流れる。',
   },
   {
     id: '05',
-    name: '胡桃キャプション',
-    note: '画像下を胡桃ブラウンの帯で締める。Lab 導線と同系の手触り。',
+    name: '展覧会ラベル',
+    note: '画像下に小さな展覧会風ラベル（タイトル／年）。説明文は右の本文欄。',
   },
   {
     id: '06',
-    name: 'フロスト・マット',
-    note: '画像上にすりガラスのキャプション帯。ホバーで透明度が下がる。',
+    name: 'タイムライン',
+    note: '左レールに西暦。縦の時系列として音源をたどる読み方。',
   },
   {
     id: '07',
-    name: 'ギャラリー・マット',
-    note: '広い白マット枠。写真展の一点もの感。ホバーで影だけ。',
+    name: 'ジャケット主景',
+    note: '大きな正方形を主にし、下段でタイトル＋年と説明文を積むカード列。',
   },
   {
     id: '08',
-    name: 'タイポ主役',
-    note: '明朝の大タイトルが主。サムネは小さなチップとして添える。',
+    name: 'リード先行',
+    note: '説明文を先に読み、末尾にサムネ・タイトル・年の小さなフッター行。',
   },
   {
     id: '09',
-    name: 'プレイ・ノッチ',
-    note: 'ティールの再生三角と角のアクセント。クリックできる感を先に出す。',
+    name: 'コンパクト行',
+    note: 'サムネ｜タイトル（年）｜説明の一行要約。件数が多いときの一覧向き。',
   },
   {
     id: '10',
-    name: 'シークエンス番号',
-    note: '大きな連番と細線。カタログ／ディスク収録順の気配。',
+    name: '余白カタログ',
+    note: '広い余白と細線。キャプションは小さく、説明文の可読性を優先。',
   },
 ] as const;
+
+function yearLabel(year?: number) {
+  return year != null ? `${year}年` : '';
+}
 ---
 
 <BaseLayout
   title="音源・動画カード検証"
-  description="調律した音源・動画のカード比較カタログ（開発用）"
+  description="調律した音源・動画のユニット比較カタログ（year / description 対応・開発用）"
   settings={settings}
   currentPath="/design/sounds/"
   noindex={true}
@@ -103,9 +116,9 @@ const patterns = [
   <div class="snd-lab site-shell">
     <header class="snd-lab__intro">
       <p class="snd-lab__eyebrow">Development</p>
-      <h1 class="snd-lab__title">音源・動画カード検証</h1>
+      <h1 class="snd-lab__title">音源・動画ユニット検証</h1>
       <p class="snd-lab__lead">
-        「調律した音源・動画」セクション用カードの見た目だけを変えた10パターンです。同じ3点の仮データで比較します（検索非公開）。
+        構成要素に西暦（year）と説明文（description）を加えた10パターンです。URLがある場合はヘッドホンアイコン付きの「聴く」リンクを必ず表示します（検索非公開）。
       </p>
       <p class="snd-lab__meta">
         <a href="/design/">デザインシステム</a>
@@ -128,7 +141,7 @@ const patterns = [
     </header>
 
     <section class="snd-lab__current" aria-label="現行スタイル">
-      <h2 class="snd-lab__section-title">現行（正方形＋キャプションを採用）</h2>
+      <h2 class="snd-lab__section-title">現行（02 縦積みエントリを採用）</h2>
       <WorksRow sounds={samples} />
     </section>
 
@@ -148,38 +161,77 @@ const patterns = [
               class:list={['snd-stage', `snd-stage--${pattern.id}`]}
               aria-label={`パターン ${pattern.id}: ${pattern.name}`}
             >
-              <div class="snd-row" role="list">
+              <div class="snd-list" role="list">
                 {samples.map((sound, index) => (
-                  <a
+                  <article
                     class:list={['snd-item', `snd-p${pattern.id}`]}
                     role="listitem"
-                    href={sound.url}
                     data-index={String(index + 1).padStart(2, '0')}
                   >
-                    <span class="snd-p__media">
-                      {sound.thumbnail ? (
-                        <img
-                          class="snd-p__thumb"
-                          src={sound.thumbnail.url}
-                          alt=""
-                          width="320"
-                          height="240"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <span class="snd-p__thumb snd-p__thumb--empty" aria-hidden="true" />
-                      )}
+                    <span class="snd-p__year" aria-hidden="true">
+                      {sound.year}
                     </span>
-                    <span class="snd-p__meta">
-                      <span class="snd-p__index" aria-hidden="true">
-                        {String(index + 1).padStart(2, '0')}
+                    <span class="snd-p__visual">
+                      <span class="snd-p__media">
+                        {sound.thumbnail ? (
+                          <img
+                            class="snd-p__thumb"
+                            src={sound.thumbnail.url}
+                            alt=""
+                            width="320"
+                            height="320"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <span class="snd-p__thumb snd-p__thumb--empty" aria-hidden="true" />
+                        )}
                       </span>
-                      <span class="snd-p__title">{sound.title}</span>
-                      <span class="snd-p__cue" aria-hidden="true">
-                        外部リンク
+                      <span class="snd-p__caption">
+                        <span class="snd-p__title">{sound.title}</span>
+                        {sound.year != null && (
+                          <span class="snd-p__year-inline">（{yearLabel(sound.year)}）</span>
+                        )}
                       </span>
                     </span>
-                  </a>
+                    <span class="snd-p__copy">
+                      <span class="snd-p__desc">{sound.description}</span>
+                      {sound.url ? (
+                        <a
+                          class="snd-p__listen"
+                          href={sound.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <svg
+                            class="snd-p__listen-icon"
+                            viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
+                            aria-hidden="true"
+                            focusable="false"
+                          >
+                            <path
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.6"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M4.5 13.5v-2a7.5 7.5 0 0 1 15 0v2"
+                            />
+                            <path
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.6"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M4.5 13.5v2.2a1.8 1.8 0 0 0 1.8 1.8h.7a1.8 1.8 0 0 0 1.8-1.8v-1.4a1.8 1.8 0 0 0-1.8-1.8h-2.5Zm15 0v2.2a1.8 1.8 0 0 1-1.8 1.8h-.7a1.8 1.8 0 0 1-1.8-1.8v-1.4a1.8 1.8 0 0 1 1.8-1.8h2.5Z"
+                            />
+                          </svg>
+                          <span class="snd-p__listen-label">聴く</span>
+                        </a>
+                      ) : null}
+                    </span>
+                  </article>
                 ))}
               </div>
             </div>
@@ -306,24 +358,19 @@ const patterns = [
   }
 
   .snd-stage {
-    padding: 2.4rem 2rem 2.8rem;
+    padding: 2.8rem 2.4rem 3.2rem;
     background:
-      radial-gradient(ellipse 80% 60% at 20% 0%, rgba(90, 140, 130, 0.06), transparent 55%),
+      radial-gradient(ellipse 70% 50% at 12% 0%, rgba(125, 87, 64, 0.05), transparent 55%),
       linear-gradient(180deg, var(--paper-deep) 0%, var(--paper) 100%);
   }
 
-  .snd-row {
+  .snd-list {
     display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(16rem, 20rem);
-    gap: 1.6rem;
-    overflow-x: auto;
-    padding-bottom: 0.8rem;
-    scroll-snap-type: x mandatory;
+    gap: 3.2rem;
+    max-width: 72rem;
   }
 
   .snd-item {
-    scroll-snap-align: start;
     color: inherit;
     text-decoration: none;
   }
@@ -345,51 +392,109 @@ const patterns = [
     font-variant-east-asian: proportional-width;
   }
 
-  .snd-p__index,
-  .snd-p__cue {
+  .snd-p__desc {
+    font-size: 1.36rem;
+    line-height: 1.85;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+
+  .snd-p__year {
     display: none;
   }
 
-  /* ——— 01 シネマ・オーバーレイ ——— */
-  .snd-p01 {
-    position: relative;
+  .snd-p__copy {
+    display: grid;
+    gap: 1.2rem;
+    align-content: start;
+    justify-items: start;
+  }
+
+  .snd-p__listen {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.48rem;
+    width: fit-content;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: var(--font-body);
+    font-size: 1.28rem;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+
+  .snd-p__listen-icon {
     display: block;
-    aspect-ratio: 3 / 4;
-    overflow: hidden;
-    isolation: isolate;
+    width: 1.28em;
+    height: 1.28em;
+    flex-shrink: 0;
+  }
+
+  .snd-p__listen:hover {
+    color: var(--walnut);
+  }
+
+  /* ——— 01 ギャラリー対置 ——— */
+  .snd-p01 {
+    display: grid;
+    grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+    column-gap: 2.8rem;
+    align-items: start;
+  }
+
+  .snd-p01 .snd-p__visual {
+    display: grid;
+    gap: 1rem;
   }
 
   .snd-p01 .snd-p__media {
-    position: absolute;
-    inset: 0;
+    aspect-ratio: 1;
+    overflow: hidden;
+    box-shadow: 0 0.8rem 2rem rgba(44, 38, 34, 0.1);
+    transition: box-shadow 0.35s ease, transform 0.35s ease;
   }
 
   .snd-p01 .snd-p__thumb {
-    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.5s ease;
   }
 
-  .snd-p01 .snd-p__meta {
-    position: absolute;
-    inset: auto 0 0;
-    z-index: 1;
-    padding: 4.8rem 1.6rem 1.6rem;
-    background: linear-gradient(180deg, transparent 0%, rgba(28, 24, 22, 0.82) 70%);
-    color: #fff;
+  .snd-p01 .snd-p__caption {
+    font-size: 1.36rem;
+    letter-spacing: 0.02em;
+    line-height: 1.55;
   }
 
-  .snd-p01 .snd-p__title {
-    display: block;
-    font-size: 1.6rem;
-    letter-spacing: 0.06em;
-    line-height: 1.45;
+  .snd-p01 .snd-p__copy {
+    padding-top: 0.2rem;
+    max-width: 42rem;
+  }
+
+  .snd-p01:hover .snd-p__media {
+    transform: translateY(-0.2rem);
+    box-shadow: 0 1.2rem 2.8rem rgba(44, 38, 34, 0.14);
   }
 
   .snd-p01:hover .snd-p__thumb {
-    transform: scale(1.06);
+    transform: scale(1.03);
   }
 
-  /* ——— 02 ジャケット・スクエア ——— */
+  /* ——— 02 縦積みエントリ ——— */
+  .snd-stage--02 .snd-list {
+    max-width: 36rem;
+    gap: 4rem;
+  }
+
   .snd-p02 {
+    display: grid;
+    gap: 1.2rem;
+  }
+
+  .snd-p02 .snd-p__visual {
     display: grid;
     gap: 1.2rem;
   }
@@ -398,116 +503,113 @@ const patterns = [
     aspect-ratio: 1;
     overflow: hidden;
     background: #1c1816;
-    box-shadow:
-      0 0 0 1px rgba(44, 38, 34, 0.12),
-      0 1.2rem 2.4rem rgba(44, 38, 34, 0.12);
-    transition: box-shadow 0.35s ease, transform 0.35s ease;
   }
 
   .snd-p02 .snd-p__thumb {
-    transition: transform 0.5s ease, opacity 0.35s ease;
+    transition: transform 0.45s ease;
   }
 
-  .snd-p02 .snd-p__title {
-    display: block;
-    font-size: 1.36rem;
-    letter-spacing: 0.12em;
-    text-align: center;
-    color: var(--ink);
+  .snd-p02 .snd-p__caption {
+    font-size: 1.52rem;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
   }
 
-  .snd-p02:hover .snd-p__media {
-    transform: translateY(-0.32rem);
-    box-shadow:
-      0 0 0 1px rgba(44, 38, 34, 0.16),
-      0 1.6rem 3.2rem rgba(44, 38, 34, 0.16);
+  .snd-p02 .snd-p__year-inline {
+    color: var(--ink-muted);
+  }
+
+  .snd-p02 .snd-p__copy {
+    gap: 1.2rem;
+    border-top: 1px solid var(--line);
+    padding-top: 1.2rem;
+  }
+
+  .snd-p02 .snd-p__desc {
+    color: var(--ink-muted);
   }
 
   .snd-p02:hover .snd-p__thumb {
-    transform: scale(1.03);
-    opacity: 0.92;
+    transform: scale(1.04);
   }
 
-  /* ——— 03 フィルム・ストリップ ——— */
+  /* ——— 03 年号柱 ——— */
   .snd-p03 {
-    position: relative;
+    display: grid;
+    grid-template-columns: 7.2rem minmax(11rem, 14rem) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+    padding-bottom: 2.4rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .snd-p03 .snd-p__year {
     display: block;
-    padding: 1.2rem 0;
-    background: #1a1715;
-    color: #f4f0ea;
+    font-family: var(--font-display);
+    font-size: 2.8rem;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    color: var(--walnut);
+    font-feature-settings: var(--font-feature-display);
+    transition: color 0.25s ease;
   }
 
-  .snd-p03::before,
-  .snd-p03::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 1.2rem;
-    background:
-      radial-gradient(circle at 50% 50%, #1a1715 0 0.28rem, transparent 0.3rem)
-        0 0 / 1.44rem 100% repeat-x,
-      linear-gradient(#2a2420, #2a2420);
+  .snd-p03 .snd-p__year-inline {
+    display: none;
   }
 
-  .snd-p03::before {
-    top: 0;
-  }
-
-  .snd-p03::after {
-    bottom: 0;
+  .snd-p03 .snd-p__visual {
+    display: contents;
   }
 
   .snd-p03 .snd-p__media {
-    display: block;
-    aspect-ratio: 16 / 10;
-    margin: 0 0.8rem;
+    aspect-ratio: 1;
     overflow: hidden;
   }
 
-  .snd-p03 .snd-p__meta {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem 1.2rem 0.4rem;
+  .snd-p03 .snd-p__caption {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: 1.68rem;
+    letter-spacing: 0.03em;
+    line-height: 1.4;
   }
 
-  .snd-p03 .snd-p__title {
-    font-size: 1.36rem;
-    letter-spacing: 0.04em;
+  .snd-p03 .snd-p__caption,
+  .snd-p03 .snd-p__copy {
+    grid-column: 3;
   }
 
-  .snd-p03 .snd-p__cue {
-    display: inline;
-    flex-shrink: 0;
-    font-family: var(--font-body);
-    font-size: 1.04rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent-soft);
+  .snd-p03 .snd-p__desc {
+    color: var(--ink-muted);
   }
 
-  .snd-p03:hover .snd-p__media {
-    outline: 1px solid rgba(255, 255, 255, 0.18);
-    outline-offset: -1px;
+  .snd-p03:hover .snd-p__year {
+    color: var(--accent);
   }
 
-  /* ——— 04 横長リール ——— */
-  .snd-stage--04 .snd-row {
-    grid-auto-columns: minmax(28rem, 34rem);
+  /* ——— 04 シート帯 ——— */
+  .snd-stage--04 .snd-list {
+    gap: 1.6rem;
   }
 
   .snd-p04 {
     display: grid;
-    grid-template-columns: 12rem 1fr;
-    min-height: 12rem;
+    grid-template-columns: 12rem minmax(14rem, 20rem) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: center;
+    padding: 1.6rem;
+    background: rgba(255, 255, 255, 0.72);
     border-block: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.7);
     transition: background 0.25s ease, border-color 0.25s ease;
   }
 
+  .snd-p04 .snd-p__visual {
+    display: contents;
+  }
+
   .snd-p04 .snd-p__media {
+    aspect-ratio: 1;
     overflow: hidden;
   }
 
@@ -515,32 +617,36 @@ const patterns = [
     transition: transform 0.45s ease;
   }
 
-  .snd-p04 .snd-p__meta {
+  .snd-p04 .snd-p__caption {
     display: grid;
-    align-content: center;
-    gap: 0.8rem;
-    padding: 1.6rem 1.8rem;
+    gap: 0.64rem;
   }
 
   .snd-p04 .snd-p__title {
-    font-size: 1.68rem;
-    letter-spacing: 0.04em;
+    display: block;
+    font-size: 1.76rem;
+    letter-spacing: 0.03em;
     line-height: 1.4;
   }
 
-  .snd-p04 .snd-p__cue {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.48rem;
+  .snd-p04 .snd-p__year-inline {
+    display: inline-block;
+    width: fit-content;
+    padding: 0.2rem 0.64rem;
+    border: 1px solid var(--line);
     font-family: var(--font-body);
     font-size: 1.2rem;
-    letter-spacing: 0.12em;
-    color: var(--accent);
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
   }
 
-  .snd-p04 .snd-p__cue::after {
-    content: '↗';
+  .snd-p04 .snd-p__copy {
+    gap: 1rem;
+  }
+
+  .snd-p04 .snd-p__desc {
     font-size: 1.28rem;
+    color: var(--ink-muted);
   }
 
   .snd-p04:hover {
@@ -552,310 +658,419 @@ const patterns = [
     transform: scale(1.05);
   }
 
-  /* ——— 05 胡桃キャプション ——— */
+  /* ——— 05 展覧会ラベル ——— */
   .snd-p05 {
     display: grid;
-    grid-template-rows: 1fr auto;
-    overflow: hidden;
-    background: var(--walnut);
-    color: #fff;
-    transition: transform 0.3s ease;
+    grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+    column-gap: 3.2rem;
+    align-items: start;
+  }
+
+  .snd-p05 .snd-p__visual {
+    display: grid;
+    gap: 0;
   }
 
   .snd-p05 .snd-p__media {
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-  }
-
-  .snd-p05 .snd-p__thumb {
-    transition: transform 0.5s ease;
-  }
-
-  .snd-p05 .snd-p__meta {
-    padding: 1.4rem 1.6rem 1.6rem;
-    background: var(--walnut);
-  }
-
-  .snd-p05 .snd-p__title {
-    display: block;
-    font-size: 1.52rem;
-    letter-spacing: 0.06em;
-    line-height: 1.45;
-  }
-
-  .snd-p05:hover {
-    transform: translateY(-0.24rem);
-  }
-
-  .snd-p05:hover .snd-p__thumb {
-    transform: scale(1.04);
-  }
-
-  /* ——— 06 フロスト・マット ——— */
-  .snd-p06 {
-    position: relative;
-    display: block;
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-  }
-
-  .snd-p06 .snd-p__media {
-    position: absolute;
-    inset: 0;
-  }
-
-  .snd-p06 .snd-p__thumb {
-    transition: filter 0.4s ease, transform 0.5s ease;
-  }
-
-  .snd-p06 .snd-p__meta {
-    position: absolute;
-    left: 1rem;
-    right: 1rem;
-    bottom: 1rem;
-    z-index: 1;
-    padding: 1.2rem 1.4rem;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    background: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: var(--ink);
-    transition: background 0.3s ease, border-color 0.3s ease;
-  }
-
-  .snd-p06 .snd-p__title {
-    display: block;
-    font-size: 1.44rem;
-    letter-spacing: 0.05em;
-    line-height: 1.45;
-  }
-
-  .snd-p06:hover .snd-p__meta {
-    background: rgba(255, 255, 255, 0.78);
-    border-color: rgba(255, 255, 255, 0.55);
-  }
-
-  .snd-p06:hover .snd-p__thumb {
-    transform: scale(1.04);
-    filter: saturate(1.05);
-  }
-
-  /* ——— 07 ギャラリー・マット ——— */
-  .snd-p07 {
-    display: grid;
-    gap: 1.2rem;
-    padding: 1.6rem 1.6rem 1.4rem;
-    background: #fff;
-    border: 1px solid rgba(44, 38, 34, 0.08);
-    transition: box-shadow 0.35s ease, transform 0.35s ease;
-  }
-
-  .snd-p07 .snd-p__media {
-    aspect-ratio: 5 / 4;
+    aspect-ratio: 1;
     overflow: hidden;
     background: rgba(44, 38, 34, 0.04);
   }
 
-  .snd-p07 .snd-p__title {
+  .snd-p05 .snd-p__caption {
+    margin-top: 1.2rem;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--line);
+    background: #fff;
+    font-size: 1.28rem;
+    letter-spacing: 0.04em;
+    line-height: 1.55;
+  }
+
+  .snd-p05 .snd-p__year-inline {
     display: block;
-    padding: 0 0.2rem;
-    font-size: 1.44rem;
-    letter-spacing: 0.08em;
-    text-align: center;
+    margin-top: 0.4rem;
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    letter-spacing: 0.12em;
     color: var(--ink-muted);
   }
 
-  .snd-p07:hover {
-    transform: translateY(-0.24rem);
-    box-shadow: 0 1.2rem 2.8rem rgba(44, 38, 34, 0.1);
+  .snd-p05 .snd-p__copy {
+    padding-top: 0.4rem;
+    max-width: 40rem;
   }
 
-  .snd-p07:hover .snd-p__title {
-    color: var(--ink);
+  .snd-p05 .snd-p__desc {
+    color: var(--ink-muted);
   }
 
-  /* ——— 08 タイポ主役 ——— */
-  .snd-stage--08 .snd-row {
-    grid-auto-columns: minmax(18rem, 22rem);
+  .snd-p05:hover .snd-p__caption {
+    border-color: var(--walnut);
+  }
+
+  /* ——— 06 タイムライン ——— */
+  .snd-stage--06 .snd-list {
+    gap: 0;
+    padding-left: 1.2rem;
+    border-left: 1px solid var(--line);
+  }
+
+  .snd-p06 {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
+    gap: 2.4rem;
+    align-items: start;
+    padding: 0 0 3.2rem 2.4rem;
+  }
+
+  .snd-p06::before {
+    content: '';
+    position: absolute;
+    left: -0.45rem;
+    top: 0.4rem;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background: var(--walnut);
+    box-shadow: 0 0 0 0.4rem var(--paper);
+  }
+
+  .snd-p06 .snd-p__year {
+    display: block;
+    position: absolute;
+    left: 2.4rem;
+    top: 0;
+    font-family: var(--font-display);
+    font-size: 1.36rem;
+    letter-spacing: 0.12em;
+    color: var(--walnut);
+  }
+
+  .snd-p06 .snd-p__year-inline {
+    display: none;
+  }
+
+  .snd-p06 .snd-p__visual {
+    display: contents;
+  }
+
+  .snd-p06 .snd-p__media {
+    margin-top: 2.8rem;
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .snd-p06 .snd-p__caption {
+    display: block;
+    margin-top: 2.8rem;
+    margin-bottom: 1rem;
+    font-size: 1.68rem;
+    letter-spacing: 0.03em;
+    line-height: 1.4;
+  }
+
+  .snd-p06 .snd-p__caption,
+  .snd-p06 .snd-p__copy {
+    grid-column: 2;
+  }
+
+  .snd-p06 .snd-p__desc {
+    color: var(--ink-muted);
+  }
+
+  .snd-p06:hover::before {
+    background: var(--accent);
+  }
+
+  /* ——— 07 ジャケット主景 ——— */
+  .snd-stage--07 .snd-list {
+    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+    gap: 2.4rem;
+    max-width: none;
+  }
+
+  .snd-p07 {
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  .snd-p07 .snd-p__visual {
+    display: grid;
+    gap: 1.2rem;
+  }
+
+  .snd-p07 .snd-p__media {
+    aspect-ratio: 1;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(44, 38, 34, 0.1),
+      0 1.2rem 2.8rem rgba(44, 38, 34, 0.12);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .snd-p07 .snd-p__thumb {
+    transition: transform 0.5s ease;
+  }
+
+  .snd-p07 .snd-p__caption {
+    font-size: 1.52rem;
+    letter-spacing: 0.04em;
+    line-height: 1.45;
+  }
+
+  .snd-p07 .snd-p__year-inline {
+    color: var(--ink-muted);
+  }
+
+  .snd-p07 .snd-p__desc {
+    font-size: 1.28rem;
+    color: var(--ink-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .snd-p07:hover .snd-p__media {
+    transform: translateY(-0.28rem);
+    box-shadow:
+      0 0 0 1px rgba(44, 38, 34, 0.14),
+      0 1.6rem 3.2rem rgba(44, 38, 34, 0.16);
+  }
+
+  .snd-p07:hover .snd-p__thumb {
+    transform: scale(1.03);
+  }
+
+  /* ——— 08 リード先行 ——— */
+  .snd-stage--08 .snd-list {
+    gap: 2.4rem;
+    max-width: 56rem;
   }
 
   .snd-p08 {
     display: grid;
-    grid-template-columns: 5.6rem 1fr;
-    gap: 1.4rem;
-    align-items: start;
-    padding: 0.4rem 0 1.2rem;
+    grid-template-columns: 6.4rem 1fr auto;
+    gap: 1.2rem 1.6rem;
+    align-items: center;
+    padding-bottom: 2.4rem;
     border-bottom: 1px solid var(--line);
-    transition: border-color 0.25s ease;
+  }
+
+  .snd-p08 .snd-p__visual {
+    display: contents;
+  }
+
+  .snd-p08 .snd-p__copy {
+    display: contents;
+  }
+
+  .snd-p08 .snd-p__desc {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.02em;
+    line-height: 1.75;
   }
 
   .snd-p08 .snd-p__media {
+    grid-row: 2;
+    width: 6.4rem;
     aspect-ratio: 1;
     overflow: hidden;
-    border-radius: 0.16rem;
   }
 
-  .snd-p08 .snd-p__meta {
-    padding-top: 0.2rem;
+  .snd-p08 .snd-p__caption {
+    grid-row: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 0.8rem;
+    font-size: 1.36rem;
   }
 
-  .snd-p08 .snd-p__title {
-    display: block;
-    font-size: clamp(1.84rem, 2.2vw, 2.24rem);
-    letter-spacing: 0.03em;
-    line-height: 1.35;
+  .snd-p08 .snd-p__year-inline {
+    color: var(--ink-muted);
   }
 
-  .snd-p08 .snd-p__cue {
-    display: inline-block;
-    margin-top: 0.8rem;
-    font-family: var(--font-body);
-    font-size: 1.2rem;
-    letter-spacing: 0.14em;
-    color: var(--accent);
+  .snd-p08 .snd-p__listen {
+    grid-row: 2;
   }
 
-  .snd-p08:hover {
-    border-color: var(--accent);
+  /* ——— 09 コンパクト行 ——— */
+  .snd-stage--09 .snd-list {
+    gap: 0;
+    max-width: none;
   }
 
-  /* ——— 09 プレイ・ノッチ ——— */
   .snd-p09 {
-    position: relative;
-    display: block;
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-    background: #1c1816;
+    display: grid;
+    grid-template-columns: 7.2rem minmax(16rem, 24rem) minmax(0, 1fr) auto;
+    gap: 1.6rem;
+    align-items: center;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.25s ease;
+  }
+
+  .snd-p09 .snd-p__visual {
+    display: contents;
+  }
+
+  .snd-p09 .snd-p__copy {
+    display: contents;
   }
 
   .snd-p09 .snd-p__media {
-    position: absolute;
-    inset: 0;
-  }
-
-  .snd-p09 .snd-p__thumb {
-    opacity: 0.88;
-    transition: opacity 0.35s ease, transform 0.5s ease;
-  }
-
-  .snd-p09 .snd-p__meta {
-    position: absolute;
-    inset: auto 0 0;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1rem;
-    align-items: end;
-    padding: 1.6rem;
-    background: linear-gradient(180deg, transparent, rgba(20, 18, 16, 0.75));
-    color: #fff;
-  }
-
-  .snd-p09 .snd-p__cue {
-    display: grid;
-    place-items: center;
-    width: 3.6rem;
-    height: 3.6rem;
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--accent) 70%, transparent);
-    font-size: 0;
-  }
-
-  .snd-p09 .snd-p__cue::before {
-    content: '';
-    width: 0;
-    height: 0;
-    margin-left: 0.24rem;
-    border-style: solid;
-    border-width: 0.56rem 0 0.56rem 0.96rem;
-    border-color: transparent transparent transparent #fff;
-  }
-
-  .snd-p09 .snd-p__title {
-    font-size: 1.44rem;
-    letter-spacing: 0.05em;
-    line-height: 1.4;
-  }
-
-  .snd-p09::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0 2.4rem 2.4rem 0;
-    border-color: transparent var(--accent) transparent transparent;
-    opacity: 0.85;
-  }
-
-  .snd-p09:hover .snd-p__thumb {
-    opacity: 1;
-    transform: scale(1.04);
-  }
-
-  .snd-p09:hover .snd-p__cue {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  /* ——— 10 シークエンス番号 ——— */
-  .snd-p10 {
-    display: grid;
-    gap: 1rem;
-    padding-top: 0.4rem;
-  }
-
-  .snd-p10 .snd-p__index {
-    display: block;
-    font-family: var(--font-display);
-    font-size: 3.2rem;
-    line-height: 1;
-    letter-spacing: 0.04em;
-    color: color-mix(in srgb, var(--walnut) 35%, transparent);
-    font-feature-settings: var(--font-feature-display);
-  }
-
-  .snd-p10 .snd-p__media {
-    position: relative;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 1;
     overflow: hidden;
   }
 
-  .snd-p10 .snd-p__media::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 1px;
-    background: var(--line);
-  }
-
-  .snd-p10 .snd-p__thumb {
-    transition: transform 0.45s ease;
-  }
-
-  .snd-p10 .snd-p__title {
-    display: block;
-    font-size: 1.52rem;
-    letter-spacing: 0.06em;
+  .snd-p09 .snd-p__caption {
+    font-size: 1.44rem;
+    letter-spacing: 0.03em;
     line-height: 1.4;
   }
 
-  .snd-p10 .snd-p__meta {
+  .snd-p09 .snd-p__year-inline {
+    color: var(--ink-muted);
+    white-space: nowrap;
+  }
+
+  .snd-p09 .snd-p__desc {
+    font-size: 1.28rem;
+    color: var(--ink-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .snd-p09 .snd-p__listen {
+    flex-shrink: 0;
+  }
+
+  .snd-p09:hover {
+    background: rgba(255, 255, 255, 0.65);
+  }
+
+  /* ——— 10 余白カタログ ——— */
+  .snd-stage--10 .snd-list {
+    gap: 5.6rem;
+    max-width: 64rem;
+  }
+
+  .snd-p10 {
     display: grid;
-    gap: 0.64rem;
+    grid-template-columns: minmax(16rem, 20rem) minmax(0, 1fr);
+    gap: 4rem;
+    align-items: start;
   }
 
-  .snd-p10:hover .snd-p__index {
-    color: var(--walnut);
+  .snd-p10 .snd-p__visual {
+    display: grid;
+    gap: 0;
   }
 
-  .snd-p10:hover .snd-p__thumb {
-    transform: scale(1.03);
+  .snd-p10 .snd-p__media {
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .snd-p10 .snd-p__caption {
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    font-size: 1.28rem;
+    letter-spacing: 0.06em;
+    line-height: 1.55;
+    color: var(--ink-muted);
+  }
+
+  .snd-p10 .snd-p__title {
+    color: var(--ink);
+  }
+
+  .snd-p10 .snd-p__copy {
+    gap: 1.6rem;
+    padding-top: 0.4rem;
+  }
+
+  .snd-p10 .snd-p__desc {
+    font-size: 1.44rem;
+    line-height: 2;
+    max-width: 36rem;
+  }
+
+  .snd-p10 .snd-p__listen {
+    letter-spacing: 0.16em;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    padding-bottom: 0.2rem;
+  }
+
+  .snd-p10 .snd-p__listen:hover {
+    border-color: var(--walnut);
+  }
+
+  @media (max-width: 899px) {
+    .snd-p01,
+    .snd-p05,
+    .snd-p10 {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+
+    .snd-p03 {
+      grid-template-columns: 5.6rem minmax(0, 1fr);
+      gap: 1.2rem 1.6rem;
+    }
+
+    .snd-p03 .snd-p__media {
+      grid-column: 2;
+      max-width: 16rem;
+    }
+
+    .snd-p03 .snd-p__caption,
+    .snd-p03 .snd-p__copy {
+      grid-column: 2;
+    }
+
+    .snd-p04 {
+      grid-template-columns: 9.6rem 1fr;
+      gap: 1.2rem 1.6rem;
+    }
+
+    .snd-p04 .snd-p__copy {
+      grid-column: 1 / -1;
+    }
+
+    .snd-p06 {
+      grid-template-columns: 1fr;
+      padding-left: 2rem;
+    }
+
+    .snd-p06 .snd-p__media,
+    .snd-p06 .snd-p__caption {
+      margin-top: 2.4rem;
+    }
+
+    .snd-p06 .snd-p__caption,
+    .snd-p06 .snd-p__copy {
+      grid-column: 1;
+    }
+
+    .snd-p09 {
+      grid-template-columns: 6.4rem 1fr;
+      gap: 1rem 1.2rem;
+    }
+
+    .snd-p09 .snd-p__desc,
+    .snd-p09 .snd-p__listen {
+      grid-column: 1 / -1;
+    }
   }
 
   @media (max-width: 719px) {
@@ -863,12 +1078,39 @@ const patterns = [
       padding: 1.6rem 1.2rem 2rem;
     }
 
-    .snd-stage--04 .snd-row {
-      grid-auto-columns: minmax(24rem, 88vw);
+    .snd-list {
+      gap: 2.8rem;
+    }
+
+    .snd-p03 {
+      grid-template-columns: 1fr;
+    }
+
+    .snd-p03 .snd-p__media,
+    .snd-p03 .snd-p__caption,
+    .snd-p03 .snd-p__copy {
+      grid-column: 1;
+    }
+
+    .snd-p03 .snd-p__media {
+      max-width: 18rem;
     }
 
     .snd-p04 {
-      grid-template-columns: 9.6rem 1fr;
+      grid-template-columns: 1fr;
+    }
+
+    .snd-p04 .snd-p__media {
+      max-width: 14rem;
+    }
+
+    .snd-p08 {
+      grid-template-columns: 5.6rem 1fr;
+    }
+
+    .snd-p08 .snd-p__listen {
+      grid-column: 1 / -1;
+      justify-self: start;
     }
   }
 </style>

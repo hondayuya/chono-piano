@@ -9,6 +9,11 @@ type Props = {
 
 const { sounds: soundsProp, works } = Astro.props;
 const sounds = soundsProp ?? works ?? [];
+
+function yearLabel(year?: number | string) {
+  if (year == null || year === '') return '';
+  return `${year}年`;
+}
 ---
 
 <div class="works-row" role="list">
@@ -16,15 +21,9 @@ const sounds = soundsProp ?? works ?? [];
     sounds.length === 0 ? (
       <p>現在登録されている音源はありません。</p>
     ) : (
-      sounds.map((sound) =>
-        sound.url ? (
-          <a
-            class="work-tile"
-            role="listitem"
-            href={sound.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+      sounds.map((sound) => (
+        <article class="work-tile" role="listitem">
+          <div class="work-tile__visual">
             <span class="work-tile__media">
               {sound.thumbnail ? (
                 <img
@@ -39,28 +38,55 @@ const sounds = soundsProp ?? works ?? [];
                 <span class="work-tile__thumb work-tile__thumb--empty" aria-hidden="true" />
               )}
             </span>
-            <span class="work-tile__title">{sound.title}</span>
-          </a>
-        ) : (
-          <article class="work-tile" role="listitem">
-            <span class="work-tile__media">
-              {sound.thumbnail ? (
-                <img
-                  class="work-tile__thumb"
-                  src={sound.thumbnail.url}
-                  alt=""
-                  width="320"
-                  height="320"
-                  loading="lazy"
-                />
-              ) : (
-                <span class="work-tile__thumb work-tile__thumb--empty" aria-hidden="true" />
+            <p class="work-tile__caption">
+              <span class="work-tile__title">{sound.title}</span>
+              {sound.year != null && sound.year !== '' && (
+                <span class="work-tile__year">（{yearLabel(sound.year)}）</span>
               )}
-            </span>
-            <span class="work-tile__title">{sound.title}</span>
-          </article>
-        ),
-      )
+            </p>
+          </div>
+          {(sound.description || sound.url) && (
+            <div class="work-tile__copy">
+              {sound.description && <p class="work-tile__desc">{sound.description}</p>}
+              {sound.url && (
+                <a
+                  class="work-tile__listen"
+                  href={sound.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <svg
+                    class="work-tile__listen-icon"
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M4.5 13.5v-2a7.5 7.5 0 0 1 15 0v2"
+                    />
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M4.5 13.5v2.2a1.8 1.8 0 0 0 1.8 1.8h.7a1.8 1.8 0 0 0 1.8-1.8v-1.4a1.8 1.8 0 0 0-1.8-1.8h-2.5Zm15 0v2.2a1.8 1.8 0 0 1-1.8 1.8h-.7a1.8 1.8 0 0 1-1.8-1.8v-1.4a1.8 1.8 0 0 1 1.8-1.8h2.5Z"
+                    />
+                  </svg>
+                  <span class="work-tile__listen-label">聴く</span>
+                </a>
+              )}
+            </div>
+          )}
+        </article>
+      ))
     )
   }
 </div>

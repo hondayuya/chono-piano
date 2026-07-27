@@ -32,6 +32,10 @@ export type Sound = {
   revisedAt?: string;
   title: string;
   url: string;
+  /** 西暦（例: 2023） */
+  year?: number | string;
+  /** 説明文 */
+  description?: string;
   thumbnail?: MicroCMSImage;
 };
 

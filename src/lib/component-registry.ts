@@ -105,10 +105,11 @@ export const componentRegistry: ComponentEntry[] = [
     file: 'src/components/WorksRow.astro',
     category: 'content',
     description:
-      'microCMS sounds（音源・動画）の横スクロール行。正方形サムネ＋下キャプション。',
+      'microCMS sounds（音源・動画）。PCは3カラム縦積み、SPは画像＋タイトル40%／説明＋聴く60%。',
     props: [{ name: 'sounds', type: 'Sound[]', required: true }],
     notes: [
-      '枠付き正方形画像の下にタイトルを置きます。',
+      'デザイン検証の「02 縦積みエントリ」をベースに採用。',
+      'url がある場合のみヘッドホンアイコン付きの「聴く」リンクを表示します。',
     ],
     usedIn: [{ href: '/', label: 'トップ' }],
     preview: 'live',

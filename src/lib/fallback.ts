@@ -75,18 +75,27 @@ export const fallbackNews: News[] = [
 export const fallbackSounds: Sound[] = [
   {
     id: 'sound-1',
-    title: '（タイトル）',
+    title: 'グッドマンズ / 助川太郎 渋谷毅',
+    year: 2023,
     url: 'https://example.com',
+    description:
+      '2006年に高円寺に移転してから毎月調律しています。当時のオーナーの方が音にこだわりがある方で、ピアニストの方々を呼んでレコーディングをされていました。Amazon musicで聴けます。',
   },
   {
     id: 'sound-2',
-    title: '（タイトル）',
+    title: '裏窓での渋谷さん',
+    year: 2011,
     url: 'https://example.com',
+    description:
+      '新宿ゴールデン街の「裏窓」では2010年からライブが始まりました。1970年製ヤマハU1のピアノを調律しています。',
   },
   {
     id: 'sound-3',
-    title: '（タイトル）',
+    title: '月光 / 吉田達也 × 三柴理',
+    year: 2022,
     url: 'https://example.com',
+    description:
+      '高円寺・JIROKICHIでの調律は1996年から。ピアノとドラムの10番勝負として収録された一枚です。古いピアノであっても省略せず通して調律しています。',
   },
 ];
 

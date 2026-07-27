@@ -85,7 +85,7 @@ const MOCK_TARGETS = [
     endpoint: 'sounds',
     queries: {
       orders: '-publishedAt',
-      fields: 'id,title,url,thumbnail,publishedAt,revisedAt,updatedAt,createdAt',
+      fields: 'id,title,url,year,description,thumbnail,publishedAt,revisedAt,updatedAt,createdAt',
     },
   },
 ];
