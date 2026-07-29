@@ -84,7 +84,7 @@ const MOCK_TARGETS = [
     file: 'sounds-list.json',
     endpoint: 'sounds',
     queries: {
-      orders: '-publishedAt',
+      // orders 未指定 = microCMS 管理画面の並び順
       fields: 'id,title,url,year,description,thumbnail,publishedAt,revisedAt,updatedAt,createdAt',
     },
   },

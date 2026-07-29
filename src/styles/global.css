@@ -1439,20 +1439,21 @@ body.is-nav-locked {
   border-radius: var(--radius);
 }
 
+.prose :where(figure) {
+  margin-block: 2.4rem;
+  margin-inline: 0;
+}
+
+.prose :where(figure img) {
+  margin: 0;
+}
+
 .prose :where(.text-table-wrap) {
   margin: 2.4rem 0;
 }
 
 .article-page {
   padding: clamp(4rem, 6vw, 6.4rem) 0;
-}
-
-.article-page__thumb {
-  display: block;
-  width: auto;
-  max-width: min(100%, 57.6rem);
-  height: auto;
-  margin: 2.4rem 0;
 }
 
 .article-page__back {

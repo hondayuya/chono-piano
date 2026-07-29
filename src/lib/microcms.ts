@@ -136,7 +136,7 @@ export async function getSounds(limit = 100): Promise<Sound[]> {
 
   try {
     const data = await getListAll<Sound>(MICROCMS_ENDPOINTS.sounds, {
-      orders: '-publishedAt',
+      // orders 未指定 = microCMS 管理画面の並び順
       fields: SOUNDS_FIELDS,
     });
     if (!data) {
