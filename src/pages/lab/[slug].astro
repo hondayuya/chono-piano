@@ -37,7 +37,7 @@ const body = applyGlossaryLinks(article.body, glossary);
     { label: article.title },
   ]}
 >
-  <article id="top" class="site-shell" style="padding:clamp(4rem,6vw,6.4rem) 0">
+  <article id="top" class="site-shell article-page">
     {
       article.audience === 'technician' && (
         <p class="badge">技術者向け</p>
@@ -46,7 +46,7 @@ const body = applyGlossaryLinks(article.body, glossary);
     <h1 class="section__title">{article.title}</h1>
     {article.series && <p class="section__lead">シリーズ: {article.series}</p>}
     <div class="prose" set:html={body} />
-    <p style="margin-top:3.2rem">
+    <p class="article-page__back">
       <a href="/lab/">Labo CHONO 一覧へ戻る</a>
     </p>
   </article>

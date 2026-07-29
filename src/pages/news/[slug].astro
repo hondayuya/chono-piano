@@ -38,22 +38,23 @@ const body = applyGlossaryLinks(article.content, glossary);
     { label: article.title },
   ]}
 >
-  <article id="top" class="site-shell" style="padding:clamp(4rem,6vw,6.4rem) 0">
+  <article id="top" class="site-shell article-page">
     <p class="news-list__date">{formatDate(article.publishedAt ?? article.createdAt)}</p>
     <h1 class="section__title">{article.title}</h1>
     {
       article.thumbnail && (
         <img
+          class="article-page__thumb"
           src={article.thumbnail.url}
           alt=""
           width={article.thumbnail.width}
           height={article.thumbnail.height}
-          style="margin:2.4rem 0;max-width:57.6rem"
+          loading="eager"
         />
       )
     }
     <div class="prose" set:html={body} />
-    <p style="margin-top:3.2rem">
+    <p class="article-page__back">
       <a href="/news/">お知らせ一覧へ戻る</a>
     </p>
   </article>

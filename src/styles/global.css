@@ -1431,12 +1431,32 @@ body.is-nav-locked {
 }
 
 .prose :where(img) {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
   margin: 2.4rem 0;
   border-radius: var(--radius);
 }
 
 .prose :where(.text-table-wrap) {
   margin: 2.4rem 0;
+}
+
+.article-page {
+  padding: clamp(4rem, 6vw, 6.4rem) 0;
+}
+
+.article-page__thumb {
+  display: block;
+  width: auto;
+  max-width: min(100%, 57.6rem);
+  height: auto;
+  margin: 2.4rem 0;
+}
+
+.article-page__back {
+  margin-top: 3.2rem;
 }
 
 .heading--meta {
