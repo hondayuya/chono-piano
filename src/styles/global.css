@@ -1456,6 +1456,12 @@ body.is-nav-locked {
   padding: clamp(4rem, 6vw, 6.4rem) 0;
 }
 
+.article-page__series {
+  margin: -0.8rem 0 2.4rem;
+  color: var(--ink-muted);
+  font-size: var(--font-size-lead);
+}
+
 .article-page__back {
   margin-top: 3.2rem;
 }
@@ -1553,6 +1559,24 @@ body.is-nav-locked {
 .meta-block p {
   margin: 0;
   color: var(--ink-muted);
+}
+
+.lab-index {
+  padding-top: clamp(4rem, 6vw, 6.4rem);
+}
+
+.lab-index__list {
+  list-style: none;
+  padding: 0;
+  margin: 1.2rem 0 0;
+  display: grid;
+  gap: 1.92rem;
+}
+
+.lab-index__excerpt {
+  margin: 0.56rem 0 0;
+  color: var(--ink-muted);
+  font-size: 1.47rem;
 }
 
 .works-row {

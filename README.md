@@ -20,7 +20,7 @@
 | `/news/` | お知らせ一覧・詳細 |
 | `/profile/` | 経歴・実績 |
 | `/notes/` | 注釈・解説 |
-| `/lab/` | Labo CHONO（調律研究所） |
+| `/lab/` | Labo CHONO（技術インフォメーション） |
 | `/contact/` | 相談・連絡シート（Astro → 静的 HTML） |
 | `/contact/thanks/` | 送信完了 |
 | `/contact/error/` | 送信エラー |
