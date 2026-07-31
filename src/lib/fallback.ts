@@ -22,8 +22,7 @@ export const fallbackSettings: SiteSettings = {
     '訪問範囲は東京周辺。都内は原則として出張費無料。その他の地域は予約時に金額をお伝えします。調律の狂いが大きい場合や修理希望がある場合は、予定を決める前に電話でお見積りが可能です。',
   address: '〒120-0025 東京都足立区千住東１丁目１１－６',
   phone: '080-5028-4732',
-  fax: '03-3879-7060',
-  email: 'y-chono@labo-chono.com',
+  email: 'p-house@m78.com',
   xUrl: '',
 };
 
@@ -125,15 +124,15 @@ export const fallbackLabArticles: LabArticle[] = [
 
 export const fallbackGlossary: Glossary[] = [
   {
-    id: 'g1',
-    term: '純正律',
-    reading: 'じゅんせいりつ',
-    body: '純正な音程関係に基づく音律。詳細は公開時に追記します。',
+    id: 'g-inharmonicity',
+    term: 'インハーモニシティ',
+    reading: 'いんはーもにしてぃ',
+    body: '現在補足説明はありません。',
   },
   {
     id: 'g2',
     term: '平均律',
     reading: 'へいきんりつ',
-    body: 'オクターブを等分した音律。詳細は公開時に追記します。',
+    body: '現在補足説明はありません。',
   },
 ];

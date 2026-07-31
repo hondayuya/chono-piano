@@ -30,7 +30,7 @@ const copyrightYear = new Date().getFullYear();
             )
           }
           {
-            (settings.phone || settings.fax) && (
+            (settings.phone || settings.email) && (
               <p class="site-footer__tels">
                 {settings.phone && (
                   <span class="site-footer__line">
@@ -40,26 +40,24 @@ const copyrightYear = new Date().getFullYear();
                     </a>
                   </span>
                 )}
-                {settings.fax && (
+                {settings.email && (
                   <span class="site-footer__line">
-                    FAX{' '}
-                    <a href={`tel:${settings.fax.replace(/[^\d+]/g, '')}`}>
-                      {settings.fax}
-                    </a>
+                    mail{' '}
+                    <a href={`mailto:${settings.email}`}>{settings.email}</a>
                   </span>
                 )}
               </p>
             )
           }
           <p class="site-footer__note">
-            調律中はお電話に出られないことが多いため、留守番電話・ショートメールのご利用をお願いします。
+            調律中は電話対応できないため、恐縮ですが留守番電話・メール・ショートメール（こちらが未登録の番号だと届かない場合があります）をご利用ください。ご質問やお見積りにはお問い合せ用の連絡フォームが確実です。
           </p>
         </div>
 
         <div class="site-footer__inquiry">
-          <p class="site-footer__inquiry-label">問い合わせ</p>
+          <p class="site-footer__inquiry-label">お問い合せ用フォーム</p>
           <a class="button site-footer__inquiry-btn" href={contactNav.href}>
-            相談・連絡シートへ
+            お問い合せ用フォームはこちら
           </a>
         </div>
       </div>

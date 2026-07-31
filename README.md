@@ -19,7 +19,7 @@
 | `/` | トップ（お知らせ・紹介・料金・業務） |
 | `/news/` | お知らせ一覧・詳細 |
 | `/profile/` | 経歴・実績 |
-| `/notes/` | 注釈・解説 |
+| `/notes/` | 補足説明 |
 | `/lab/` | Labo CHONO（技術インフォメーション） |
 | `/contact/` | 相談・連絡シート（Astro → 静的 HTML） |
 | `/contact/thanks/` | 送信完了 |

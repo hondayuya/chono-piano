@@ -24,5 +24,5 @@ export const labNav: NavLink = {
 
 /** Footer-only secondary links. */
 export const footerSecondaryNav: NavLink[] = [
-  { href: '/notes/', label: '注釈' },
+  { href: '/notes/', label: '補足説明' },
 ];

@@ -1958,16 +1958,22 @@ body.is-nav-locked {
 }
 
 .site-footer__note {
-  margin: 0.48rem 0 0;
+  margin: 0.8rem 0 0;
+  padding: 1.2rem 1.4rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: #fff;
   font-size: 1.28rem;
   max-width: 40rem;
+  color: var(--ink-muted);
 }
 
 .site-footer__inquiry {
   display: grid;
   gap: 0.8rem;
-  justify-items: start;
+  justify-items: stretch;
   margin-top: 1.6rem;
+  max-width: 40rem;
 }
 
 .site-footer__inquiry-label {
@@ -1978,8 +1984,11 @@ body.is-nav-locked {
 }
 
 .site-footer__inquiry-btn {
-  padding: 0.72rem 1.6rem;
-  font-size: 1.2rem;
+  width: 100%;
+  min-height: 5.6rem;
+  padding: 1.6rem 2rem;
+  font-size: 1.44rem;
+  justify-content: center;
 }
 
 .site-footer__bottom {
