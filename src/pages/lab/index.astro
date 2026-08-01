@@ -26,11 +26,11 @@ const bySeries = articles.reduce<Record<string, typeof articles>>((acc, item) =>
 
   <section class="section">
     <div class="site-shell">
-      <div class="meta-grid">
+      <div class="lab-index__series">
         {
           Object.entries(bySeries).map(([series, items]) => (
-            <div class="meta-block">
-              <h3>{series}</h3>
+            <div class="lab-index__group">
+              <h2 class="heading--meta">{series}</h2>
               <ul class="lab-index__list">
                 {items.map((item) => (
                   <li>

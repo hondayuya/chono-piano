@@ -1565,10 +1565,19 @@ body.is-nav-locked {
   padding-top: clamp(4rem, 6vw, 6.4rem);
 }
 
+.lab-index__series {
+  display: grid;
+  gap: 4.8rem;
+}
+
+.lab-index__group .heading--meta {
+  margin-bottom: 1.6rem;
+}
+
 .lab-index__list {
   list-style: none;
   padding: 0;
-  margin: 1.2rem 0 0;
+  margin: 0;
   display: grid;
   gap: 1.92rem;
 }
