@@ -5,7 +5,6 @@ import NewsList from '../components/NewsList.astro';
 import Table from '../components/text/Table.astro';
 import WorksRow from '../components/WorksRow.astro';
 import {
-  getLabArticles,
   getNewsList,
   getSiteSettings,
   getSounds,
@@ -14,8 +13,6 @@ import {
 const settings = await getSiteSettings();
 const news = (await getNewsList(5)).slice(0, 5);
 const sounds = await getSounds();
-const labArticles = await getLabArticles();
-const featuredLab = labArticles.find((a) => a.id.includes('chono-method-1')) ?? labArticles[0];
 
 const heroLead = (settings.catchphrase ?? '')
   .replace(
@@ -128,14 +125,8 @@ const aboutSliderImages = [
             }
           </div>
           <div class="section__actions">
-            <a class="button button--ghost" href="/profile/">経歴・実績を見る</a>
-            {
-              featuredLab && (
-                <a class="button button--ghost button--lab" href={`/lab/${featuredLab.id}/`}>
-                  チョウノウ方式について
-                </a>
-              )
-            }
+            <a class="button button--ghost" href="/profile/">自己紹介と実績を見る</a>
+            <a class="button button--ghost button--lab" href="/lab/">Labo CHONO 記事一覧を見る</a>
           </div>
         </div>
         <figure class="about-layout__media">

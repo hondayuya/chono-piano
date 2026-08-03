@@ -32,7 +32,7 @@ export async function getGlossaryWithUsages(): Promise<{
     })),
     {
       href: '/profile/',
-      title: `${profile.name}の経歴`,
+      title: `${profile.name}の自己紹介と経歴`,
       html: profile.biography,
     },
   ];
