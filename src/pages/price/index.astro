@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Table from '../../components/text/Table.astro';
+import { contactNav } from '../../lib/nav';
+import { getSiteSettings } from '../../lib/microcms';
+
+const settings = await getSiteSettings();
+---
+
+<BaseLayout
+  title="ご依頼内容と料金"
+  description="チョウノウ調律所の調律・調整・修理・出張・購入相談のご案内と料金"
+  settings={settings}
+  currentPath="/price/"
+>
+  <div id="top" class="site-shell service-page">
+    <h1 class="section__title">ご依頼内容と料金</h1>
+    <p class="section__lead">
+      調律・調整・修理から出張、購入相談まで、ご依頼いただける内容と料金のご案内です。
+    </p>
+
+    <section class="service-block">
+      <h2 class="service-block__title">調律割引料金</h2>
+      <div class="prose">
+        <p>
+          年間調律回数による割引あります（音楽施設、ライブハウス、ピアノ教室、個人宅など）お問い合わせ下さい。
+        </p>
+      </div>
+    </section>
+
+    <section class="service-block">
+      <h2 class="service-block__title">調律基本料金</h2>
+      <Table caption="税込価格">
+        <thead>
+          <tr>
+            <th scope="col">区分</th>
+            <th scope="col">料金</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>グランドピアノ</td>
+            <td>{settings.feeGp ?? '¥22,000（税込）'}</td>
+          </tr>
+          <tr>
+            <td>アップライトピアノ</td>
+            <td>{settings.feeUp ?? '¥16,500（税込）'}</td>
+          </tr>
+        </tbody>
+      </Table>
+    </section>
+
+    <section class="service-block">
+      <h2 class="service-block__title">割増料金</h2>
+      <div class="prose">
+        <p>
+          当日、ピアノの音が下がりすぎていて、通常の一回調律では通常のピッチ（A=440～442Hz）を取り戻せない場合は、さらにもう一回調律が必要です。その場合は割増料金となります。しばらく調律していない場合事前にご相談ください。
+        </p>
+        <p>
+          また古く、極端に音の下がったピアノでは、弦の錆などが原因で音を上げた際、弦が切れる場合があります。その場合新しい弦の張弦料金が発生します。
+        </p>
+      </div>
+    </section>
+
+    <section class="service-block">
+      <h2 class="service-block__title">調整（整調・整音）、修理の料金</h2>
+      <div class="prose">
+        <p>
+          お問い合わせメールの内容を確認して、メールでもお電話でも、おおよその料金をお見積りいたします。
+        </p>
+      </div>
+    </section>
+
+    <section class="service-block">
+      <h2 class="service-block__title">出張費・交通費</h2>
+      <div class="prose">
+        <p>
+          主な訪問範囲は都内です。都内の出張費は無料ですが、場合によって出張費・交通費が発生することがあります。メールでも電話でもお答えいたします。場合によって遠隔地にもお伺いしています。
+        </p>
+      </div>
+    </section>
+
+    <section class="service-block">
+      <h2 class="service-block__title">購入のご相談</h2>
+      <div class="prose">
+        <p>新品・中古ピアノ購入のアドバイス（特に外国製ピアノ）承ります。</p>
+        <p>注：すでに商談が進んでいる場合お断りすることがあります。</p>
+        <p>
+          メールでの対応は基本無料です。その後はご要望に応じて対応します。
+        </p>
+      </div>
+    </section>
+
+    <div class="section__actions">
+      <a class="button" href={contactNav.href}>{contactNav.labelLong}</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .service-page {
+    padding-top: clamp(4rem, 6vw, 6.4rem);
+    padding-bottom: clamp(6.4rem, 10vw, 12rem);
+  }
+
+  .service-page .section__lead {
+    margin-bottom: clamp(3.2rem, 5vw, 4.8rem);
+  }
+
+  .service-block {
+    margin-bottom: clamp(3.2rem, 5vw, 4.8rem);
+  }
+
+  .service-block__title {
+    margin: 0 0 1.6rem;
+    font-size: clamp(1.84rem, 2.2vw, 2.16rem);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .service-block .prose :where(p) {
+    margin-bottom: 1.28rem;
+  }
+
+  .service-block .prose :where(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .service-page .section__actions {
+    margin-top: clamp(4rem, 6vw, 5.76rem);
+  }
+</style>

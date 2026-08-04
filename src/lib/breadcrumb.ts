@@ -7,9 +7,10 @@ export type BreadcrumbItem = {
 const PATH_LABELS: Record<string, string> = {
   '/news/': 'お知らせ',
   '/profile/': '自己紹介と経歴',
+  '/price/': 'ご依頼内容と料金',
   '/notes/': '補足説明',
   '/lab/': 'Labo CHONO',
-  '/contact/': 'ご相談・連絡',
+  '/contact/': 'お問い合わせフォーム',
   '/contact/thanks/': '送信完了',
   '/contact/error/': '送信エラー',
   '/design/': 'デザインシステム',

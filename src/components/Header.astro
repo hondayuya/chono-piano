@@ -68,7 +68,8 @@ const revealOnScroll = currentPath === '/';
         href={contactNav.href}
         aria-current={contactCurrent ? 'page' : undefined}
       >
-        {contactNav.label}
+        <span class="site-header__cta-short">{contactNav.label}</span>
+        <span class="site-header__cta-long">{contactNav.labelLong}</span>
       </a>
     </div>
   </div>

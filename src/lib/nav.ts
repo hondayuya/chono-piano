@@ -8,12 +8,15 @@ export const primaryNav: NavLink[] = [
   { href: '/', label: 'ホーム' },
   { href: '/news/', label: 'お知らせ' },
   { href: '/profile/', label: '自己紹介と経歴' },
-  { href: '/#service', label: '料金' },
+  { href: '/price/', label: 'ご依頼内容と料金' },
 ];
 
-export const contactNav: NavLink = {
+export const contactNav: NavLink & { labelLong: string } = {
   href: '/contact/',
-  label: 'ご相談・連絡',
+  /** Desktop header — shorter for space */
+  label: 'お問い合わせ',
+  /** Mobile hamburger / footer — fuller form */
+  labelLong: 'お問い合わせフォーム',
 };
 
 /** Professional / research area — not in header; footer banner only. */

@@ -50,14 +50,14 @@ const copyrightYear = new Date().getFullYear();
             )
           }
           <p class="site-footer__note">
-            調律中は電話対応できないため、恐縮ですが留守番電話・メール・ショートメール（こちらが未登録の番号だと届かない場合があります）をご利用ください。ご質問やお見積りにはお問い合せ用の連絡フォームが確実です。
+            調律中は電話対応できないため、恐縮ですが留守番電話・メール・ショートメール（こちらが未登録の番号だと届かない場合があります）をご利用ください。ご質問やお見積りにはお問い合わせフォームが確実です。
           </p>
         </div>
 
         <div class="site-footer__inquiry">
-          <p class="site-footer__inquiry-label">お問い合せ用フォーム</p>
+          <p class="site-footer__inquiry-label">{contactNav.labelLong}</p>
           <a class="button site-footer__inquiry-btn" href={contactNav.href}>
-            お問い合せ用フォームはこちら
+            {contactNav.labelLong}はこちら
           </a>
         </div>
       </div>

@@ -37,7 +37,7 @@ export const componentRegistry: ComponentEntry[] = [
     file: 'src/components/Header.astro',
     category: 'layout',
     description:
-      'サイト共通ヘッダー。ブランド名・メインナビ・ご相談 CTA を表示します。',
+      'サイト共通ヘッダー。ブランド名・メインナビ・お問い合わせ CTA を表示します。',
     props: [
       { name: 'settings', type: 'SiteSettings', required: true },
       { name: 'currentPath', type: 'string', note: '現在ページのハイライト用。既定 `/`' },
