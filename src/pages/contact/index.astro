@@ -57,7 +57,7 @@ const settings = await getSiteSettings();
         </div>
 
         <div class="field" data-field="address">
-          <label for="address">ご住所</label>
+          <label for="address">ご住所　訪問の目安となる駅名でも構いません。</label>
           <input
             type="text"
             id="address"
@@ -96,7 +96,7 @@ const settings = await getSiteSettings();
             aria-describedby="phone-hint phone-error"
           />
           <span class="hint" id="phone-hint">
-            ※訪問時間帯のご予約は基本電話で行います。電話番号はご相談後にメールでお伝えいただいても結構です。
+            ※訪問時刻の連絡は原則電話またはショートメールで行います。電話番号は調律依頼確定後にメールでお伝えいただいても結構です。
           </span>
           <p class="field__error" id="phone-error" role="alert" hidden></p>
         </div>
@@ -114,7 +114,7 @@ const settings = await getSiteSettings();
         </div>
 
         <div class="field" data-field="piano_age">
-          <label for="piano_age">ピアノの古さ（購入時期の目安）</label>
+          <label for="piano_age">ピアノの古さ　購入時期と、新品か中古のどちらでしたか？</label>
           <input
             type="text"
             id="piano_age"
@@ -144,7 +144,7 @@ const settings = await getSiteSettings();
             name="message"
             required
             maxlength="5000"
-            placeholder="音が出ない／出にくいキー、特にこうしてほしいこと、調律のみか修理希望か、以前の調律師についてなど"
+            placeholder="調律だけのご相談、又はタッチや音色、修理なども含めてのご相談お知らせください。"
             aria-describedby="message-error"
           ></textarea>
           <p class="field__error" id="message-error" role="alert" hidden></p>
@@ -157,12 +157,7 @@ const settings = await getSiteSettings();
       </form>
 
       <div class="privacy">
-        <p>
-          送信内容は調律・修理のご相談対応の目的でのみ利用します。調律の狂いが大きい場合や修理が必要な場合は、別料金が発生することがあります。古いピアノでは調律時に弦が切れる場合があるため、現地確認後に説明する場合があります。
-        </p>
-        <p>
-          原則として一度はお電話でお話しします。修理見積はメールでお送りし、承諾のご返信をいただく場合があります。
-        </p>
+        <p>送信内容はご相談対応の目的でのみ利用します。</p>
       </div>
     </div>
   </div>
