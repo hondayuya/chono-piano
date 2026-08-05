@@ -2210,6 +2210,11 @@ body.is-nav-locked {
   font-size: 1.31rem;
 }
 
+.field label .hint {
+  display: inline;
+  margin-top: 0;
+}
+
 .field__error {
   margin: 0.56rem 0 0;
   color: var(--rosewood);
